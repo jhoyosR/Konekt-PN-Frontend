@@ -1,0 +1,150 @@
+.login-page {
+  min-height: 95vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f6f9;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #0f172a;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+.btn-login,
+.btn-register {
+  width: 100%;
+  padding: 0.85rem;
+  margin-top: 0.6rem;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-login {
+  background-color: #2563eb;
+}
+
+.btn-login:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+.btn-register {
+  background-color: #10b981;
+}
+
+.btn-register:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.btn-register:active {
+  transform: translateY(0);
+}
+
+.forgot-password {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.forgot-password a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+  color: #1d4ed8;
+}
+.show-password {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.show-password input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+
+.show-password label {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #0f172a;
+  cursor: pointer;
+  user-select: none;
+}
+.logo-container {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.login-logo {
+  max-width: 200px;
+  width: 100%;
+  height: auto;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
