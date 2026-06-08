@@ -5,7 +5,6 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-/* HEADER */
 .role-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -22,7 +21,6 @@
   font-size: 1rem;
 }
 
-/* CONTAINER */
 .roles-container {
   display: flex;
   justify-content: center;
@@ -30,12 +28,10 @@
   flex-wrap: wrap;
 }
 
-/* ITEM */
 .role-item {
   width: 380px;
 }
 
-/* CARD (BASE LOGIN STYLE) */
 .role-card {
   position: relative;
   width: 100%;
@@ -46,19 +42,18 @@
   cursor: pointer;
   border: none;
 
-  /* MISMA SOMBRA DEL LOGIN */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.12);
 
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-/* HOVER (AZUL REAL DEL LOGIN) */
 .role-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 0 18px rgba(37, 99, 235, 0.25);
 }
 
-/* IMAGEN */
 .card-image {
   height: 300px;
   overflow: hidden;
@@ -72,7 +67,6 @@
   object-position: top;
 }
 
-/* CONTENIDO */
 .card-content {
   padding: 1.5rem;
   text-align: center;
@@ -84,7 +78,6 @@
   margin: 0;
 }
 
-/* OVERLAY (usa azul oscuro consistente con login feel) */
 .card-hover-info {
   position: absolute;
   inset: 0;
@@ -104,7 +97,6 @@
   opacity: 1;
 }
 
-/* LISTA */
 .card-hover-info ul {
   list-style: none;
   padding: 0;

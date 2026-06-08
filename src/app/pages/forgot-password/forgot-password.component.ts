@@ -6,18 +6,17 @@ import { Router } from '@angular/router';
   selector: 'app-forgot-password',
   imports: [FormsModule],
   templateUrl: './forgot-password.component.html',
-  styleUrl: './forgot-password.component.css'
+  styleUrl: './forgot-password.component.css',
 })
 export class ForgotPasswordComponent {
-
   constructor(private router: Router) {}
-email: string = '';
+  email: string = '';
 
-sendRecovery() {
-  console.log(this.email);
-}
+  sendRecovery() {
+    console.log(this.email);
+  }
 
-goToLogin() {
-  this.router.navigate(['/']);
-}
+  goToLogin() {
+    this.router.navigate(['/']);
+  }
 }

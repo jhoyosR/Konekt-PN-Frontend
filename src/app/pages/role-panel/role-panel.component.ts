@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
   selector: 'app-role-panel',
   imports: [],
   templateUrl: './role-panel.component.html',
-  styleUrl: './role-panel.component.css'
+  styleUrl: './role-panel.component.css',
 })
 export class RolePanelComponent {
-constructor(private router: Router) {}
+  constructor(private router: Router) {}
 
   goToStudentRegister() {
     this.router.navigate(['/register/student']);
