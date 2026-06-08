@@ -148,3 +148,15 @@ body {
   padding: 0;
   height: 100%;
 }
+.error-message {
+  display: block;
+  margin-top: 0.4rem;
+  color: #dc2626;
+  font-size: 0.85rem;
+}
+
+.btn-login:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}

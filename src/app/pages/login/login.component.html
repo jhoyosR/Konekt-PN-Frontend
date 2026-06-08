@@ -1,60 +1,85 @@
 <div class="login-page">
   <div class="login-container">
-
     <div class="logo-container">
-      <img
-        src="images/logo2.png"
-        alt="Logo Konekt"
-        class="login-logo"
-      />
+      <img src="images/logo.png" alt="Logo Konekt" class="login-logo" />
     </div>
 
     <h2 class="login-title">Iniciar sesión</h2>
 
-    <form class="login-form">
-
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="signIn()">
+      <!-- EMAIL -->
       <div class="form-group">
         <label for="email">Correo electrónico</label>
+
         <input
           type="email"
           id="email"
+          formControlName="email"
           placeholder="correo@ejemplo.com"
         />
+
+        @if (f["email"].touched && f["email"].hasError("required")) {
+          <small class="error-message"> El correo es obligatorio. </small>
+        }
+
+        @if (f["email"].touched && f["email"].hasError("email")) {
+          <small class="error-message"> Ingresa un correo válido. </small>
+        }
       </div>
 
+      <!-- PASSWORD -->
       <div class="form-group">
         <label for="password">Contraseña</label>
 
         <input
-          type="password"
+          [type]="showPassword ? 'text' : 'password'"
           id="password"
-          placeholder="********"
+          formControlName="password"
         />
+
+        @if (f["password"].touched && f["password"].hasError("required")) {
+          <small class="error-message"> La contraseña es obligatoria. </small>
+        }
+
+        @if (f["password"].touched && f["password"].hasError("minlength")) {
+          <small class="error-message">
+            La contraseña debe tener mínimo 8 caracteres.
+          </small>
+        }
+
+        @if (f["password"].touched && f["password"].hasError("pattern")) {
+          <small class="error-message">
+            Debe contener una mayúscula, una minúscula, un número y un carácter
+            especial.
+          </small>
+        }
 
         <div class="show-password">
           <input
             type="checkbox"
             id="showPassword"
+            [checked]="showPassword"
+            (change)="togglePassword()"
           />
 
-          <label for="showPassword">
-            Mostrar contraseña
-          </label>
+          <label for="showPassword"> Mostrar contraseña </label>
         </div>
       </div>
 
-      <button type="submit" class="btn-login">
+      <!-- BOTÓN LOGIN -->
+      <button type="submit" class="btn-login" [disabled]="loginForm.invalid">
         Iniciar sesión
       </button>
 
-      <button type="button" class="btn-register">
+      <!-- BOTÓN REGISTRO -->
+      <button type="button" class="btn-register" (click)="goToRegister()">
         Registrarse
       </button>
 
+      <!-- RECUPERAR CONTRASEÑA -->
       <div class="forgot-password">
-        <a href="#">¿Olvidaste tu contraseña?</a>
+        <a (click)="goToForgotPassword()"> ¿Olvidaste tu contraseña? </a>
       </div>
-
     </form>
   </div>
 </div>
