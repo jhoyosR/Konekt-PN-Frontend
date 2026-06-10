@@ -42,66 +42,83 @@ export class LoginComponent {
     });
   }
 
-  signIn(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    const credentials: LoginRequest = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password,
-    };
-
-    Swal.fire({
-      title: 'Iniciando sesión...',
-      text: 'Por favor espera',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      customClass: {
-        popup: 'konekt-swal',
-      },
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-
-    this.loginService.login(credentials).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
-
-        Swal.fire({
-          icon: 'success',
-          title: '¡Bienvenido!',
-          text: 'Inicio de sesión exitoso.',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#2563eb',
-          customClass: {
-            popup: 'konekt-swal',
-          },
-        }).then(() => {
-          // TODO: navegar según el rol
-          // this.router.navigate(['/dashboard']);
-        });
-      },
-
-      error: (error) => {
-        console.error('Login error', error);
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: error?.message || 'No se pudo iniciar sesión.',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#2563eb',
-          customClass: {
-            popup: 'konekt-swal',
-          },
-        });
-      },
-    });
+signIn(): void {
+  if (this.loginForm.invalid) {
+    this.loginForm.markAllAsTouched();
+    return;
   }
 
+  const credentials: LoginRequest = {
+    email: this.loginForm.value.email,
+    password: this.loginForm.value.password,
+  };
+
+  Swal.fire({
+    title: 'Iniciando sesión...',
+    text: 'Por favor espera',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    customClass: {
+      popup: 'konekt-swal',
+    },
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  this.loginService.login(credentials).subscribe({
+    next: (response) => {
+      console.log('Login successful', response);
+
+      const user = response?.user || JSON.parse(sessionStorage.getItem('user') || '{}');
+      const role = user?.role;
+
+      Swal.fire({
+        icon: 'success',
+        title: '¡Bienvenido!',
+        text: 'Inicio de sesión exitoso.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#2563eb',
+        customClass: {
+          popup: 'konekt-swal',
+        },
+      }).then(() => {
+        switch (role) {
+          case 'student':
+            this.router.navigate(['/dashboard/student']);
+            break;
+
+          case 'company':
+            this.router.navigate(['/dashboard/company']);
+            break;
+
+          case 'university':
+            this.router.navigate(['/dashboard/university']);
+            break;
+
+          default:
+            this.router.navigate(['/']);
+            break;
+        }
+      });
+    },
+
+    error: (error) => {
+      console.error('Login error', error);
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error?.message || 'No se pudo iniciar sesión.',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#2563eb',
+        customClass: {
+          popup: 'konekt-swal',
+        },
+      });
+    },
+  });
+}
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }

@@ -106,6 +106,12 @@ input:focus {
   transition: 0.25s;
 }
 
+.btn-register:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .btn-register {
   background-color: #10b981;
 }
