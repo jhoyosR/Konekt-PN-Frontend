@@ -11,6 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class NavbarComponent implements OnChanges {
   @Input() role: 'student' | 'company' | 'university' = 'student';
+  menuOpen = false;
 
   links: { label: string; path: string }[] = [];
 
@@ -38,7 +39,10 @@ export class NavbarComponent implements OnChanges {
       default:
         this.links = [
           { label: 'Vacantes', path: '/dashboard/student/vacancies' },
-          { label: 'Mis postulaciones', path: '/dashboard/student/applications' },
+          {
+            label: 'Mis postulaciones',
+            path: '/dashboard/student/applications',
+          },
         ];
     }
   }
@@ -47,5 +51,12 @@ export class NavbarComponent implements OnChanges {
     sessionStorage.clear();
     this.router.navigate(['/']);
   }
- 
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
+  }
+
+goToProfile(): void {
+  this.menuOpen = false;
+  this.router.navigate(['/profile']);
+}
 }

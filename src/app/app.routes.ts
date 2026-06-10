@@ -18,6 +18,7 @@ import { CompanyVacanciesComponent } from './pages/company-vacancies/company-vac
 import { StudentVacanciesComponent } from './pages/student-vacancies/student-vacancies.component';
 import { StudentApplicationComponent } from './pages/student-application/student-application.component';
 import { CompanyApplicationComponent } from './pages/company-application/company-application.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,10 @@ export const routes: Routes = [
   {
     path: 'roles',
     component: RolePanelComponent,
+  },
+ {
+    path: 'profile',
+    component: ProfileComponent,
   },
 
   {
