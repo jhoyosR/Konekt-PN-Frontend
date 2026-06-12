@@ -97,13 +97,14 @@
         <label>Universidad</label>
 
         <ng-select
-          [items]="universities"
+          [items]="displayUniversities"
           bindLabel="name"
           bindValue="id"
           placeholder="Seleccione una universidad"
           formControlName="universityId"
           [loading]="loading"
           (scrollToEnd)="onScrollEnd()"
+          (search)="onUniversitySearch($event)"
         >
         </ng-select>
 

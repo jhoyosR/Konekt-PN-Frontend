@@ -1,0 +1,79 @@
+<app-navbar [role]="'university'"></app-navbar>
+
+<div class="students-page">
+  <div class="list-container">
+    <h2 class="page-title">Estudiantes de la universidad</h2>
+
+    <div *ngIf="students.length === 0" class="empty">
+      No hay estudiantes registrados
+    </div>
+
+    <div class="cards-grid">
+      <div *ngFor="let student of students" class="card">
+        <h3>{{ student.fullName }}</h3>
+
+        <p class="about">
+          {{ student.about }}
+        </p>
+
+        <div class="info-grid">
+          <div>
+            <i class="fa-solid fa-envelope"></i>
+            <b>Correo:</b>
+            {{ student.user.email }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-id-card"></i>
+            <b>Documento:</b>
+            {{ student.documentNumber }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-graduation-cap"></i>
+            <b>Carrera:</b>
+            {{ student.career }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-book-open"></i>
+            <b>Semestre:</b>
+            {{ student.semester }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-phone"></i>
+            <b>Teléfono:</b>
+            {{ student.phone }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination-container" *ngIf="pageCount > 1">
+      <button
+        class="pagination-btn"
+        (click)="previousPage()"
+        [disabled]="!hasPrev"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+        Anterior
+      </button>
+
+      <select
+        class="pagination-select"
+        [value]="page"
+        (change)="goToPage(+$any($event.target).value)"
+      >
+        <option *ngFor="let p of pages" [value]="p">
+          Página {{ p }} de {{ pageCount }}
+        </option>
+      </select>
+
+      <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+        Siguiente
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -27,10 +27,23 @@ export class StudentApplicationComponent implements OnInit {
     this.loadApplications();
   }
 
-  loadApplications(): void {
-    this.applicationsService.getApplications(this.page).subscribe({
+ loadApplications(): void {
+  const user = JSON.parse(
+    sessionStorage.getItem('user') || '{}'
+  );
+
+  const studentId = user?.profile?.id;
+
+  this.applicationsService
+    .getApplications(this.page, undefined, studentId)
+    .subscribe({
       next: (response) => {
         this.applications = response.data;
+
+        console.log(
+          'Applications response:',
+          response
+        );
 
         this.total = response.total;
         this.page = response.page;
@@ -49,7 +62,7 @@ export class StudentApplicationComponent implements OnInit {
         });
       },
     });
-  }
+}
   nextPage(): void {
     if (!this.hasNext) return;
 

@@ -1,69 +1,50 @@
 <div class="profile-page">
-    <div class="back-button" (click)="goToDashboard()">
-  <i class="fa-solid fa-arrow-left back-icon"></i>
-  <span class="back-text">Volver</span>
-</div>
-  <div class="profile-container">
+  <div class="back-button" (click)="goToDashboard()">
+    <i class="fa-solid fa-arrow-left back-icon"></i>
+    <span class="back-text">Volver</span>
+  </div>
 
+  <div class="profile-container">
     <h2 class="profile-title">Mi Perfil</h2>
 
     <div class="profile-grid">
-
-      <div class="profile-item">
+      <!-- Correo -->
+      <div class="profile-item full-width">
         <span class="label">Correo electrónico</span>
         <span class="value">{{ user.email }}</span>
       </div>
 
-      <div class="profile-item">
-        <span class="label">Rol</span>
-        <span class="value">{{ user.role }}</span>
-      </div>
+      <!-- Campos dinámicos según el rol -->
+      @for (field of fields; track field.key) {
+        <div
+          class="profile-item"
+          [class.full-width]="field.fullWidth"
+        >
+          <span class="label">{{ field.label }}</span>
+          <span class="value">
+            {{ profile[field.key] || "-" }}
+          </span>
+        </div>
+      }
 
-      <div class="profile-item">
-        <span class="label">Nombre</span>
-        <span class="value">{{ profile.name }}</span>
-      </div>
+      <!-- Fechas -->
+      @if (profile.createdAt) {
+        <div class="profile-item">
+          <span class="label">Fecha de creación</span>
+          <span class="value">
+            {{ profile.createdAt | date: "dd/MM/yyyy" }}
+          </span>
+        </div>
+      }
 
-      <div class="profile-item">
-        <span class="label">NIT</span>
-        <span class="value">{{ profile.nit }}</span>
-      </div>
-
-      <div class="profile-item">
-        <span class="label">Industria</span>
-        <span class="value">{{ profile.industry }}</span>
-      </div>
-
-      <div class="profile-item">
-        <span class="label">Teléfono</span>
-        <span class="value">{{ profile.phone }}</span>
-      </div>
-
-      <div class="profile-item full-width">
-        <span class="label">Dirección</span>
-        <span class="value">{{ profile.address }}</span>
-      </div>
-
-      <div class="profile-item full-width">
-        <span class="label">Descripción</span>
-        <span class="value">{{ profile.description }}</span>
-      </div>
-
-      <div class="profile-item">
-        <span class="label">Fecha de creación</span>
-        <span class="value">
-          {{ profile.createdAt | date:'dd/MM/yyyy HH:mm' }}
-        </span>
-      </div>
-
-      <div class="profile-item">
-        <span class="label">Última actualización</span>
-        <span class="value">
-          {{ profile.updatedAt | date:'dd/MM/yyyy HH:mm' }}
-        </span>
-      </div>
-
+      @if (profile.updatedAt) {
+        <div class="profile-item">
+          <span class="label">Última actualización</span>
+          <span class="value">
+            {{ profile.updatedAt | date: "dd/MM/yyyy" }}
+          </span>
+        </div>
+      }
     </div>
-
   </div>
 </div>

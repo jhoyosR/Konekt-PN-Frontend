@@ -21,4 +21,7 @@ export class RolePanelComponent {
   goToUniversityRegister() {
     this.router.navigate(['/register/university']);
   }
+    goToRoles(): void {
+    this.router.navigate(['/']);
+  }
 }

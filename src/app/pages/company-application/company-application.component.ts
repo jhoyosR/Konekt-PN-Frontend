@@ -35,15 +35,28 @@ export class CompanyApplicationComponent implements OnInit {
   }
 
   loadCatalogs(): void {
-    this.commonService.getConstants('vacancie-status').subscribe({
+    this.commonService.getConstants('application-status').subscribe({
       next: (res) => (this.statuses = res),
       error: (err) => console.error('Error statuses', err),
     });
   }
-  loadApplications(): void {
-    this.applicationsService.getApplications(this.page).subscribe({
+ loadApplications(): void {
+  const user = JSON.parse(
+    sessionStorage.getItem('user') || '{}'
+  );
+
+  const companyId = user?.profile?.id;
+
+  this.applicationsService
+    .getApplications(this.page, companyId)
+    .subscribe({
       next: (response) => {
         this.applications = response.data;
+
+        console.log(
+          'Applications response:',
+          response
+        );
 
         this.total = response.total;
         this.page = response.page;
@@ -62,7 +75,7 @@ export class CompanyApplicationComponent implements OnInit {
         });
       },
     });
-  }
+}
   nextPage(): void {
     if (!this.hasNext) return;
 

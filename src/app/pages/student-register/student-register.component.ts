@@ -27,8 +27,10 @@ export class StudentRegisterComponent implements OnInit {
   showPassword = false;
   registerForm: FormGroup;
   universities: University[] = [];
+  allUniversities: University[] = [];
+  displayUniversities: University[] = [];
+  isSearchMode = false;
   page = 1;
-  perPage = 10;
   loading = false;
   hasMore = true;
   careers: string[] = [];
@@ -86,17 +88,22 @@ export class StudentRegisterComponent implements OnInit {
   }
 
   private loadUniversities(): void {
-    if (this.loading || !this.hasMore) return;
+    if (this.loading || !this.hasMore || this.isSearchMode) {
+      return;
+    }
 
     this.loading = true;
 
-    this.universityService.getUniversities(this.page, this.perPage).subscribe({
+    this.universityService.getUniversities(this.page).subscribe({
       next: (response) => {
-        const data = response?.data ?? [];
+        const data = response.data ?? [];
 
         this.universities = [...this.universities, ...data];
 
-        if (data.length < this.perPage) {
+        // lo que ve el select
+        this.displayUniversities = [...this.universities];
+
+        if (data.length < 10) {
           this.hasMore = false;
         }
 
@@ -104,13 +111,55 @@ export class StudentRegisterComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error cargando universidades', error);
+        console.error(error);
         this.loading = false;
       },
     });
   }
+  loadAllUniversities(): void {
+    this.loading = true;
 
+    this.universityService.getUniversities(undefined, true).subscribe({
+      next: (response: any) => {
+        this.allUniversities = response ?? [];
+
+        // el select muestra TODAS
+        this.displayUniversities = [...this.allUniversities];
+
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.loading = false;
+      },
+    });
+  }
+  allUniversitiesLoaded = false;
+
+  onUniversitySearch(event: { term: string }): void {
+    const term = event.term?.trim();
+
+    if (!term) {
+      this.isSearchMode = false;
+
+      // vuelve a mostrar las paginadas
+      this.displayUniversities = [...this.universities];
+
+      return;
+    }
+
+    this.isSearchMode = true;
+
+    if (!this.allUniversitiesLoaded) {
+      this.allUniversitiesLoaded = true;
+      this.loadAllUniversities();
+    }
+  }
   onScrollEnd(): void {
+    if (this.isSearchMode) {
+      return;
+    }
+
     this.loadUniversities();
   }
 

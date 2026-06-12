@@ -12,10 +12,15 @@ export class UniversityService {
   private readonly endpoint = `${API_URL}/university`;
 
   constructor(private http: HttpClient) {}
+getUniversities(page?: number, all?: boolean): Observable<UniversityListResponse> {
+  let params = new HttpParams();
 
-  getUniversities(page: number, perPage: number) {
-    let params = new HttpParams().set('page', page).set('per_page', perPage);
-
-    return this.http.get<UniversityListResponse>(this.endpoint, { params });
+  if (all) {
+    params = params.set('all', 'true');
+  } else if (page !== undefined) {
+    params = params.set('page', page);
   }
+
+  return this.http.get<UniversityListResponse>(this.endpoint, { params });
+}
 }

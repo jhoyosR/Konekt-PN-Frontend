@@ -54,8 +54,13 @@ export class CompanyVacanciesComponent implements OnInit {
     });
   }
 
-  loadVacancies(): void {
-    this.vacanciesService.getVacancies(this.page).subscribe({
+ loadVacancies(): void {
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+  const companyId = user?.profile?.id;
+
+  this.vacanciesService
+    .getVacancies(this.page, undefined, undefined, companyId)
+    .subscribe({
       next: (response) => {
         this.vacancies = response.data;
 
@@ -78,7 +83,7 @@ export class CompanyVacanciesComponent implements OnInit {
         });
       },
     });
-  }
+}
   nextPage(): void {
     if (!this.hasNext) return;
 

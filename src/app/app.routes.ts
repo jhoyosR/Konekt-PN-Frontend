@@ -19,6 +19,7 @@ import { StudentVacanciesComponent } from './pages/student-vacancies/student-vac
 import { StudentApplicationComponent } from './pages/student-application/student-application.component';
 import { CompanyApplicationComponent } from './pages/company-application/company-application.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { UniversityStudentsComponent } from './pages/university-students/university-students.component';
 
 export const routes: Routes = [
   {
@@ -30,7 +31,7 @@ export const routes: Routes = [
     path: 'roles',
     component: RolePanelComponent,
   },
- {
+  {
     path: 'profile',
     component: ProfileComponent,
   },
@@ -102,6 +103,19 @@ export const routes: Routes = [
           {
             path: 'applications',
             component: StudentApplicationComponent,
+          },
+        ],
+      },
+      {
+        path: 'university',
+        children: [
+          {
+            path: '',
+            component: UniversityDashboardComponent,
+          },
+          {
+            path: 'students',
+            component: UniversityStudentsComponent,
           },
         ],
       },

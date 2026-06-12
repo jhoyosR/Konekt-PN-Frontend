@@ -25,7 +25,7 @@ export class ApplicationsService {
     });
   }
 
-  applyToVacancy(vacancieId: number): Observable<ApplicationResponse> {
+  createApplication(vacancieId: number): Observable<ApplicationResponse> {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     const studentId = user?.profile?.id;
 
@@ -46,11 +46,22 @@ export class ApplicationsService {
       );
   }
 
- getApplications(
-  page: number = 1
+getApplications(
+  page: number = 1,
+  companyId?: number,
+  studentId?: number
 ): Observable<ApplicationListResponse> {
-  const params = new HttpParams()
+
+  let params = new HttpParams()
     .set('page', page);
+
+  if (companyId !== undefined) {
+    params = params.set('companyId', companyId);
+  }
+
+  if (studentId !== undefined) {
+    params = params.set('studentId', studentId);
+  }
 
   return this.http
     .get<ApplicationListResponse>(this.endpoint, {

@@ -72,7 +72,6 @@
   transition: 0.2s ease;
   font-family: "Segoe UI", sans-serif;
 }
-}
 
 .back-button:hover {
   transform: translateX(-3px);

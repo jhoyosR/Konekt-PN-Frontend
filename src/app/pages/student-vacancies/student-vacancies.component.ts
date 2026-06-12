@@ -36,28 +36,36 @@ hasPrev = false;
   }
 
 loadVacancies(): void {
-  this.vacanciesService.getVacancies(this.page).subscribe({
-    next: (response: any) => {
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+  const notAppliedByStudentId = user?.profile?.id;
 
-      this.vacancies = response.data;
+  this.vacanciesService
+    .getVacancies(
+      this.page,
+      notAppliedByStudentId,
+      'Activa'
+    )
+    .subscribe({
+      next: (response: any) => {
+        this.vacancies = response.data;
 
-      this.total = response.total;
-      this.page = response.page;
-      this.pageCount = response.page_count;
-      this.hasNext = response.has_next;
-      this.hasPrev = response.has_prev;
-    },
+        this.total = response.total;
+        this.page = response.page;
+        this.pageCount = response.page_count;
+        this.hasNext = response.has_next;
+        this.hasPrev = response.has_prev;
+      },
 
-    error: () => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se pudieron cargar las vacantes',
-        confirmButtonColor: '#2563eb',
-        customClass: { popup: 'konekt-swal' },
-      });
-    },
-  });
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudieron cargar las vacantes',
+          confirmButtonColor: '#2563eb',
+          customClass: { popup: 'konekt-swal' },
+        });
+      },
+    });
 }
 nextPage(): void {
   if (!this.hasNext) return;
@@ -87,48 +95,50 @@ get pages(): number[] {
   );
 }
 
-  applyVacancy(vacancy: VacancieResponse): void {
+applyVacancy(vacancy: VacancieResponse): void {
+  Swal.fire({
+    title: '¿Postularte a esta vacante?',
+    text: vacancy.title,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, postularme',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#2563eb',
+    cancelButtonColor: '#ef4444',
+    customClass: { popup: 'konekt-swal' },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: 'Enviando postulación...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+        customClass: { popup: 'konekt-swal' },
+      });
 
-    Swal.fire({
-      title: '¿Postularte a esta vacante?',
-      text: vacancy.title,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, postularme',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#2563eb',
-      cancelButtonColor: '#ef4444',
-      customClass: { popup: 'konekt-swal' },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Enviando postulación...',
-          allowOutsideClick: false,
-          didOpen: () => Swal.showLoading(),
-          customClass: { popup: 'konekt-swal' },
-        });
+      this.applicationsService.createApplication(vacancy.id!).subscribe({
+        next: () => {
+          this.loadVacancies();
 
-        this.applicationsService.applyToVacancy(vacancy.id!).subscribe({
-          next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Postulación enviada',
-              confirmButtonColor: '#2563eb',
-              customClass: { popup: 'konekt-swal' },
-            });
-          },
+          Swal.fire({
+            icon: 'success',
+            title: 'Postulación enviada',
+            text: 'Te has postulado correctamente a la vacante.',
+            confirmButtonColor: '#2563eb',
+            customClass: { popup: 'konekt-swal' },
+          });
+        },
 
-          error: () => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se pudo postular',
-              confirmButtonColor: '#2563eb',
-              customClass: { popup: 'konekt-swal' },
-            });
-          },
-        });
-      }
-    });
-  }
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo postular',
+            confirmButtonColor: '#2563eb',
+            customClass: { popup: 'konekt-swal' },
+          });
+        },
+      });
+    }
+  });
+}
 }

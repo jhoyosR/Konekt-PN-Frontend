@@ -111,3 +111,26 @@
 .card-hover-info li:last-child {
   margin-bottom: 0;
 }
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #2563eb;
+  font-weight: 500;
+  user-select: none;
+  transition: 0.2s ease;
+}
+
+.back-button:hover {
+  transform: translateX(-3px);
+  color: #1d4ed8;
+}
+
+.back-icon {
+  font-size: 17px;
+}
