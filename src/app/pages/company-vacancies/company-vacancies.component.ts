@@ -1,58 +1,58 @@
-  import { Component, OnInit } from '@angular/core';
-  import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-  import { CommonModule } from '@angular/common';
-  import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
-  import { NavbarComponent } from '../navbar/navbar.component';
-  import { VacanciesService } from '../../services/vacancies.service';
-  import { CommonService } from '../../services/common.service';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { VacanciesService } from '../../services/vacancies.service';
+import { CommonService } from '../../services/common.service';
 
-  import { VacancieRequest } from '../../interfaces/vacancie-request';
-  import { VacancieResponse } from '../../interfaces/vacancie-response';
-  import localeEsCo from '@angular/common/locales/es-CO';
-  import { registerLocaleData } from '@angular/common';
+import { VacancieRequest } from '../../interfaces/vacancie-request';
+import { VacancieResponse } from '../../interfaces/vacancie-response';
+import localeEsCo from '@angular/common/locales/es-CO';
+import { registerLocaleData } from '@angular/common';
 
-  registerLocaleData(localeEsCo, 'es-CO');
+registerLocaleData(localeEsCo, 'es-CO');
 
-  @Component({
-    selector: 'app-company-vacancies',
-    standalone: true,
-    imports: [NavbarComponent, FormsModule, CommonModule, ReactiveFormsModule],
-    templateUrl: './company-vacancies.component.html',
-    styleUrl: './company-vacancies.component.css',
-  })
-  export class CompanyVacanciesComponent implements OnInit {
-    vacancies: VacancieResponse[] = [];
-    statuses: any[] = [];
-    modalities: any[] = [];
-    page = 1;
-    total = 0;
-    pageCount = 0;
-    hasNext = false;
-    hasPrev = false;
+@Component({
+  selector: 'app-company-vacancies',
+  standalone: true,
+  imports: [NavbarComponent, FormsModule, CommonModule, ReactiveFormsModule],
+  templateUrl: './company-vacancies.component.html',
+  styleUrl: './company-vacancies.component.css',
+})
+export class CompanyVacanciesComponent implements OnInit {
+  vacancies: VacancieResponse[] = [];
+  statuses: any[] = [];
+  modalities: any[] = [];
+  page = 1;
+  total = 0;
+  pageCount = 0;
+  hasNext = false;
+  hasPrev = false;
 
-    constructor(
-      private vacanciesService: VacanciesService,
-      private commonService: CommonService,
-    ) {}
+  constructor(
+    private vacanciesService: VacanciesService,
+    private commonService: CommonService,
+  ) {}
 
-    ngOnInit(): void {
-      this.loadVacancies();
-      this.loadCatalogs();
-    }
+  ngOnInit(): void {
+    this.loadVacancies();
+    this.loadCatalogs();
+  }
 
-    loadCatalogs(): void {
-      this.commonService.getConstants('vacancie-status').subscribe({
-        next: (res) => (this.statuses = res),
-        error: (err) => console.error('Error status', err),
-      });
+  loadCatalogs(): void {
+    this.commonService.getConstants('vacancie-status').subscribe({
+      next: (res) => (this.statuses = res),
+      error: (err) => console.error('Error status', err),
+    });
 
-      this.commonService.getConstants('modality').subscribe({
-        next: (res) => (this.modalities = res),
-        error: (err) => console.error('Error modality', err),
-      });
-    }
+    this.commonService.getConstants('modality').subscribe({
+      next: (res) => (this.modalities = res),
+      error: (err) => console.error('Error modality', err),
+    });
+  }
 
   loadVacancies(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
@@ -84,38 +84,38 @@
         },
       });
   }
-    nextPage(): void {
-      if (!this.hasNext) return;
+  nextPage(): void {
+    if (!this.hasNext) return;
 
-      this.page++;
-      this.loadVacancies();
-    }
+    this.page++;
+    this.loadVacancies();
+  }
 
-    previousPage(): void {
-      if (!this.hasPrev) return;
+  previousPage(): void {
+    if (!this.hasPrev) return;
 
-      this.page--;
-      this.loadVacancies();
-    }
+    this.page--;
+    this.loadVacancies();
+  }
 
-    goToPage(page: number): void {
-      if (page < 1 || page > this.pageCount) return;
+  goToPage(page: number): void {
+    if (page < 1 || page > this.pageCount) return;
 
-      this.page = page;
-      this.loadVacancies();
-    }
-    get pages(): number[] {
-      return Array.from({ length: this.pageCount }, (_, i) => i + 1);
-    }
-    openCreateVacancyModal(): void {
-      Swal.fire({
-        title: `<span style="font-family:Segoe UI; font-weight:600;">Crear vacante</span>`,
-        width: '750px',
-        showCloseButton: true,
-        customClass: {
-          popup: 'konekt-swal',
-        },
-        html: `
+    this.page = page;
+    this.loadVacancies();
+  }
+  get pages(): number[] {
+    return Array.from({ length: this.pageCount }, (_, i) => i + 1);
+  }
+  openCreateVacancyModal(): void {
+    Swal.fire({
+      title: `<span style="font-family:Segoe UI; font-weight:600;">Crear vacante</span>`,
+      width: '750px',
+      showCloseButton: true,
+      customClass: {
+        popup: 'konekt-swal',
+      },
+      html: `
         <style>
           .swal-form {
             display: grid;
@@ -227,115 +227,115 @@
         </div>
       `,
 
-        showCancelButton: true,
-        confirmButtonText: 'Crear',
-        cancelButtonText: 'Cancelar',
+      showCancelButton: true,
+      confirmButtonText: 'Crear',
+      cancelButtonText: 'Cancelar',
 
-        confirmButtonColor: '#2563eb',
-        cancelButtonColor: '#ef4444',
+      confirmButtonColor: '#2563eb',
+      cancelButtonColor: '#ef4444',
 
-        preConfirm: () => {
-          const title = (document.getElementById('title') as HTMLInputElement)
-            .value;
-          const description = (
-            document.getElementById('description') as HTMLTextAreaElement
-          ).value;
-          const requirements = (
-            document.getElementById('requirements') as HTMLTextAreaElement
-          ).value;
-          const salary = Number(
-            (document.getElementById('salary') as HTMLInputElement).value,
-          );
-          const location = (
-            document.getElementById('location') as HTMLInputElement
-          ).value;
+      preConfirm: () => {
+        const title = (document.getElementById('title') as HTMLInputElement)
+          .value;
+        const description = (
+          document.getElementById('description') as HTMLTextAreaElement
+        ).value;
+        const requirements = (
+          document.getElementById('requirements') as HTMLTextAreaElement
+        ).value;
+        const salary = Number(
+          (document.getElementById('salary') as HTMLInputElement).value,
+        );
+        const location = (
+          document.getElementById('location') as HTMLInputElement
+        ).value;
 
-          const modality = (
-            document.getElementById('modality') as HTMLSelectElement
-          ).value;
-          const status = (document.getElementById('status') as HTMLSelectElement)
-            .value;
+        const modality = (
+          document.getElementById('modality') as HTMLSelectElement
+        ).value;
+        const status = (document.getElementById('status') as HTMLSelectElement)
+          .value;
 
-          const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-          const companyId = user?.profile?.id;
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const companyId = user?.profile?.id;
 
-          if (
-            !title ||
-            !description ||
-            !requirements ||
-            !salary ||
-            !location ||
-            !modality ||
-            !status ||
-            !companyId
-          ) {
-            Swal.showValidationMessage('Todos los campos con * son obligatorios');
-            return false;
-          }
-
-          return {
-            title,
-            description,
-            requirements,
-            salary,
-            location,
-            modality,
-            status,
-            companyId,
-          } as VacancieRequest;
-        },
-      }).then((result) => {
-        if (result.isConfirmed && result.value) {
-          // 🔥 LOADING
-          Swal.fire({
-            title: 'Creando vacante...',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-            customClass: {
-              popup: 'konekt-swal',
-            },
-          });
-
-          this.vacanciesService.createVacancie(result.value).subscribe({
-            next: () => {
-              Swal.fire({
-                icon: 'success',
-                title: 'Vacante creada',
-                confirmButtonColor: '#2563eb',
-                customClass: {
-                  popup: 'konekt-swal',
-                },
-              });
-
-              this.loadVacancies();
-            },
-
-            error: () => {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudo crear la vacante',
-                customClass: {
-                  popup: 'konekt-swal',
-                },
-              });
-            },
-          });
+        if (
+          !title ||
+          !description ||
+          !requirements ||
+          !salary ||
+          !location ||
+          !modality ||
+          !status ||
+          !companyId
+        ) {
+          Swal.showValidationMessage('Todos los campos con * son obligatorios');
+          return false;
         }
-      });
-    }
-    openUpdateVacancyModal(vacancy: VacancieResponse): void {
-      Swal.fire({
-        title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar vacante</span>`,
-        width: '750px',
-        showCloseButton: true,
-        customClass: {
-          popup: 'konekt-swal',
-        },
-        html: `
+
+        return {
+          title,
+          description,
+          requirements,
+          salary,
+          location,
+          modality,
+          status,
+          companyId,
+        } as VacancieRequest;
+      },
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        // 🔥 LOADING
+        Swal.fire({
+          title: 'Creando vacante...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
+
+        this.vacanciesService.createVacancie(result.value).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Vacante creada',
+              confirmButtonColor: '#2563eb',
+              customClass: {
+                popup: 'konekt-swal',
+              },
+            });
+
+            this.loadVacancies();
+          },
+
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo crear la vacante',
+              customClass: {
+                popup: 'konekt-swal',
+              },
+            });
+          },
+        });
+      }
+    });
+  }
+  openUpdateVacancyModal(vacancy: VacancieResponse): void {
+    Swal.fire({
+      title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar vacante</span>`,
+      width: '750px',
+      showCloseButton: true,
+      customClass: {
+        popup: 'konekt-swal',
+      },
+      html: `
         <style>
           .swal-form {
             display: grid;
@@ -449,120 +449,65 @@
         </div>
       `,
 
-        showCancelButton: true,
-        confirmButtonText: 'Actualizar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#2563eb',
-        cancelButtonColor: '#ef4444',
+      showCancelButton: true,
+      confirmButtonText: 'Actualizar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#2563eb',
+      cancelButtonColor: '#ef4444',
 
-        preConfirm: () => {
-          const payload: Partial<VacancieRequest> = {
-            title: (document.getElementById('title') as HTMLInputElement).value,
-            salary: Number(
-              (document.getElementById('salary') as HTMLInputElement).value,
-            ),
-            description: (
-              document.getElementById('description') as HTMLTextAreaElement
-            ).value,
-            requirements: (
-              document.getElementById('requirements') as HTMLTextAreaElement
-            ).value,
-            location: (document.getElementById('location') as HTMLInputElement)
-              .value,
-            modality: (document.getElementById('modality') as HTMLSelectElement)
-              .value,
-            status: (document.getElementById('status') as HTMLSelectElement)
-              .value,
-          };
+      preConfirm: () => {
+        const payload: Partial<VacancieRequest> = {
+          title: (document.getElementById('title') as HTMLInputElement).value,
+          salary: Number(
+            (document.getElementById('salary') as HTMLInputElement).value,
+          ),
+          description: (
+            document.getElementById('description') as HTMLTextAreaElement
+          ).value,
+          requirements: (
+            document.getElementById('requirements') as HTMLTextAreaElement
+          ).value,
+          location: (document.getElementById('location') as HTMLInputElement)
+            .value,
+          modality: (document.getElementById('modality') as HTMLSelectElement)
+            .value,
+          status: (document.getElementById('status') as HTMLSelectElement)
+            .value,
+        };
 
-          if (
-            !payload.title ||
-            !payload.description ||
-            !payload.requirements ||
-            !payload.salary ||
-            !payload.location ||
-            !payload.modality ||
-            !payload.status
-          ) {
-            Swal.showValidationMessage('Todos los campos son obligatorios');
-            return false;
-          }
-
-          return payload;
-        },
-      }).then((result) => {
-        if (result.isConfirmed && result.value) {
-          Swal.fire({
-            title: 'Actualizando...',
-            allowOutsideClick: false,
-            didOpen: () => Swal.showLoading(),
-            customClass: {
-              popup: 'konekt-swal',
-            },
-          });
-
-          this.vacanciesService
-            .updateVacancie(vacancy.id, result.value)
-            .subscribe({
-              next: () => {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Actualizada',
-                  confirmButtonColor: '#2563eb',
-                  customClass: {
-                    popup: 'konekt-swal',
-                  },
-                });
-
-                this.loadVacancies();
-              },
-              error: () => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'No se pudo actualizar la vacante',
-                  customClass: {
-                    popup: 'konekt-swal',
-                  },
-                });
-              },
-            });
+        if (
+          !payload.title ||
+          !payload.description ||
+          !payload.requirements ||
+          !payload.salary ||
+          !payload.location ||
+          !payload.modality ||
+          !payload.status
+        ) {
+          Swal.showValidationMessage('Todos los campos son obligatorios');
+          return false;
         }
-      });
-    }
 
-    deleteVacancie(id: number): void {
-      Swal.fire({
-        title: '¿Eliminar vacante?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ef4444',
-        cancelButtonColor: '#2563eb',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar',
-        customClass: {
-          popup: 'konekt-swal',
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Eliminando...',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-            customClass: {
-              popup: 'konekt-swal',
-            },
-          });
+        return payload;
+      },
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        Swal.fire({
+          title: 'Actualizando...',
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading(),
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
 
-          this.vacanciesService.deleteVacancie(id).subscribe({
+        this.vacanciesService
+          .updateVacancie(vacancy.id, result.value)
+          .subscribe({
             next: () => {
               Swal.fire({
                 icon: 'success',
-                title: 'Eliminada',
-                text: 'Vacante eliminada',
+                title: 'Actualizada',
                 confirmButtonColor: '#2563eb',
                 customClass: {
                   popup: 'konekt-swal',
@@ -575,14 +520,69 @@
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'No se pudo eliminar',
+                text: 'No se pudo actualizar la vacante',
                 customClass: {
                   popup: 'konekt-swal',
                 },
               });
             },
           });
-        }
-      });
-    }
+      }
+    });
   }
+
+  deleteVacancie(id: number): void {
+    Swal.fire({
+      title: '¿Eliminar vacante?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#2563eb',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'konekt-swal',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Eliminando...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
+
+        this.vacanciesService.deleteVacancie(id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Eliminada',
+              text: 'Vacante eliminada',
+              confirmButtonColor: '#2563eb',
+              customClass: {
+                popup: 'konekt-swal',
+              },
+            });
+
+            this.loadVacancies();
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar',
+              customClass: {
+                popup: 'konekt-swal',
+              },
+            });
+          },
+        });
+      }
+    });
+  }
+}

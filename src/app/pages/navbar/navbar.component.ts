@@ -10,7 +10,8 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent implements OnChanges {
-  @Input() role: 'student' | 'company' | 'university' = 'student';
+  @Input() role: 'student' | 'company' | 'university' | 'super-admin' =
+    'student';
   menuOpen = false;
 
   links: { label: string; path: string }[] = [];
@@ -28,6 +29,7 @@ export class NavbarComponent implements OnChanges {
           { label: 'Inicio', path: '/dashboard/company' },
           { label: 'Vacantes', path: '/dashboard/company/vacancies' },
           { label: 'Postulaciones', path: '/dashboard/company/applications' },
+          { label: 'Convenios', path: '/dashboard/company/partnership' },
         ];
         break;
 
@@ -35,6 +37,19 @@ export class NavbarComponent implements OnChanges {
         this.links = [
           { label: 'Inicio', path: '/dashboard/university' },
           { label: 'Estudiantes', path: '/dashboard/university/students' },
+          { label: 'Convenios', path: '/dashboard/university/partnership' },
+        ];
+        break;
+      case 'super-admin':
+        this.links = [
+          { label: 'Inicio', path: '/dashboard/admin' },
+          { label: 'Usuarios', path: '/dashboard/admin/users' },
+          { label: 'Estudiantes', path: '/dashboard/admin/students' },
+          { label: 'Empresas', path: '/dashboard/admin/company' },
+          { label: 'Universidades', path: '/dashboard/admin/university' },
+          { label: 'Vacantes', path: '/dashboard/admin/vacancies' },
+          { label: 'Postulaciones', path: '/dashboard/admin/applications' },
+          { label: 'Convenios', path: '/dashboard/admin/partnership' },
         ];
         break;
 

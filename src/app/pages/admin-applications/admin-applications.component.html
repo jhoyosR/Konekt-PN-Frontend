@@ -1,0 +1,67 @@
+<app-navbar [role]="'super-admin'"></app-navbar>
+
+<div class="applications-page">
+  <h2 class="page-title">Gestión de postulaciones</h2>
+
+  <div class="table-container">
+    <table class="applications-table">
+      <thead>
+        <tr>
+          <th>Estudiante</th>
+          <th>Vacante</th>
+          <th>Empresa</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let a of applications">
+          <td>{{ a.student.fullName }}</td>
+
+          <td>{{ a.vacancie.title }}</td>
+
+          <td>{{ a.vacancie.company.name }}</td>
+
+          <td>
+            <span class="status" [ngClass]="getStatusClass(a.status)">
+              {{ a.status }}
+            </span>
+          </td>
+
+          <td>
+            {{ a.createdAt | date: "mediumDate" }}
+          </td>
+        </tr>
+
+        <tr *ngIf="applications.length === 0">
+          <td colspan="5" class="empty">No hay postulaciones disponibles</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+    </button>
+  </div>
+</div>

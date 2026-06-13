@@ -20,6 +20,16 @@ import { StudentApplicationComponent } from './pages/student-application/student
 import { CompanyApplicationComponent } from './pages/company-application/company-application.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { UniversityStudentsComponent } from './pages/university-students/university-students.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { AdminUsersComponent } from './pages/admin-users/admin-users.component';
+import { AdminStudentsComponent } from './pages/admin-students/admin-students.component';
+import { AdminUniversitiesComponent } from './pages/admin-universities/admin-universities.component';
+import { AdminCompaniesComponent } from './pages/admin-companies/admin-companies.component';
+import { AdminApplicationsComponent } from './pages/admin-applications/admin-applications.component';
+import { AdminVacanciesComponent } from './pages/admin-vacancies/admin-vacancies.component';
+import { AdminPartnershipComponent } from './pages/admin-partnership/admin-partnership.component';
+import { UniversityPartnershipComponent } from './pages/university-partnership/university-partnership.component';
+import { CompanyPartnershipComponent } from './pages/company-partnership/company-partnership.component';
 
 export const routes: Routes = [
   {
@@ -70,6 +80,10 @@ export const routes: Routes = [
         path: 'university',
         component: UniversityDashboardComponent,
       },
+      {
+        path: 'admin',
+        component: AdminDashboardComponent,
+      },
 
       {
         path: 'company',
@@ -85,6 +99,10 @@ export const routes: Routes = [
           {
             path: 'applications',
             component: CompanyApplicationComponent,
+          },
+             {
+            path: 'partnership',
+            component: CompanyPartnershipComponent,
           },
         ],
       },
@@ -116,6 +134,47 @@ export const routes: Routes = [
           {
             path: 'students',
             component: UniversityStudentsComponent,
+          },
+           {
+            path: 'partnership',
+            component: UniversityPartnershipComponent,
+          },
+        ],
+      },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: '',
+            component: AdminDashboardComponent,
+          },
+          {
+            path: 'users',
+            component: AdminUsersComponent,
+          },
+          {
+            path: 'students',
+            component: AdminStudentsComponent,
+          },
+          {
+            path: 'university',
+            component: AdminUniversitiesComponent,
+          },
+          {
+            path: 'company',
+            component: AdminCompaniesComponent,
+          },
+          {
+            path: 'applications',
+            component: AdminApplicationsComponent,
+          },
+          {
+            path: 'vacancies',
+            component: AdminVacanciesComponent,
+          },
+          {
+            path: 'partnership',
+            component: AdminPartnershipComponent,
           },
         ],
       },

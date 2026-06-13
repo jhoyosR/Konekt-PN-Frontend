@@ -1,6 +1,8 @@
 export interface UserResponse {
-  id: number;
-  name: string;
+  id: string;
   email: string;
+  isActive: boolean;
   role: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

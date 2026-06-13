@@ -53,19 +53,14 @@
       <h3>Universidades destacadas</h3>
 
       <ng-container *ngIf="topUniversities.length > 0; else noUniversities">
-        <div
-          class="university-item"
-          *ngFor="let u of topUniversities"
-        >
+        <div class="university-item" *ngFor="let u of topUniversities">
           <strong>{{ u[0] }}</strong>
           <span>{{ u[1] }} postulaciones</span>
         </div>
       </ng-container>
 
       <ng-template #noUniversities>
-        <div class="empty-state">
-          No hay universidades asociadas.
-        </div>
+        <div class="empty-state">No hay universidades asociadas.</div>
       </ng-template>
     </div>
   </div>
@@ -73,20 +68,15 @@
   <div class="students-card">
     <h3>Últimas postulaciones</h3>
 
-    <ng-container
-      *ngIf="recentApplications.length > 0; else noApplications"
-    >
-      <div
-        class="student-item"
-        *ngFor="let app of recentApplications"
-      >
+    <ng-container *ngIf="recentApplications.length > 0; else noApplications">
+      <div class="student-item" *ngFor="let app of recentApplications">
         <div>
           <strong>
-            {{ app?.student?.fullName || 'Sin nombre' }}
+            {{ app?.student?.fullName || "Sin nombre" }}
           </strong>
 
           <p>
-            {{ app?.student?.career || 'Sin carrera' }}
+            {{ app?.student?.career || "Sin carrera" }}
           </p>
         </div>
 
@@ -97,9 +87,7 @@
     </ng-container>
 
     <ng-template #noApplications>
-      <div class="empty-state">
-        No hay postulaciones registradas.
-      </div>
+      <div class="empty-state">No hay postulaciones registradas.</div>
     </ng-template>
   </div>
 </div>

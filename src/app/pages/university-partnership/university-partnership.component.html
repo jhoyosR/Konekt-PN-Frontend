@@ -1,0 +1,103 @@
+<app-navbar [role]="'university'"></app-navbar>
+
+<div class="partnership-page">
+
+  <button class="btn-create" (click)="openCreatePartnershipModal()">
+    <i class="fa-solid fa-plus"></i>
+    Crear convenio
+  </button>
+
+  <div class="list-container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <h2 class="page-title">Convenios</h2>
+    </div>
+
+    <!-- EMPTY -->
+    <div class="empty" *ngIf="partnerships.length === 0">
+      No hay convenios registrados
+    </div>
+
+    <!-- CARDS -->
+    <div class="cards-grid">
+
+      <div class="card" *ngFor="let p of partnerships">
+
+        <!-- 🔥 TITULO = EMPRESA -->
+        <h3>
+          <i class="fa-solid fa-building"></i>
+          {{ p.company.name || 'Empresa' }}
+        </h3>
+
+        <!-- COMMENT -->
+        <p>
+          <i class="fa-solid fa-comment"></i>
+          {{ p.comment }}
+        </p>
+
+        <!-- STATUS -->
+        <div class="status-row">
+          <i class="fa-solid fa-circle-info"></i>
+
+          <b>Estado:</b>
+
+         <span
+  class="status-badge"
+  [ngClass]="{
+    activo: p.status === 'Activo',
+    suspendido: p.status === 'Suspendido',
+    cancelado: p.status === 'Cancelado',
+    cerrado: p.status === 'Cerrado',
+    solicitado: p.status === 'Solicitado'
+  }"
+>
+  {{ p.status }}
+</span>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+
+          <button (click)="openUpdatePartnershipModal(p)">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Actualizar
+          </button>
+
+          <button (click)="deletePartnership(p.id)">
+            <i class="fa-solid fa-trash"></i>
+            Eliminar
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+ <!-- PAGINATION -->
+    <div class="pagination-container" *ngIf="pageCount > 1">
+      <button
+        class="pagination-btn"
+        (click)="previousPage()"
+        [disabled]="!hasPrev"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+        Anterior
+      </button>
+
+      <select
+        class="pagination-select"
+        (change)="goToPage(+$any($event.target).value)"
+      >
+        <option *ngFor="let p of pages" [value]="p">
+          Página {{ p }} de {{ pageCount }}
+        </option>
+      </select>
+
+      <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+        Siguiente
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

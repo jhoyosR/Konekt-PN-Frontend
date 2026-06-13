@@ -1,0 +1,67 @@
+<app-navbar [role]="'super-admin'"></app-navbar>
+
+<div class="users-page">
+  <h2 class="page-title">Gestión de usuarios</h2>
+
+  <div class="table-container">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Creado</th>
+          <th>Actualizado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let u of users">
+          <td>{{ u.email }}</td>
+
+          <td>{{ u.role }}</td>
+
+          <td>
+            <span class="status" [ngClass]="u.isActive ? 'active' : 'inactive'">
+              {{ u.isActive ? "Activo" : "Inactivo" }}
+            </span>
+          </td>
+
+          <td>{{ formatDate(u.createdAt) }}</td>
+
+          <td>{{ formatDate(u.updatedAt) }}</td>
+        </tr>
+
+        <tr *ngIf="users.length === 0">
+          <td colspan="6" class="empty">No hay usuarios disponibles</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      <i class="fa-solid fa-chevron-left"></i>
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+</div>

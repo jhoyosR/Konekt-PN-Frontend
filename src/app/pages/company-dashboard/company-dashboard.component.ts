@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
@@ -13,29 +10,19 @@ import {
   DoughnutController,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
-Chart.register(
-  DoughnutController,
-  ArcElement,
-  Tooltip,
-  Legend
-);
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 @Component({
   selector: 'app-company-dashboard',
   standalone: true,
-  imports: [
-    CommonModule,
-    NavbarComponent
-  ],
+  imports: [CommonModule, NavbarComponent],
   templateUrl: './company-dashboard.component.html',
-  styleUrl: './company-dashboard.component.css'
+  styleUrl: './company-dashboard.component.css',
 })
-export class CompanyDashboardComponent
-  implements OnInit
-{
+export class CompanyDashboardComponent implements OnInit {
   applications: any[] = [];
 
   recentApplications: any[] = [];
@@ -54,104 +41,75 @@ export class CompanyDashboardComponent
 
   private chart?: Chart;
 
-  constructor(
-    private applicationsService: ApplicationsService
-  ) {}
+  constructor(private applicationsService: ApplicationsService) {}
 
   ngOnInit(): void {
     this.loadDashboard();
   }
 
   loadDashboard(): void {
-    const user = JSON.parse(
-      sessionStorage.getItem('user') || '{}'
-    );
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
     const companyId = user?.profile?.id;
 
-    this.companyName =
-      user?.profile?.name || 'Empresa';
+    this.companyName = user?.profile?.name || 'Empresa';
 
-    this.applicationsService
-      .getApplications(1, companyId)
-      .subscribe({
-        next: (response) => {
-          console.log(
-            'Dashboard response:',
-            response
-          );
+    this.applicationsService.getApplications(1, companyId).subscribe({
+      next: (response) => {
+        console.log('Dashboard response:', response);
 
-          this.applications =
-            response?.data || [];
+        this.applications = response?.data || [];
 
-          this.totalApplications =
-            response?.total ??
-            this.applications.length;
+        this.totalApplications = response?.total ?? this.applications.length;
 
-          this.activeApplications =
-            this.applications.filter(
-              a => a?.status === 'Activa'
-            ).length;
+        this.activeApplications = this.applications.filter(
+          (a) => a?.status === 'Activa',
+        ).length;
 
-          this.suspendedApplications =
-            this.applications.filter(
-              a => a?.status === 'Suspendida'
-            ).length;
+        this.suspendedApplications = this.applications.filter(
+          (a) => a?.status === 'Suspendida',
+        ).length;
 
-          this.cancelledApplications =
-            this.applications.filter(
-              a =>
-                a?.status === 'Cancelada' ||
-                a?.status === 'Cerrada'
-            ).length;
+        this.cancelledApplications = this.applications.filter(
+          (a) => a?.status === 'Cancelada' || a?.status === 'Cerrada',
+        ).length;
 
-          this.recentApplications =
-            [...this.applications].slice(0, 5);
+        this.recentApplications = [...this.applications].slice(0, 5);
 
-          this.buildUniversityStats();
+        this.buildUniversityStats();
 
-          setTimeout(() => {
-            this.createChart();
-          }, 100);
-        },
+        setTimeout(() => {
+          this.createChart();
+        }, 100);
+      },
 
-        error: (error) => {
-          console.error(
-            'Error dashboard:',
-            error
-          );
-        }
-      });
+      error: (error) => {
+        console.error('Error dashboard:', error);
+      },
+    });
   }
 
   buildUniversityStats(): void {
     this.universities = {};
 
-    this.applications.forEach(app => {
-      const university =
-        app?.student?.university?.name ??
-        'Sin universidad';
+    this.applications.forEach((app) => {
+      const university = app?.student?.university?.name ?? 'Sin universidad';
 
-      this.universities[university] =
-        (this.universities[university] || 0) + 1;
+      this.universities[university] = (this.universities[university] || 0) + 1;
     });
 
-    this.topUniversities =
-      Object.entries(this.universities)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5);
+    this.topUniversities = Object.entries(this.universities)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
   }
 
   createChart(): void {
-    const canvas =
-      document.getElementById(
-        'applicationsChart'
-      ) as HTMLCanvasElement | null;
+    const canvas = document.getElementById(
+      'applicationsChart',
+    ) as HTMLCanvasElement | null;
 
     if (!canvas) {
-      console.error(
-        'No se encontró el canvas applicationsChart'
-      );
+      console.error('No se encontró el canvas applicationsChart');
       return;
     }
 
@@ -162,26 +120,18 @@ export class CompanyDashboardComponent
     this.chart = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: [
-          'Activas',
-          'Suspendidas',
-          'Canceladas'
-        ],
+        labels: ['Activas', 'Suspendidas', 'Canceladas'],
         datasets: [
           {
             data: [
               this.activeApplications,
               this.suspendedApplications,
-              this.cancelledApplications
+              this.cancelledApplications,
             ],
-            backgroundColor: [
-              '#16a34a',
-              '#2563eb',
-              '#dc2626'
-            ],
-            borderWidth: 0
-          }
-        ]
+            backgroundColor: ['#16a34a', '#2563eb', '#dc2626'],
+            borderWidth: 0,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -189,14 +139,10 @@ export class CompanyDashboardComponent
 
         plugins: {
           legend: {
-            position: 'bottom'
-          }
-        }
-      }
+            position: 'bottom',
+          },
+        },
+      },
     });
-
-    console.log(
-      'Gráfico creado correctamente'
-    );
   }
 }

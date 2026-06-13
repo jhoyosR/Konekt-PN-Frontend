@@ -98,37 +98,61 @@ generateSemesterStats(): void {
   this.activeSemesters = Object.keys(this.semesters).length;
 }
 
-  createChart(): void {
-    const canvas = document.getElementById(
-      'semesterChart'
-    ) as HTMLCanvasElement;
+createChart(): void {
+  const canvas = document.getElementById(
+    'semesterChart'
+  ) as HTMLCanvasElement;
 
-    if (!canvas) return;
+  if (!canvas) return;
 
-    Chart.getChart(canvas)?.destroy();
+  Chart.getChart(canvas)?.destroy();
 
-    new Chart(canvas, {
-      type: 'bar',
-      data: {
-        labels: Object.keys(this.semesters),
-        datasets: [
-          {
-            label: 'Estudiantes',
-            data: Object.values(this.semesters),
-            borderWidth: 0,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false,
-          },
+  const labels = Object.keys(this.semesters);
+  const values = Object.values(this.semesters);
+
+  const colors = [
+    '#2563eb', // azul
+    '#16a34a', // verde
+    '#f59e0b', // amarillo
+    '#ef4444', // rojo
+    '#8b5cf6', // morado
+    '#06b6d4', // cyan
+    '#f97316', // naranja
+    '#84cc16', // verde lima
+  ];
+
+  new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Estudiantes',
+          data: values,
+
+          backgroundColor: labels.map(
+            (_, i) => colors[i % colors.length]
+          ),
+
+          borderRadius: 6,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false,
         },
       },
-    });
-  }
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}
 
   get recentStudents() {
     return this.students.slice(0, 5);

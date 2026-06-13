@@ -84,4 +84,46 @@ export class StudentService {
         }),
       );
   }
+  updateStudent(
+  id: number,
+  data: {
+    password?: string;
+    about?: string;
+    phone?: string;
+    career?: string;
+    semester?: number;
+  }
+): Observable<StudentRegisterResponse> {
+
+  const payload = Object.fromEntries(
+    Object.entries(data).filter(
+      ([_, value]) =>
+        value !== undefined &&
+        value !== null &&
+        value !== ''
+    )
+  );
+
+  return this.http
+    .patch<StudentRegisterResponse>(
+      `${this.endpoint}/${id}`,
+      payload,
+      {
+        headers: this.getHeaders(),
+      }
+    )
+    .pipe(
+      catchError((error) => {
+        console.error(
+          '[StudentService] updateStudent error:',
+          error
+        );
+
+        return throwError(() => ({
+          message: 'Error updating student',
+          error,
+        }));
+      })
+    );
+}
 }

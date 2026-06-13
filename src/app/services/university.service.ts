@@ -23,4 +23,17 @@ getUniversities(page?: number, all?: boolean): Observable<UniversityListResponse
 
   return this.http.get<UniversityListResponse>(this.endpoint, { params });
 }
+updateUniversity(
+  id: number,
+  data: {
+    address?: string;
+    phone?: string;
+    password?: string;
+  }
+) {
+  return this.http.patch(
+    `${this.endpoint}/${id}`,
+    data
+  );
+}
 }

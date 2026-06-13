@@ -1,0 +1,101 @@
+<app-navbar [role]="'super-admin'"></app-navbar>
+
+<div class="dashboard-container">
+  <div class="welcome-card">
+    <h1>Panel Administrativo</h1>
+    <p>Resumen general del sistema</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <i class="fa-solid fa-users"></i>
+      <div>
+        <h2>{{ totalUsers }}</h2>
+        <span>Usuarios</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-user-graduate"></i>
+      <div>
+        <h2>{{ totalStudents }}</h2>
+        <span>Estudiantes</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-building"></i>
+      <div>
+        <h2>{{ totalCompanies }}</h2>
+        <span>Empresas</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-university"></i>
+      <div>
+        <h2>{{ totalUniversities }}</h2>
+        <span>Universidades</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-briefcase"></i>
+      <div>
+        <h2>{{ totalVacancies }}</h2>
+        <span>Vacantes</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-file-lines"></i>
+      <div>
+        <h2>{{ totalApplications }}</h2>
+        <span>Postulaciones</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-handshake"></i>
+      <div>
+        <h2>{{ totalPartnerships }}</h2>
+        <span>Convenios</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="chart-card">
+      <h3>Usuarios activos vs inactivos</h3>
+
+      <div class="chart-container">
+        <canvas id="adminChart"></canvas>
+      </div>
+    </div>
+
+    <div class="students-card">
+      <h3>Últimos usuarios registrados</h3>
+
+      <div *ngFor="let u of recentUsers" class="student-item">
+        <div>
+          <strong>{{ u.name || u.email }}</strong>
+          <p>{{ u.email }}</p>
+        </div>
+
+        <span>
+          {{
+            u.role === "student"
+              ? "Estudiante"
+              : u.role === "company"
+                ? "Empresa"
+                : u.role === "university"
+                  ? "Universidad"
+                  : u.role === "super-admin"
+                    ? "Administrador"
+                    : u.role
+          }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

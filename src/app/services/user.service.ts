@@ -28,7 +28,7 @@ export class UserService {
   }
 
   getUsers(
-    page: number = 1,
+    page: number,
   ): Observable<UserListResponse> {
     const params = new HttpParams().set('page', page);
 

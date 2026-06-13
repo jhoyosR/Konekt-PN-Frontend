@@ -95,6 +95,9 @@ signIn(): void {
           case 'university':
             this.router.navigate(['/dashboard/university']);
             break;
+             case 'super-admin':
+            this.router.navigate(['/dashboard/admin']);
+            break;
 
           default:
             this.router.navigate(['/']);
