@@ -3,9 +3,53 @@
 <div class="profile-page">
   <div class="profile-container">
     <h2 class="profile-title">Mi Perfil</h2>
+    <!-- PROFILE PHOTO -->
+    <div class="profile-avatar-wrapper">
+      <div class="profile-avatar">
+        <ng-container
+          *ngIf="
+            profileImagePreview ||
+              profile.profilePhotoUrl ||
+              profile.profilePhoto;
+            else noAvatar
+          "
+        >
+          <img
+            [src]="profileImagePreview || getProfilePhoto()"
+            alt="Profile photo"
+          />
+        </ng-container>
 
+        <ng-template #noAvatar>
+          <div class="avatar-placeholder">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </ng-template>
+
+        <!-- 👇 AHORA DENTRO DEL CÍRCULO -->
+        <button class="avatar-edit-btn" (click)="fileInput.click()">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+      </div>
+
+      <input
+        type="file"
+        hidden
+        #fileInput
+        accept="image/*"
+        (change)="onFileSelected($event)"
+      />
+
+      @if (selectedFile) {
+        <button class="btn-save-photo" (click)="updateProfilePhoto()">
+          <i class="fa-solid fa-upload"></i>
+          Guardar foto
+        </button>
+      }
+    </div>
     <!-- DATOS GENERALES -->
     <div class="profile-grid">
+    
       <div class="profile-item full-width">
         <span class="label">Correo electrónico</span>
         <span class="value">{{ user.email }}</span>
@@ -54,75 +98,136 @@
     </div>
 
     <!-- FORMULARIO PERFIL -->
-    <form class="edit-form" [formGroup]="editForm">
-      @if (user.role === "student") {
-        <div class="form-group">
-          <label>Teléfono</label>
-          <input type="text" formControlName="phone" />
+  <!-- FORMULARIO PERFIL -->
+<!-- FORMULARIO PERFIL -->
+<form class="edit-form" [formGroup]="editForm">
+
+  <!-- =========================
+       STUDENT
+  ========================== -->
+  @if (user.role === "student") {
+
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="text" formControlName="phone" />
+    </div>
+
+    <div class="form-group">
+      <label>Carrera</label>
+      <ng-select
+        [items]="careers"
+        bindLabel=""
+        bindValue=""
+        placeholder="Seleccione una carrera"
+        formControlName="career"
+      ></ng-select>
+    </div>
+
+    <div class="form-group">
+      <label>Semestre</label>
+      <input type="number" formControlName="semester" />
+    </div>
+
+    <!-- HOJA DE VIDA -->
+    <div class="form-group ">
+      <div class="resume-wrapper">
+
+        <div class="resume-header">
+          <span class="label">Hoja de vida</span>
+
+          @if (profile.resumeUrl) {
+            <a
+              class="resume-link-badge"
+              [href]="profile.resumeUrl"
+              target="_blank"
+            >
+              <i class="fa-solid fa-eye"></i>
+              Ver actual
+            </a>
+          }
         </div>
 
-        <div class="form-group">
-          <label>Carrera</label>
-          <ng-select
-            [items]="careers"
-            bindLabel=""
-            bindValue=""
-            placeholder="Seleccione una carrera"
-            formControlName="career"
-          ></ng-select>
+        <input
+          type="file"
+          hidden
+          #resumeInput
+          accept=".pdf,.doc,.docx"
+          (change)="onResumeSelected($event)"
+        />
+
+        <div class="resume-actions">
+          <button type="button" class="btn-resume-upload" (click)="resumeInput.click()">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            Subir archivo
+          </button>
+
+          @if (selectedResume) {
+            <button type="button" class="btn-save-resume" (click)="updateResume()">
+              <i class="fa-solid fa-check"></i>
+              Guardar
+            </button>
+          }
         </div>
 
-        <div class="form-group full-width">
-          <label>Semestre</label>
-          <input type="number" formControlName="semester" />
-        </div>
+      </div>
+    </div>
 
-        <div class="form-group full-width">
-          <label>Acerca de mí</label>
-          <textarea rows="4" formControlName="about"></textarea>
-        </div>
-      }
+    <div class="form-group full-width">
+      <label>Acerca de mí</label>
+      <textarea rows="4" formControlName="about"></textarea>
+    </div>
+  }
 
-      @if (user.role === "company") {
-        <div class="form-group">
-          <label>Industria</label>
-          <ng-select
-            [items]="industries"
-            bindLabel=""
-            bindValue=""
-            placeholder="Seleccione una industria"
-            formControlName="industry"
-          ></ng-select>
-        </div>
+  <!-- =========================
+       COMPANY
+  ========================== -->
+  @if (user.role === "company") {
 
-        <div class="form-group">
-          <label>Teléfono</label>
-          <input type="text" formControlName="phone" />
-        </div>
 
-        <div class="form-group full-width">
-          <label>Dirección</label>
-          <input type="text" formControlName="address" />
-        </div>
+    <div class="form-group">
+      <label>Industria</label>
+      <ng-select
+        [items]="industries"
+        bindLabel=""
+        bindValue=""
+        placeholder="Seleccione una industria"
+        formControlName="industry"
+      ></ng-select>
+    </div>
 
-        <div class="form-group full-width">
-          <label>Descripción</label>
-          <textarea rows="4" formControlName="description"></textarea>
-        </div>
-      }
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="text" formControlName="phone" />
+    </div>
 
-      @if (user.role === "university") {
-        <div class="form-group">
-          <label>Teléfono</label>
-          <input type="text" formControlName="phone" />
-        </div>
+    <div class="form-group full-width">
+      <label>Dirección</label>
+      <input type="text" formControlName="address" />
+    </div>
 
-        <div class="form-group">
-          <label>Dirección</label>
-          <input type="text" formControlName="address" />
-        </div>
-      }
-    </form>
+    <div class="form-group full-width">
+      <label>Descripción</label>
+      <textarea rows="4" formControlName="description"></textarea>
+    </div>
+  }
+
+  <!-- =========================
+       UNIVERSITY
+  ========================== -->
+@if (user.role === "university") {
+
+  <!-- SOLO EDITABLES -->
+  <div class="form-group">
+    <label>Teléfono</label>
+    <input type="text" formControlName="phone" />
+  </div>
+
+  <div class="form-group ">
+    <label>Dirección</label>
+    <input type="text" formControlName="address" />
+  </div>
+}
+</form>
 
     <!-- FORMULARIO CONTRASEÑA -->
     @if (showPasswordForm) {

@@ -1,5 +1,5 @@
 export interface PartnershipRequest {
-  comment: string;
+  comment?: string;
   status: string;
   companyId: number;
   universityId: number;

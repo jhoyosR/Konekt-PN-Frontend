@@ -4,7 +4,7 @@ import { University } from './university';
 export interface PartnershipResponse {
   id: number;
   status: string;
-  comment: string;
+  comment?: string;
   university: University;
   company: Company;
   createdAt: string;

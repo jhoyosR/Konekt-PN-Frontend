@@ -26,13 +26,12 @@
         </h3>
 
         <!-- COMMENT -->
-        <p>
+        <p *ngIf="p.comment?.trim()" class="comment">
           <i class="fa-solid fa-comment"></i>
           {{ p.comment }}
         </p>
-
         <!-- STATUS ONLY -->
-        <div class="status-row">
+        <div class="status-row" [class.no-comment]="!p.comment?.trim()">
           <i class="fa-solid fa-circle-info"></i>
 
           <b>Estado:</b>

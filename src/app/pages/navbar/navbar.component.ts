@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -9,17 +9,43 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements OnChanges {
+export class NavbarComponent implements OnChanges, OnInit {
   @Input() role: 'student' | 'company' | 'university' | 'super-admin' =
     'student';
+
   menuOpen = false;
+
+  profilePhotoUrl: string | null = null;
 
   links: { label: string; path: string }[] = [];
 
   constructor(private router: Router) {}
 
+  ngOnInit(): void {
+    this.loadProfilePhoto();
+  }
+
   ngOnChanges(): void {
     this.setLinks();
+    this.loadProfilePhoto();
+  }
+
+  private loadProfilePhoto(): void {
+    const userStr = sessionStorage.getItem('user');
+
+    if (!userStr) {
+      this.profilePhotoUrl = null;
+      return;
+    }
+
+    try {
+      const user = JSON.parse(userStr);
+
+      this.profilePhotoUrl =
+        user?.profile?.profilePhotoUrl || null;
+    } catch {
+      this.profilePhotoUrl = null;
+    }
   }
 
   private setLinks(): void {
@@ -40,6 +66,7 @@ export class NavbarComponent implements OnChanges {
           { label: 'Convenios', path: '/dashboard/university/partnership' },
         ];
         break;
+
       case 'super-admin':
         this.links = [
           { label: 'Inicio', path: '/dashboard/admin' },
@@ -69,6 +96,7 @@ export class NavbarComponent implements OnChanges {
     sessionStorage.clear();
     this.router.navigate(['/']);
   }
+
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }

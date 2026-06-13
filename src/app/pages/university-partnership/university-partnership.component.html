@@ -31,7 +31,7 @@
         </h3>
 
         <!-- COMMENT -->
-        <p>
+         <p *ngIf="p.comment?.trim()" class="comment">
           <i class="fa-solid fa-comment"></i>
           {{ p.comment }}
         </p>

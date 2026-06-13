@@ -118,37 +118,32 @@ export class CompanyPartnershipComponent implements OnInit {
   }
 
   openCreatePartnershipModal(): void {
-    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const companyId = user?.profile?.id;
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+  const companyId = user?.profile?.id;
 
-    Swal.fire({
-      title: `<span style="font-family:Segoe UI; font-weight:600;">Crear convenio</span>`,
-      width: '750px',
+  Swal.fire({
+    title: `<span style="font-family:Segoe UI; font-weight:600;">Crear convenio</span>`,
+    width: '750px',
+    position: 'top',
+    showCloseButton: true,
+    customClass: {
+      popup: 'konekt-swal',
+    },
 
-      position: 'top',
+    didOpen: () => {
+      const container = document.querySelector('.swal2-container') as HTMLElement;
+      if (container) {
+        container.style.alignItems = 'flex-start';
+        container.style.paddingTop = '120px';
+      }
 
-      showCloseButton: true,
+      const popup = document.querySelector('.swal2-popup') as HTMLElement;
+      if (popup) {
+        popup.style.overflow = 'visible';
+      }
+    },
 
-      customClass: {
-        popup: 'konekt-swal',
-      },
-
-      didOpen: () => {
-        const container = document.querySelector(
-          '.swal2-container',
-        ) as HTMLElement;
-        if (container) {
-          container.style.alignItems = 'flex-start';
-          container.style.paddingTop = '120px';
-        }
-
-        const popup = document.querySelector('.swal2-popup') as HTMLElement;
-        if (popup) {
-          popup.style.overflow = 'visible';
-        }
-      },
-
-      html: `
+    html: `
       <style>
         .swal-form {
           display: grid;
@@ -191,7 +186,6 @@ export class CompanyPartnershipComponent implements OnInit {
           min-height: 80px;
         }
 
-       
         .swal2-popup {
           overflow: visible !important;
         }
@@ -204,7 +198,7 @@ export class CompanyPartnershipComponent implements OnInit {
       <div class="swal-form">
 
         <div class="swal-group" style="grid-column: span 2;">
-          <label>Comentario *</label>
+          <label>Comentario</label>
           <textarea id="comment" class="swal-field" placeholder="Escribe un comentario"></textarea>
         </div>
 
@@ -223,85 +217,86 @@ export class CompanyPartnershipComponent implements OnInit {
       </div>
     `,
 
-      showCancelButton: true,
-      confirmButtonText: 'Crear',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#2563eb',
-      cancelButtonColor: '#ef4444',
+    showCancelButton: true,
+    confirmButtonText: 'Crear',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#2563eb',
+    cancelButtonColor: '#ef4444',
 
-      preConfirm: () => {
-        const popup = Swal.getPopup()!;
+    preConfirm: () => {
+      const popup = Swal.getPopup()!;
 
-        const comment = (
-          popup.querySelector('#comment') as HTMLTextAreaElement
-        ).value.trim();
+      const commentValue = (
+        popup.querySelector('#comment') as HTMLTextAreaElement
+      ).value.trim();
 
-        const universityId = Number(
-          (popup.querySelector('#universityId') as HTMLSelectElement).value,
-        );
+      const universityId = Number(
+        (popup.querySelector('#universityId') as HTMLSelectElement).value,
+      );
 
-        if (!comment) {
-          Swal.showValidationMessage('El comentario es obligatorio');
-          return false;
-        }
+      if (!universityId || !companyId) {
+        Swal.showValidationMessage('Debes seleccionar una universidad');
+        return false;
+      }
 
-        if (!universityId || !companyId) {
-          Swal.showValidationMessage('Debes seleccionar una universidad');
-          return false;
-        }
+      const payload: any = {
+        universityId,
+        companyId,
+        status: 'Solicitado',
+      };
 
-        return {
-          comment,
-          universityId,
-          companyId,
-          status: 'Solicitado',
-        };
-      },
-    }).then((result) => {
-      if (!result.isConfirmed || !result.value) return;
+      // solo enviar comment si existe
+      if (commentValue) {
+        payload.comment = commentValue;
+      }
 
-      Swal.fire({
-        title: 'Creando...',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-        customClass: { popup: 'konekt-swal' },
-      });
+      return payload;
+    },
+  }).then((result) => {
+    if (!result.isConfirmed || !result.value) return;
 
-      this.partnershipService.createPartnership(result.value).subscribe({
-        next: () => {
-          Swal.close();
-
-          Swal.fire({
-            icon: 'success',
-            title: 'Convenio creado',
-            confirmButtonColor: '#2563eb',
-            customClass: { popup: 'konekt-swal' },
-          });
-
-          this.loadPartnerships();
-        },
-        error: () => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error creando convenio',
-            confirmButtonColor: '#2563eb',
-            customClass: { popup: 'konekt-swal' },
-          });
-        },
-      });
-    });
-  }
-
-  openUpdatePartnershipModal(p: PartnershipResponse): void {
     Swal.fire({
-      title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar convenio</span>`,
-      width: '750px',
-      showCloseButton: true,
-      customClass: {
-        popup: 'konekt-swal',
-      },
+      title: 'Creando...',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+      customClass: { popup: 'konekt-swal' },
+    });
 
-      html: `
+    this.partnershipService.createPartnership(result.value).subscribe({
+      next: () => {
+        Swal.close();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Convenio creado',
+          confirmButtonColor: '#2563eb',
+          customClass: { popup: 'konekt-swal' },
+        });
+
+        this.loadPartnerships();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error creando convenio',
+          confirmButtonColor: '#2563eb',
+          customClass: { popup: 'konekt-swal' },
+        });
+      },
+    });
+  });
+}
+
+openUpdatePartnershipModal(p: PartnershipResponse): void {
+  Swal.fire({
+    title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar convenio</span>`,
+    width: '750px',
+    showCloseButton: true,
+    customClass: {
+      popup: 'konekt-swal',
+    },
+
+    html: `
       <style>
         .swal-form {
           display: grid;
@@ -350,17 +345,14 @@ export class CompanyPartnershipComponent implements OnInit {
 
       <div class="swal-form">
 
-      
         <div class="swal-group" style="grid-column: span 2;">
-          <label>Comentario *</label>
+          <label>Comentario</label>
           <textarea id="comment" class="swal-field">${p.comment ?? ''}</textarea>
         </div>
 
-       
         <div class="swal-group" style="grid-column: span 2;">
           <label>Estado *</label>
           <select id="status" class="swal-field">
-
             ${this.statuses
               .map(
                 (s: any) => `
@@ -371,74 +363,81 @@ export class CompanyPartnershipComponent implements OnInit {
                 `,
               )
               .join('')}
-
           </select>
         </div>
 
       </div>
     `,
 
-      showCancelButton: true,
-      confirmButtonText: 'Actualizar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#2563eb',
-      cancelButtonColor: '#ef4444',
+    showCancelButton: true,
+    confirmButtonText: 'Actualizar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#2563eb',
+    cancelButtonColor: '#ef4444',
 
-      preConfirm: () => {
-        const popup = Swal.getPopup()!;
+    preConfirm: () => {
+      const popup = Swal.getPopup()!;
 
-        const comment = (
-          popup.querySelector('#comment') as HTMLTextAreaElement
-        ).value.trim();
+      const commentValue = (
+        popup.querySelector('#comment') as HTMLTextAreaElement
+      ).value.trim();
 
-        const status = (popup.querySelector('#status') as HTMLSelectElement)
-          .value;
+      const status = (
+        popup.querySelector('#status') as HTMLSelectElement
+      ).value;
 
-        if (!comment || !status) {
-          Swal.showValidationMessage('Todos los campos son obligatorios');
-          return false;
-        }
+      // estado obligatorio
+      if (!status) {
+        Swal.showValidationMessage('El estado es obligatorio');
+        return false;
+      }
 
-        return {
-          comment,
-          status,
-        };
-      },
-    }).then((result) => {
-      if (!result.isConfirmed || !result.value) return;
+      // construir payload dinámico
+      const payload: any = {
+        status,
+      };
 
-      Swal.fire({
-        title: 'Actualizando...',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-        customClass: { popup: 'konekt-swal' },
-      });
+      // solo enviar comment si tiene valor
+      if (commentValue) {
+        payload.comment = commentValue;
+      }
 
-      this.partnershipService.updatePartnership(p.id, result.value).subscribe({
-        next: () => {
-          Swal.close();
+      return payload;
+    },
+  }).then((result) => {
+    if (!result.isConfirmed || !result.value) return;
 
-          Swal.fire({
-            icon: 'success',
-            title: 'Actualizado',
-            confirmButtonColor: '#2563eb',
-            customClass: { popup: 'konekt-swal' },
-          });
-
-          this.loadPartnerships();
-        },
-        error: () => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error actualizando',
-            confirmButtonColor: '#2563eb',
-            customClass: { popup: 'konekt-swal' },
-          });
-        },
-      });
+    Swal.fire({
+      title: 'Actualizando...',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+      customClass: { popup: 'konekt-swal' },
     });
-  }
 
+    this.partnershipService.updatePartnership(p.id, result.value).subscribe({
+      next: () => {
+        Swal.close();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Actualizado',
+          confirmButtonColor: '#2563eb',
+          customClass: { popup: 'konekt-swal' },
+        });
+
+        this.loadPartnerships();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error actualizando',
+          confirmButtonColor: '#2563eb',
+          customClass: { popup: 'konekt-swal' },
+        });
+      },
+    });
+  });
+}
   deletePartnership(id: number): void {
     Swal.fire({
       title: '¿Eliminar convenio?',

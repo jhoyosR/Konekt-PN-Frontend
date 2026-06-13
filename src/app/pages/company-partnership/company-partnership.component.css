@@ -65,8 +65,11 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
   transition: 0.2s ease;
   border-left: 5px solid #2563eb;
-}
 
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 .card:hover {
   transform: translateY(-3px);
 }
@@ -80,14 +83,14 @@
 
 .card p {
   color: #475569;
-  margin: 8px 0 12px 0;
+ 
   font-size: 14px;
 }
 
 .card div {
   font-size: 13px;
   color: #334155;
-  margin-bottom: 6px;
+
 }
 
 .card b {
@@ -100,7 +103,6 @@
   gap: 10px;
   margin-top: 15px;
 }
-
 .actions button:first-child {
   background: #2563eb;
   color: white;
@@ -195,7 +197,6 @@
   gap: 8px;
   font-size: 13px;
   color: #334155;
-  margin-bottom: 6px;
 }
 
 .status-label {
@@ -224,3 +225,8 @@
 .status-badge.solicitado {
   color: #f97316;
 }
+.comment {
+  margin: 0;
+}
+
+

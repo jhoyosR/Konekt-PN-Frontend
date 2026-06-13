@@ -14,6 +14,7 @@ export interface UpdateCompanyRequest {
   industry?: string;
   address?: string;
   phone?: string;
+  profilePhoto?: string
 }
 
 @Injectable({
@@ -60,5 +61,21 @@ getCompanies(page?: number, all = false): Observable<any> {
     headers: this.getHeaders(),
     params,
   });
+}
+getCompanyById(id: number): Observable<any> {
+  return this.http
+    .get(`${this.endpoint}/${id}`, {
+      headers: this.getHeaders(),
+    })
+    .pipe(
+      catchError((error) => {
+        console.error('[CompanyService] getCompanyById error:', error);
+
+        return throwError(() => ({
+          message: error?.error?.message || 'Error getting company',
+          error,
+        }));
+      }),
+    );
 }
 }

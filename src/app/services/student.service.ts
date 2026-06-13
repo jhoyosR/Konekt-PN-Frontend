@@ -92,6 +92,8 @@ export class StudentService {
     phone?: string;
     career?: string;
     semester?: number;
+    profilePhoto?: string;
+    resume?:string;
   }
 ): Observable<StudentRegisterResponse> {
 

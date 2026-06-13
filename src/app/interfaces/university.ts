@@ -7,6 +7,7 @@ export interface University {
   address: string;
   phone: string;
   user: User;
+  profilePhoto?: string;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

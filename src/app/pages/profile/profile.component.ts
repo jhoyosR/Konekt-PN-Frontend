@@ -18,6 +18,7 @@ import { UniversityService } from '../../services/university.service';
 import { CommonService } from '../../services/common.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { FilesService } from '../../services/files.service';
 
 interface ProfileField {
   label: string;
@@ -48,6 +49,14 @@ export class ProfileComponent implements OnInit {
   careers: string[] = [];
   industries: string[] = [];
 
+  // =========================
+  // ✅ NUEVO: PROFILE PHOTO
+  // =========================
+  selectedFile: File | null = null;
+  profileImagePreview: string = '';
+  selectedResume: File | null = null;
+resumePreview: string = '';
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -55,24 +64,33 @@ export class ProfileComponent implements OnInit {
     private companyService: CompanyService,
     private universityService: UniversityService,
     private commonService: CommonService,
+    private fileService: FilesService,
   ) {}
 
-  ngOnInit(): void {
-    const sessionUser = JSON.parse(sessionStorage.getItem('user') || '{}');
+ngOnInit(): void {
+  const sessionUser = JSON.parse(sessionStorage.getItem('user') || '{}');
 
-    this.user = sessionUser;
-    this.profile = sessionUser.profile || {};
+  this.user = sessionUser;
+  this.profile = sessionUser.profile || {};
 
-    if (this.profile.university) {
-      this.profile.universityName = this.profile.university.name;
-    }
+  // ✅ NORMALIZAR FOTO AL ENTRAR
+  this.profileImagePreview =
+    this.profile.profilePhotoUrl ||
+    this.profile.profilePhoto ||
+    null;
 
-    this.loadFields();
-    this.createForms();
+  console.log('🖼 FOTO INICIAL CARGADA:', this.profileImagePreview);
 
-    this.loadCareers();
-    this.loadIndustries();
+  if (this.profile.university) {
+    this.profile.universityName = this.profile.university.name;
   }
+
+  this.loadFields();
+  this.createForms();
+
+  this.loadCareers();
+  this.loadIndustries();
+}
 
   get f() {
     return this.editForm.controls;
@@ -92,6 +110,9 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
+  getProfilePhoto(): string | null {
+  return this.profile.profilePhotoUrl || this.profile.profilePhoto || null;
+}
 
   private loadIndustries(): void {
     this.commonService.getConstants('industry-type').subscribe({
@@ -181,7 +202,7 @@ export class ProfileComponent implements OnInit {
           { label: 'Documento', key: 'documentNumber' },
           { label: 'Teléfono', key: 'phone' },
           { label: 'Carrera', key: 'career' },
-          { label: 'Semestre', key: 'semester', fullWidth: true },
+          { label: 'Semestre', key: 'semester'},
           { label: 'Universidad', key: 'universityName' },
           { label: 'Acerca de mí', key: 'about', fullWidth: true },
         ];
@@ -200,6 +221,268 @@ export class ProfileComponent implements OnInit {
         this.fields = [];
     }
   }
+
+  // =========================
+  // 🟢 NUEVO: PHOTO HANDLERS
+  // =========================
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.profileImagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+onResumeSelected(event: any): void {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  this.selectedResume = file;
+}
+updateProfilePhoto(): void {
+  if (!this.selectedFile) return;
+
+  Swal.fire({
+    title: '¿Actualizar foto de perfil?',
+    text: 'Se reemplazará la imagen actual',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, actualizar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#2563eb',
+    cancelButtonColor: '#ef4444',
+    customClass: {
+      popup: 'konekt-swal',
+    },
+  }).then((result) => {
+    if (!result.isConfirmed) return;
+
+    const formData = new FormData();
+    formData.append('file', this.selectedFile!);
+
+    this.fileService.uploadFile(formData).subscribe({
+      next: (res) => {
+        const fileName = res.fileName || res.filename;
+        const payload = { profilePhoto: fileName };
+        const id = this.profile.id;
+
+        let update$;
+        let refresh$;
+
+        // =========================
+        // 🔥 UPDATE POR ROL
+        // =========================
+        switch (this.user.role) {
+          case 'student':
+            update$ = this.studentService.updateStudent(id, payload);
+            refresh$ = this.studentService.getStudentById(id);
+            break;
+
+          case 'company':
+            update$ = this.companyService.updateCompany(id, payload);
+            refresh$ = this.companyService.getCompanyById(id);
+            break;
+
+          case 'university':
+            update$ = this.universityService.updateUniversity(id, payload);
+            refresh$ = this.universityService.getUniversityById(id);
+            break;
+
+          default:
+            console.warn('Rol no soportado para actualización de foto');
+            return;
+        }
+
+        // =========================
+        // UPDATE
+        // =========================
+        update$.subscribe({
+          next: () => {
+            // =========================
+            // REFRESH
+            // =========================
+            refresh$.subscribe({
+              next: (entity: any) => {
+                const photo =
+                  entity.profilePhotoUrl ||
+                  entity.profilePhoto ||
+                  fileName;
+
+                this.profile = {
+                  ...this.profile,
+                  ...entity,
+                };
+
+                this.profile.profilePhoto = photo;
+                this.profile.profilePhotoUrl = photo;
+                this.profileImagePreview = photo;
+
+                this.selectedFile = null;
+
+                // =========================
+                // SESSION UPDATE
+                // =========================
+                const user = JSON.parse(
+                  sessionStorage.getItem('user') || '{}'
+                );
+
+                user.profile = {
+                  ...user.profile,
+                  profilePhoto: photo,
+                  profilePhotoUrl: photo,
+                };
+
+                sessionStorage.setItem('user', JSON.stringify(user));
+
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Foto actualizada',
+                  timer: 1500,
+                  showConfirmButton: false,
+                  customClass: {
+                    popup: 'konekt-swal',
+                  },
+                });
+              },
+              error: (err) => {
+                console.error('❌ REFRESH ERROR:', err);
+              },
+            });
+          },
+          error: (err) => {
+            console.error('❌ UPDATE ERROR:', err);
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Error actualizando foto',
+              text: err?.message || 'Error inesperado',
+              confirmButtonColor: '#ef4444',
+              customClass: {
+                popup: 'konekt-swal',
+              },
+            });
+          },
+        });
+      },
+      error: (err) => {
+        console.error('❌ UPLOAD ERROR:', err);
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error subiendo archivo',
+          text: err?.message || 'Error inesperado',
+          confirmButtonColor: '#ef4444',
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
+      },
+    });
+  });
+}
+updateResume(): void {
+  if (!this.selectedResume || this.user.role !== 'student') return;
+
+  Swal.fire({
+    title: '¿Actualizar hoja de vida?',
+    text: 'Se reemplazará el archivo actual',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, actualizar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#2563eb',
+    cancelButtonColor: '#ef4444',
+    customClass: {
+      popup: 'konekt-swal',
+    },
+  }).then((result) => {
+    if (!result.isConfirmed) return;
+
+    const formData = new FormData();
+    formData.append('file', this.selectedResume!);
+
+    this.fileService.uploadFile(formData).subscribe({
+      next: (res) => {
+        const fileName = res.fileName || res.filename;
+
+        const payload = {
+          resume: fileName, // 👈 CAMPO NUEVO BACKEND
+        };
+
+        const id = this.profile.id;
+
+        this.studentService.updateStudent(id, payload).subscribe({
+          next: () => {
+            this.studentService.getStudentById(id).subscribe({
+              next: (student: any) => {
+
+                const resumeUrl = student.resumeUrl || fileName;
+
+                this.profile = {
+                  ...this.profile,
+                  ...student,
+                  resumeUrl,
+                };
+
+                this.selectedResume = null;
+
+                const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+
+                user.profile = {
+                  ...user.profile,
+                  resumeUrl,
+                };
+
+                sessionStorage.setItem('user', JSON.stringify(user));
+
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Hoja de vida actualizada',
+                  timer: 1500,
+                  showConfirmButton: false,
+                  customClass: {
+                    popup: 'konekt-swal',
+                  },
+                });
+              },
+              error: (err) => {
+                console.error('GET STUDENT ERROR', err);
+              },
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error actualizando hoja de vida',
+              text: err?.message || 'Error inesperado',
+              customClass: {
+                popup: 'konekt-swal',
+              },
+            });
+          },
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error subiendo archivo',
+          text: err?.message || 'Error inesperado',
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
+      },
+    });
+  });
+}
+  // =========================
+  // EXISTENTE (SIN TOCAR)
+  // =========================
 
   toggleEditForm(): void {
     this.showEditForm = !this.showEditForm;
@@ -233,10 +516,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(): void {
-    if (this.editForm.invalid) {
-      this.editForm.markAllAsTouched();
-      return;
-    }
+    if (this.editForm.invalid) return;
 
     const id = this.profile.id;
 
@@ -321,10 +601,7 @@ export class ProfileComponent implements OnInit {
   }
 
   changePassword(): void {
-    if (this.passwordForm.invalid) {
-      this.passwordForm.markAllAsTouched();
-      return;
-    }
+    if (this.passwordForm.invalid) return;
 
     const payload = {
       password: this.passwordForm.value.password,
@@ -341,22 +618,13 @@ export class ProfileComponent implements OnInit {
 
       switch (this.user.role) {
         case 'student':
-          request$ = this.studentService.updateStudent(
-            this.profile.id,
-            payload,
-          );
+          request$ = this.studentService.updateStudent(this.profile.id, payload);
           break;
         case 'company':
-          request$ = this.companyService.updateCompany(
-            this.profile.id,
-            payload,
-          );
+          request$ = this.companyService.updateCompany(this.profile.id, payload);
           break;
         case 'university':
-          request$ = this.universityService.updateUniversity(
-            this.profile.id,
-            payload,
-          );
+          request$ = this.universityService.updateUniversity(this.profile.id, payload);
           break;
         default:
           return;

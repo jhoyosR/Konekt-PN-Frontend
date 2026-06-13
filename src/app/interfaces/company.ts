@@ -9,6 +9,7 @@ export interface Company {
   address: string;
   phone: string;
   user: User;
+  profilePhotoUrl?: string;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

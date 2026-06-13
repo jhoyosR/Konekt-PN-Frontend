@@ -14,30 +14,38 @@
       {{ link.label }}
     </a>
   </div>
-<div class="navbar-right">
 
-  <div class="user-menu">
+  <div class="navbar-right">
+    <div class="user-menu">
 
-    <button class="user-btn" (click)="toggleMenu()">
-      <i class="fa-solid fa-user-circle"></i>
-      <i class="fa-solid fa-chevron-down"></i>
-    </button>
+      <button class="user-btn" (click)="toggleMenu()">
 
-    <div class="dropdown-menu" *ngIf="menuOpen">
+        <!-- FOTO O ICONO -->
+        <ng-container *ngIf="profilePhotoUrl; else defaultIcon">
+          <img class="nav-avatar" [src]="profilePhotoUrl" alt="profile" />
+        </ng-container>
 
-      <button class="dropdown-item" (click)="goToProfile()">
-        <i class="fa-solid fa-user"></i>
-        Mi perfil
+        <ng-template #defaultIcon>
+          <i class="fa-solid fa-user-circle"></i>
+        </ng-template>
+
+        <i class="fa-solid fa-chevron-down"></i>
       </button>
 
-      <button class="dropdown-item logout" (click)="logout()">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        Cerrar sesión
-      </button>
+      <div class="dropdown-menu" *ngIf="menuOpen">
+
+        <button class="dropdown-item" (click)="goToProfile()">
+          <i class="fa-solid fa-user"></i>
+          Mi perfil
+        </button>
+
+        <button class="dropdown-item logout" (click)="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          Cerrar sesión
+        </button>
+
+      </div>
 
     </div>
-
   </div>
-
-</div>
 </nav>
