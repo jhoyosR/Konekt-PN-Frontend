@@ -6,6 +6,8 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { IntershipService } from '../../services/intership.service';
 import { IntershipResponse } from '../../interfaces/internship-response';
 import { CommonService } from '../../services/common.service';
+import { InternshipUpdateService } from '../../services/internship-update.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company-internship',
@@ -27,6 +29,8 @@ export class CompanyInternshipComponent implements OnInit {
   constructor(
     private intershipService: IntershipService,
     private commonService: CommonService,
+    private internshipUpdateService: InternshipUpdateService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -309,4 +313,176 @@ export class CompanyInternshipComponent implements OnInit {
       }
     });
   }
+  followInternship(intership: any): void {
+    Swal.fire({
+      title: `<span style="font-family:Segoe UI; font-weight:600;">Registrar seguimiento</span>`,
+      width: '700px',
+      showCloseButton: true,
+      customClass: {
+        popup: 'konekt-swal',
+      },
+
+      html: `
+      <style>
+        .swal-form {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          font-family: Inter, sans-serif;
+          font-size: 14px;
+        }
+
+        .swal-group {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        label {
+          font-weight: 600;
+          color: #111827;
+          text-align: center;
+        }
+
+        .required {
+          color: #ef4444;
+          margin-left: 3px;
+        }
+
+        .swal-field {
+          width: 100%;
+          box-sizing: border-box;
+          border: 1px solid #d1d5db;
+          border-radius: 6px;
+          padding: 10px;
+          font-size: 14px;
+          text-align: center;
+        }
+
+        .swal-field:focus {
+          outline: none;
+          border-color: #2563eb;
+        }
+
+        textarea.swal-field {
+          min-height: 120px;
+          resize: vertical;
+        }
+      </style>
+
+      <div class="swal-form">
+
+        <div class="swal-group">
+          <label>
+            Título
+            <span class="required">*</span>
+          </label>
+
+          <input
+            id="title"
+            class="swal-field"
+            placeholder="Ingrese el título"
+          />
+        </div>
+
+        <div class="swal-group">
+          <label>
+            Descripción
+            <span class="required">*</span>
+          </label>
+
+          <textarea
+            id="description"
+            class="swal-field"
+            placeholder="Ingrese la descripción del seguimiento"
+          ></textarea>
+        </div>
+
+      </div>
+    `,
+
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#2563eb',
+      cancelButtonColor: '#ef4444',
+
+      preConfirm: () => {
+        const title = (
+          document.getElementById('title') as HTMLInputElement
+        ).value.trim();
+
+        const description = (
+          document.getElementById('description') as HTMLTextAreaElement
+        ).value.trim();
+
+        if (!title || !description) {
+          Swal.showValidationMessage('Título y descripción son obligatorios');
+          return false;
+        }
+
+        return {
+          title,
+          description,
+          internshipId: intership.id,
+        };
+      },
+    }).then((result) => {
+      if (!result.isConfirmed || !result.value) return;
+
+      Swal.fire({
+        title: 'Guardando seguimiento...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        customClass: {
+          popup: 'konekt-swal',
+        },
+      });
+
+      this.internshipUpdateService
+        .createInternshipUpdate(result.value)
+        .subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Seguimiento registrado',
+              confirmButtonColor: '#2563eb',
+              customClass: {
+                popup: 'konekt-swal',
+              },
+            }).then(() => {
+              this.router.navigate(['/dashboard/company/internship-update'], {
+                queryParams: {
+                  internshipId: intership.id,
+                },
+              });
+            });
+          },
+
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo registrar el seguimiento',
+              customClass: {
+                popup: 'konekt-swal',
+              },
+            });
+          },
+        });
+    });
+  }
+  viewInternshipDetails(intership: IntershipResponse): void {
+  this.router.navigate(
+    ['/dashboard/company/internship-update'],
+    {
+      queryParams: {
+        internshipId: intership.id,
+      },
+    },
+  );
+}
 }

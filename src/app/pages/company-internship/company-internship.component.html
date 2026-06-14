@@ -108,6 +108,16 @@
 
       <!-- ACTIONS -->
       <div class="actions">
+        <button class="btn-follow" (click)="followInternship(i)">
+          <i class="fa-solid fa-plus"></i>
+          Crear seguimiento
+        </button>
+
+        <button class="btn-details" (click)="viewInternshipDetails(i)">
+          <i class="fa-solid fa-eye"></i>
+          Ver detalles
+        </button>
+
         <button class="btn-update" (click)="updateInternship(i)">
           <i class="fa-solid fa-pen-to-square"></i>
           Actualizar

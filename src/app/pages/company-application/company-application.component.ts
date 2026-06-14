@@ -45,12 +45,19 @@ export class CompanyApplicationComponent implements OnInit {
     });
   }
 
-  loadApplications(): void {
-    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+loadApplications(): void {
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
-    const companyId = user?.profile?.id;
+  const companyId = user?.profile?.id;
 
-    this.applicationsService.getApplications(this.page, companyId).subscribe({
+  this.applicationsService
+    .getApplications(
+      this.page,
+      companyId,
+      undefined,
+      true,
+    )
+    .subscribe({
       next: (response) => {
         this.applications = response.data;
 
@@ -73,7 +80,7 @@ export class CompanyApplicationComponent implements OnInit {
         });
       },
     });
-  }
+}
   nextPage(): void {
     if (!this.hasNext) return;
 

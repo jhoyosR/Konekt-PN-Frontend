@@ -1,7 +1,18 @@
-.internships-page {
-  padding: 40px 20px;
+.updates-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 40px 20px 20px;
   background: #f4f6f9;
   font-family: "Segoe UI", sans-serif;
+}
+
+.list-container {
+  width: 100%;
+}
+
+.header {
+  width: 100%;
 }
 
 .page-title {
@@ -14,8 +25,8 @@
 
 .empty {
   text-align: center;
-  color: #64748b;
   padding: 20px;
+  color: #64748b;
 }
 
 .cards-grid {
@@ -26,11 +37,16 @@
 
 .card {
   background: white;
-  padding: 18px;
+  padding: 20px;
   border-radius: 14px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
-  border-left: 5px solid #2563eb;
-  transition: 0.2s;
+  border-left: 5px solid #16a34a;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  transition: all 0.2s ease;
 }
 
 .card:hover {
@@ -39,30 +55,39 @@
 
 .card h3 {
   margin: 0;
-  font-size: 18px;
   color: #0f172a;
+  font-size: 18px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.card h4 {
-  margin-top: 10px;
-  font-size: 15px;
+.description {
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.card p {
-  margin: 6px 0;
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
   font-size: 14px;
   color: #334155;
 }
 
-.card i {
-  margin-right: 6px;
-  color: #64748b;
+.info-row i {
+  color: #16a34a;
+  width: 18px;
 }
 
 hr {
-  margin: 12px 0;
   border: none;
   border-top: 1px solid #e2e8f0;
+  margin: 8px 0;
 }
 
 .actions {
@@ -79,9 +104,10 @@ hr {
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
+
   display: flex;
-  gap: 6px;
   align-items: center;
+  gap: 6px;
 }
 
 .btn-update:hover {
@@ -95,16 +121,16 @@ hr {
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
+
   display: flex;
-  gap: 6px;
   align-items: center;
+  gap: 6px;
 }
 
 .btn-delete:hover {
   background: #dc2626;
 }
 
-/* PAGINACIÓN */
 .pagination-container {
   display: flex;
   justify-content: center;
@@ -112,7 +138,8 @@ hr {
   gap: 16px;
 
   margin-top: 40px;
-  padding: 20px 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .pagination-btn {
@@ -128,6 +155,8 @@ hr {
   color: white;
   font-weight: 600;
   cursor: pointer;
+
+  transition: all 0.2s ease;
 }
 
 .pagination-btn:hover:not(:disabled) {
@@ -136,89 +165,37 @@ hr {
 
 .pagination-btn:disabled {
   background-color: #cbd5e1;
-  cursor: not-allowed;
   color: #64748b;
+  cursor: not-allowed;
 }
 
 .pagination-select {
   min-width: 180px;
+
   padding: 10px 14px;
+
   border: 1px solid #cbd5e1;
   border-radius: 10px;
+
   background: white;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
 }
-/* ICONOS EN BOTONES EN BLANCO */
+
+.pagination-select:focus {
+  border-color: #2563eb;
+  outline: none;
+}
 .btn-update i,
-.btn-delete i {
-  color: white !important;
+.btn-delete i,
+.pagination-btn i {
+  color: inherit !important;
 }
-.status-activa {
-  color: #16a34a; /* verde */
-  font-weight: 700;
-}
-
-.status-suspendida {
-  color: #2563eb; /* azul */
-  font-weight: 700;
-}
-
-.status-cerrada {
-  color: #dc2626; /* rojo */
-  font-weight: 700;
-}
-.btn-follow {
-  background: #16a34a;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
+.dates-container {
   display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.btn-follow:hover {
-  background: #15803d;
-}
-
-/* Icono blanco */
-.btn-follow i {
-  color: white !important;
-}
-.btn-follow {
-  background: #16a34a;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-follow:hover {
-  background: #15803d;
-}
-.btn-details {
-  background: #7c3aed;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-details i {
-  color: white !important;
-}
-
-.btn-details:hover {
-  background: #6d28d9;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
 }

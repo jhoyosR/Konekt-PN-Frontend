@@ -49,7 +49,8 @@ export class ApplicationsService {
 getApplications(
   page: number = 1,
   companyId?: number,
-  studentId?: number
+  studentId?: number,
+  withoutInternship?: boolean,
 ): Observable<ApplicationListResponse> {
 
   let params = new HttpParams()
@@ -61,6 +62,13 @@ getApplications(
 
   if (studentId !== undefined) {
     params = params.set('studentId', studentId);
+  }
+
+  if (withoutInternship !== undefined) {
+    params = params.set(
+      'withoutInternship',
+      withoutInternship,
+    );
   }
 
   return this.http

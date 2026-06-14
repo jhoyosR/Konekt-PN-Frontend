@@ -56,6 +56,10 @@ export class NavbarComponent implements OnChanges, OnInit {
           { label: 'Postulaciones', path: '/dashboard/company/applications' },
           { label: 'Convenios', path: '/dashboard/company/partnership' },
           { label: 'Prácticas', path: '/dashboard/company/internship' },
+          {
+            label: 'Segumiento prácticas',
+            path: '/dashboard/company/internship-update',
+          },
         ];
         break;
 

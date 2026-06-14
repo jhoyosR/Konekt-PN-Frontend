@@ -33,6 +33,7 @@ import { CompanyPartnershipComponent } from './pages/company-partnership/company
 import { UniversityIntershipComponent } from './pages/university-intership/university-intership.component';
 import { StudentInternshipComponent } from './pages/student-internship/student-internship.component';
 import { CompanyInternshipComponent } from './pages/company-internship/company-internship.component';
+import { CompanyIntershipUpdateComponent } from './pages/company-intership-update/company-intership-update.component';
 
 export const routes: Routes = [
   {
@@ -110,6 +111,10 @@ export const routes: Routes = [
            {
             path: 'internship',
             component: CompanyInternshipComponent,
+          },
+           {
+            path: 'internship-update',
+            component: CompanyIntershipUpdateComponent,
           },
           
         ],
