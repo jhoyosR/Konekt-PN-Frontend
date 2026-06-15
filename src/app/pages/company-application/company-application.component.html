@@ -105,54 +105,55 @@
         </div>
 
         <!-- BOTONES -->
-       <div class="actions">
-  <button class="btn-update" (click)="updateApplication(a)">
-    <i class="fa-solid fa-pen-to-square"></i>
-    Actualizar
-  </button>
+        <div class="actions">
+          <button class="btn-update" (click)="updateApplication(a)">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Actualizar
+          </button>
 
-  <button class="btn-manage" (click)="managePractice(a.id)">
-    <i class="fa-solid fa-briefcase"></i>
-    Contratar
-  </button>
+          <button class="btn-manage" (click)="managePractice(a.id)">
+            <i class="fa-solid fa-briefcase"></i>
+            Contratar
+          </button>
 
-  <!-- NUEVO BOTÓN -->
-  <button
-    class="btn-cv"
-    *ngIf="a.student.resume"
-   (click)="a.student.resumeUrl && openResume(a.student.resumeUrl)"
-  >
-    <i class="fa-solid fa-file-lines"></i>
-    Ver hoja de vida
-  </button>
-</div>
+          <!-- NUEVO BOTÓN -->
+          <button
+            class="btn-cv"
+            *ngIf="a.student.resume"
+            (click)="a.student.resumeUrl && openResume(a.student.resumeUrl)"
+          >
+            <i class="fa-solid fa-file-lines"></i>
+            Ver hoja de vida
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- PAGINACIÓN -->
-  <div class="pagination-container" *ngIf="pageCount > 1">
-    <button
-      class="pagination-btn"
-      (click)="previousPage()"
-      [disabled]="!hasPrev"
-    >
-      <i class="fa-solid fa-chevron-left"></i>
-      Anterior
-    </button>
+    <!-- PAGINACIÓN -->
+    <div class="pagination-container" *ngIf="pageCount > 1">
+      <button
+        class="pagination-btn"
+        (click)="previousPage()"
+        [disabled]="!hasPrev"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+        Anterior
+      </button>
 
-    <select
-      class="pagination-select"
-      [value]="page"
-      (change)="goToPage(+$any($event.target).value)"
-    >
-      <option *ngFor="let p of pages" [value]="p">
-        Página {{ p }} de {{ pageCount }}
-      </option>
-    </select>
+      <select
+        class="pagination-select"
+        [value]="page"
+        (change)="goToPage(+$any($event.target).value)"
+      >
+        <option *ngFor="let p of pages" [value]="p">
+          Página {{ p }} de {{ pageCount }}
+        </option>
+      </select>
 
-    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
-      Siguiente
-      <i class="fa-solid fa-chevron-right"></i>
-    </button>
+      <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+        Siguiente
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
   </div>
 </div>

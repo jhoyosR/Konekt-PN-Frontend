@@ -7,6 +7,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { StudentService } from '../../services/student.service';
 import { Student } from '../../interfaces/student';
 import { Router } from '@angular/router';
+import { IntershipService } from '../../services/intership.service';
 
 @Component({
   selector: 'app-university-students',
@@ -17,7 +18,6 @@ import { Router } from '@angular/router';
 })
 export class UniversityStudentsComponent implements OnInit {
   students: Student[] = [];
-
   page = 1;
   total = 0;
   pageCount = 0;
@@ -27,12 +27,13 @@ export class UniversityStudentsComponent implements OnInit {
   constructor(
     private studentService: StudentService,
     private router: Router,
+    private intershipService: IntershipService,
   ) {}
 
   ngOnInit(): void {
     this.loadStudents();
   }
-
+  //Metodo para cargar los estudiantes
   loadStudents(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
@@ -41,8 +42,6 @@ export class UniversityStudentsComponent implements OnInit {
     this.studentService.getStudents(this.page, universityId).subscribe({
       next: (response) => {
         this.students = response.data;
-
-        console.log('Students response:', response); // Debug log
 
         this.total = response.total;
         this.page = response.page;
@@ -64,15 +63,49 @@ export class UniversityStudentsComponent implements OnInit {
       },
     });
   }
+  //Metodo para abrir la practica de un estudiante seleccionado (botón gestionar práctica)
   managePractice(studentId: number): void {
-    const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/dashboard/university/intership'], {
-        queryParams: { studentId },
-      }),
-    );
+    this.intershipService.getInterships({ studentId }).subscribe({
+      next: (response) => {
+        const interships = response.data || [];
 
-    window.open(url, '_blank');
+        if (interships.length === 0) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Sin práctica registrada',
+            text: 'El estudiante no tiene una práctica asociada.',
+            confirmButtonColor: '#2563eb',
+            customClass: {
+              popup: 'konekt-swal',
+            },
+          });
+
+          return;
+        }
+
+        const url = this.router.serializeUrl(
+          this.router.createUrlTree(['/dashboard/university/intership'], {
+            queryParams: { studentId },
+          }),
+        );
+
+        window.open(url, '_blank');
+      },
+
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo verificar la práctica del estudiante',
+          confirmButtonColor: '#2563eb',
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
+      },
+    });
   }
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
 
@@ -97,7 +130,8 @@ export class UniversityStudentsComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
+  //Metodo para abrir la foto de perfil del estudiante en otra ventana
   openStudentPhoto(url: string): void {
-  window.open(url, '_blank');
-}
+    window.open(url, '_blank');
+  }
 }

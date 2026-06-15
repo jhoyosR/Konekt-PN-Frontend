@@ -11,11 +11,12 @@ import { LoginResponse } from '../interfaces/login-response';
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para iniciar sesión
 export class LoginService {
   private readonly authEndpoint = `${API_URL}/auth`;
 
   constructor(private http: HttpClient) {}
-
+//Iniciar sesión
   login(
     credentials: LoginRequest,
   ): Observable<LoginResponse> {
@@ -61,7 +62,7 @@ export class LoginService {
         }),
       );
   }
-
+//Olvidar la contraseña
   forgotPassword(
     email: string,
   ): Observable<any> {
@@ -90,7 +91,7 @@ export class LoginService {
         }),
       );
   }
-
+//Restablecer la contraseña
   resetPassword(
     token: string,
     password: string,

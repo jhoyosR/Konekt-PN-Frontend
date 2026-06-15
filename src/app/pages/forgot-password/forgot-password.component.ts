@@ -16,7 +16,7 @@ export class ForgotPasswordComponent {
     private loginService: LoginService,
   ) {}
   email: string = '';
-
+  //Metodo para el olvido de contraseña
   sendRecovery(): void {
     if (!this.email.trim()) {
       Swal.fire({
@@ -70,6 +70,7 @@ export class ForgotPasswordComponent {
       },
     });
   }
+  //Metodo para volver al login
   goToLogin() {
     this.router.navigate(['/']);
   }

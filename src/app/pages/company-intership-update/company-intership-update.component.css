@@ -41,11 +41,9 @@
   border-radius: 14px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
   border-left: 5px solid #16a34a;
-
   display: flex;
   flex-direction: column;
   gap: 10px;
-
   transition: all 0.2s ease;
 }
 
@@ -104,7 +102,6 @@ hr {
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
-
   display: flex;
   align-items: center;
   gap: 6px;
@@ -121,7 +118,6 @@ hr {
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
-
   display: flex;
   align-items: center;
   gap: 6px;
@@ -146,16 +142,13 @@ hr {
   display: flex;
   align-items: center;
   gap: 8px;
-
   padding: 10px 18px;
   border: none;
   border-radius: 10px;
-
   background-color: #2563eb;
   color: white;
   font-weight: 600;
   cursor: pointer;
-
   transition: all 0.2s ease;
 }
 
@@ -171,14 +164,10 @@ hr {
 
 .pagination-select {
   min-width: 180px;
-
   padding: 10px 14px;
-
   border: 1px solid #cbd5e1;
   border-radius: 10px;
-
   background: white;
-
   font-size: 14px;
   font-weight: 500;
   color: #334155;
@@ -246,11 +235,9 @@ hr {
   cursor: pointer;
   font-size: 12px;
   width: fit-content;
-
   display: inline-flex;
   align-items: center;
   gap: 6px;
-
   transition: all 0.2s ease;
 }
 
@@ -262,4 +249,30 @@ hr {
 .empty {
   font-size: 12px;
   color: #6b7280;
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.status-badge i {
+  font-size: 10px;
+}
+
+.status-badge.active {
+  color: #16a34a;
+}
+
+.status-badge.suspended {
+  color: #2563eb;
+}
+
+.status-badge.closed {
+  color: #ef4444;
 }

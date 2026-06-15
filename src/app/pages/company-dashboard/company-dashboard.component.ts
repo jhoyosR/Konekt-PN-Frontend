@@ -24,21 +24,14 @@ Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 })
 export class CompanyDashboardComponent implements OnInit {
   applications: any[] = [];
-
   recentApplications: any[] = [];
-
   topUniversities: [string, number][] = [];
-
   companyName = '';
-
   totalApplications = 0;
-
   activeApplications = 0;
   suspendedApplications = 0;
   cancelledApplications = 0;
-
   universities: Record<string, number> = {};
-
   private chart?: Chart;
 
   constructor(private applicationsService: ApplicationsService) {}
@@ -46,7 +39,7 @@ export class CompanyDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadDashboard();
   }
-
+//Metodo para cargar la dashboard de la empresa
   loadDashboard(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
@@ -88,7 +81,7 @@ export class CompanyDashboardComponent implements OnInit {
       },
     });
   }
-
+//Metodo para cargar las universidades de las postulaciones que se hacen a la empresa
   buildUniversityStats(): void {
     this.universities = {};
 
@@ -102,7 +95,7 @@ export class CompanyDashboardComponent implements OnInit {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5);
   }
-
+//Metodo para crear el grafico de la dashboard
   createChart(): void {
     const canvas = document.getElementById(
       'applicationsChart',

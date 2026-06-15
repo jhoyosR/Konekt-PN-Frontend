@@ -1,5 +1,5 @@
 import { University } from './university';
-
+//Interface para la paginación de las universidades
 export interface UniversityListResponse {
   data: University[];
   total: number;

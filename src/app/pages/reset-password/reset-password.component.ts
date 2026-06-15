@@ -26,9 +26,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ResetPasswordComponent implements OnInit {
   showPassword = false;
-
   token = '';
-
   passwordForm!: FormGroup;
 
   constructor(
@@ -77,7 +75,7 @@ export class ResetPasswordComponent implements OnInit {
       });
     }
   }
-
+//Metodo para validar que las contraseñas escritas coincidan
   passwordsMatchValidator(
     control: AbstractControl
   ): ValidationErrors | null {
@@ -108,7 +106,7 @@ export class ResetPasswordComponent implements OnInit {
       this.confirmPassword?.touched === true
     );
   }
-
+//Metodo para restablecer contraseña
   resetPassword(): void {
     if (this.passwordForm.invalid) {
       this.passwordForm.markAllAsTouched();
@@ -161,7 +159,7 @@ export class ResetPasswordComponent implements OnInit {
         },
       });
   }
-
+//Metodo para volver al login
   goToLogin(): void {
     this.router.navigate(['/']);
   }

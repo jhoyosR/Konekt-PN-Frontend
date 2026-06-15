@@ -83,14 +83,13 @@
 
 .card p {
   color: #475569;
- 
+
   font-size: 14px;
 }
 
 .card div {
   font-size: 13px;
   color: #334155;
-
 }
 
 .card b {
@@ -254,13 +253,11 @@
   object-fit: cover;
 }
 
-/* PLACEHOLDER */
 .avatar-placeholder {
   font-size: 18px;
   color: #6b7280;
 }
 
-/* INFO */
 .student-info {
   flex: 1;
 }
@@ -272,9 +269,8 @@
   color: #111827;
 }
 
-/* BOTÓN VER (AZUL) */
 .view-photo-btn {
-  background: #2563eb; /* azul */
+  background: #2563eb;
   color: white;
   border: none;
   width: 34px;
@@ -293,10 +289,6 @@
   transform: scale(1.05);
 }
 
-/* OPCIONAL: mejor espaciado en cards */
 .card {
   padding: 16px;
 }
-
-
-

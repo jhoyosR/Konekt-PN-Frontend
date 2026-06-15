@@ -80,33 +80,24 @@
   position: absolute;
   top: 45px;
   right: 0;
-
   min-width: 180px;
-
   background: white;
   border-radius: 10px;
   overflow: hidden;
-
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-
   z-index: 1000;
 }
 
 .dropdown-item {
   width: 100%;
-
   display: flex;
   align-items: center;
   gap: 10px;
-
   padding: 12px 16px;
-
   border: none;
   background: white;
-
   cursor: pointer;
   text-align: left;
-
   font-size: 14px;
   color: #0f172a;
 }

@@ -1,3 +1,4 @@
+//Interfaz para crear una universidad
 export interface UniversityRegisterRequest {
   email: string;
   password: string;

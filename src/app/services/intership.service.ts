@@ -10,14 +10,12 @@ import { IntershipResponse } from '../interfaces/internship-response';
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para las prácticas
 export class IntershipService {
   private readonly endpoint = `${API_URL}/internship`;
 
   constructor(private http: HttpClient) {}
 
-  // =========================
-  // HEADERS CON TOKEN
-  // =========================
   private getHeaders(): HttpHeaders {
     const token = sessionStorage.getItem('token');
 
@@ -27,14 +25,12 @@ export class IntershipService {
     });
   }
 
-  // =========================
-  // GET (page | all | studentId opcionales)
-  // =========================
+  //Obtener las prácticas
   getInterships(params?: {
     page?: number;
     all?: boolean;
     studentId?: number;
-    companyId?: number; // 👈 nuevo opcional
+    companyId?: number;
   }): Observable<InternshipListResponse> {
     let httpParams = new HttpParams();
 
@@ -62,9 +58,7 @@ export class IntershipService {
       .pipe(catchError(this.handleError));
   }
 
-  // =========================
-  // POST (crear internship)
-  // =========================
+  //Crear una práctica
   createIntership(data: IntershipRequest): Observable<IntershipResponse> {
     return this.http
       .post<IntershipResponse>(this.endpoint, data, {
@@ -73,9 +67,7 @@ export class IntershipService {
       .pipe(catchError(this.handleError));
   }
 
-  // =========================
-  // PATCH (update parcial)
-  // =========================
+  //Actualizar una práctica
   updateIntership(
     id: number,
     data: Partial<IntershipRequest>,
@@ -86,10 +78,22 @@ export class IntershipService {
       })
       .pipe(catchError(this.handleError));
   }
-
-  // =========================
-  // ERROR HANDLER
-  // =========================
+  //Eliminar una práctica
+  deleteIntership(id: number): Observable<void> {
+    return this.http
+      .delete<void>(`${this.endpoint}/${id}`, {
+        headers: this.getHeaders(),
+      })
+      .pipe(catchError(this.handleError));
+  }
+  //Obtener una práctica por id
+  getIntershipById(id: number): Observable<IntershipResponse> {
+    return this.http
+      .get<IntershipResponse>(`${this.endpoint}/${id}`, {
+        headers: this.getHeaders(),
+      })
+      .pipe(catchError(this.handleError));
+  }
   private handleError(error: any) {
     console.error('[IntershipService Error]', error);
 
@@ -102,22 +106,4 @@ export class IntershipService {
       errors,
     }));
   }
-
-  deleteIntership(id: number): Observable<void> {
-    return this.http
-      .delete<void>(`${this.endpoint}/${id}`, {
-        headers: this.getHeaders(),
-      })
-      .pipe(catchError(this.handleError));
-  }
-  // =========================
-// GET BY ID (detalle internship)
-// =========================
-getIntershipById(id: number): Observable<IntershipResponse> {
-  return this.http
-    .get<IntershipResponse>(`${this.endpoint}/${id}`, {
-      headers: this.getHeaders(),
-    })
-    .pipe(catchError(this.handleError));
-}
 }

@@ -9,6 +9,7 @@ import { UniversityRegisterResponse } from '../interfaces/university-register-re
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para crear una universidad
 export class UniversityRegisterService {
   private readonly endpoint = `${API_URL}/auth/register-university`;
 

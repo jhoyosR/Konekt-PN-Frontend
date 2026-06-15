@@ -41,7 +41,7 @@ export class CompanyVacanciesComponent implements OnInit {
     this.loadVacancies();
     this.loadCatalogs();
   }
-
+  //Metodo para cargar los estados de una vacante
   loadCatalogs(): void {
     this.commonService.getConstants('vacancie-status').subscribe({
       next: (res) => (this.statuses = res),
@@ -53,7 +53,7 @@ export class CompanyVacanciesComponent implements OnInit {
       error: (err) => console.error('Error modality', err),
     });
   }
-
+  //Metodo para listar las vacantes
   loadVacancies(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     const companyId = user?.profile?.id;
@@ -84,6 +84,7 @@ export class CompanyVacanciesComponent implements OnInit {
         },
       });
   }
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
 
@@ -107,6 +108,7 @@ export class CompanyVacanciesComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
+  //Modal para crear una vacante (botón crear vacante)
   openCreateVacancyModal(): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Crear vacante</span>`,
@@ -286,7 +288,6 @@ export class CompanyVacanciesComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed && result.value) {
-        // 🔥 LOADING
         Swal.fire({
           title: 'Creando vacante...',
           allowOutsideClick: false,
@@ -327,6 +328,7 @@ export class CompanyVacanciesComponent implements OnInit {
       }
     });
   }
+  //Modal para actualizar una vacante (botón actualizar)
   openUpdateVacancyModal(vacancy: VacancieResponse): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar vacante</span>`,
@@ -530,7 +532,7 @@ export class CompanyVacanciesComponent implements OnInit {
       }
     });
   }
-
+  //Modal para eliminar una vacante (botón eliminar)
   deleteVacancie(id: number): void {
     Swal.fire({
       title: '¿Eliminar vacante?',

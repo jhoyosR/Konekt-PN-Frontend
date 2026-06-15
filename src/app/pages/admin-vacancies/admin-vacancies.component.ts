@@ -27,7 +27,7 @@ export class AdminVacanciesComponent implements OnInit {
   ngOnInit(): void {
     this.loadVacancies();
   }
-
+  //Metodo para cargar las vacantes
   loadVacancies(): void {
     this.vacanciesService.getVacancies(this.page).subscribe({
       next: (response: any) => {
@@ -49,7 +49,7 @@ export class AdminVacanciesComponent implements OnInit {
       },
     });
   }
-
+  //Metodos para paginación
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;
@@ -71,6 +71,7 @@ export class AdminVacanciesComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
+  //Metodos para poner colores en los estados en la tabla
   getStatusClass(status: string): string {
     switch (status) {
       case 'Activa':

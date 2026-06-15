@@ -6,7 +6,6 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
 import { API_URL } from '../../global';
 import { UserResponse } from '../interfaces/user-response';
 import { UserListResponse } from '../interfaces/user-list-response';
@@ -14,6 +13,7 @@ import { UserListResponse } from '../interfaces/user-list-response';
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para los usuarios
 export class UserService {
   private endpoint = `${API_URL}/user`;
 
@@ -26,7 +26,7 @@ export class UserService {
       Authorization: `Bearer ${token}`,
     });
   }
-
+//Obtener usuarios
   getUsers(
     page: number,
   ): Observable<UserListResponse> {
@@ -51,7 +51,7 @@ export class UserService {
         }),
       );
   }
-
+//Obtener usuario por id
   getUserById(
     id: number,
   ): Observable<UserResponse> {

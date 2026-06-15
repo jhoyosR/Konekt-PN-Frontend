@@ -11,6 +11,7 @@ import { ApplicationListResponse } from '../interfaces/application-list-response
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para las postulaciones
 export class ApplicationsService {
   private readonly endpoint = `${API_URL}/application`;
 
@@ -24,7 +25,7 @@ export class ApplicationsService {
       Authorization: `Bearer ${token}`,
     });
   }
-
+  //Crear postulación
   createApplication(vacancieId: number): Observable<ApplicationResponse> {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     const studentId = user?.profile?.id;
@@ -45,52 +46,44 @@ export class ApplicationsService {
         }),
       );
   }
+  //Obtener postulaciones
+  getApplications(
+    page: number = 1,
+    companyId?: number,
+    studentId?: number,
+    withoutInternship?: boolean,
+  ): Observable<ApplicationListResponse> {
+    let params = new HttpParams().set('page', page);
 
-getApplications(
-  page: number = 1,
-  companyId?: number,
-  studentId?: number,
-  withoutInternship?: boolean,
-): Observable<ApplicationListResponse> {
+    if (companyId !== undefined) {
+      params = params.set('companyId', companyId);
+    }
 
-  let params = new HttpParams()
-    .set('page', page);
+    if (studentId !== undefined) {
+      params = params.set('studentId', studentId);
+    }
 
-  if (companyId !== undefined) {
-    params = params.set('companyId', companyId);
+    if (withoutInternship !== undefined) {
+      params = params.set('withoutInternship', withoutInternship);
+    }
+
+    return this.http
+      .get<ApplicationListResponse>(this.endpoint, {
+        headers: this.getHeaders(),
+        params,
+      })
+      .pipe(
+        catchError((error) => {
+          console.error('[ApplicationsService] getApplications error:', error);
+
+          return throwError(() => ({
+            message: 'Error fetching applications',
+            error,
+          }));
+        }),
+      );
   }
-
-  if (studentId !== undefined) {
-    params = params.set('studentId', studentId);
-  }
-
-  if (withoutInternship !== undefined) {
-    params = params.set(
-      'withoutInternship',
-      withoutInternship,
-    );
-  }
-
-  return this.http
-    .get<ApplicationListResponse>(this.endpoint, {
-      headers: this.getHeaders(),
-      params,
-    })
-    .pipe(
-      catchError((error) => {
-        console.error(
-          '[ApplicationsService] getApplications error:',
-          error,
-        );
-
-        return throwError(() => ({
-          message: 'Error fetching applications',
-          error,
-        }));
-      }),
-    );
-}
-
+  //Obtener postulación por id
   getApplicationById(id: number): Observable<ApplicationResponse> {
     return this.http
       .get<ApplicationResponse>(`${this.endpoint}/${id}`, {
@@ -103,7 +96,7 @@ getApplications(
         }),
       );
   }
-
+  //Actualizar postulación
   updateApplication(
     id: number,
     data: Partial<ApplicationRequest>,
@@ -119,7 +112,7 @@ getApplications(
         }),
       );
   }
-
+  //Eliminar postulación
   deleteApplication(id: number): Observable<void> {
     return this.http
       .delete<void>(`${this.endpoint}/${id}`, {

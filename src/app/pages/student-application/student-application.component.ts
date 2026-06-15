@@ -26,43 +26,39 @@ export class StudentApplicationComponent implements OnInit {
   ngOnInit(): void {
     this.loadApplications();
   }
+  //Metodo para cargar las postulaciones
+  loadApplications(): void {
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
- loadApplications(): void {
-  const user = JSON.parse(
-    sessionStorage.getItem('user') || '{}'
-  );
+    const studentId = user?.profile?.id;
 
-  const studentId = user?.profile?.id;
+    this.applicationsService
+      .getApplications(this.page, undefined, studentId)
+      .subscribe({
+        next: (response) => {
+          this.applications = response.data;
 
-  this.applicationsService
-    .getApplications(this.page, undefined, studentId)
-    .subscribe({
-      next: (response) => {
-        this.applications = response.data;
+          console.log('Applications response:', response);
 
-        console.log(
-          'Applications response:',
-          response
-        );
+          this.total = response.total;
+          this.page = response.page;
+          this.pageCount = response.page_count;
+          this.hasNext = response.has_next;
+          this.hasPrev = response.has_prev;
+        },
 
-        this.total = response.total;
-        this.page = response.page;
-        this.pageCount = response.page_count;
-        this.hasNext = response.has_next;
-        this.hasPrev = response.has_prev;
-      },
-
-      error: () => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudieron cargar las postulaciones',
-          confirmButtonColor: '#2563eb',
-          customClass: { popup: 'konekt-swal' },
-        });
-      },
-    });
-}
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron cargar las postulaciones',
+            confirmButtonColor: '#2563eb',
+            customClass: { popup: 'konekt-swal' },
+          });
+        },
+      });
+  }
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
 
@@ -87,7 +83,7 @@ export class StudentApplicationComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
-
+  //Modal para eliminar una postulación (botón eliminar)
   deleteApplication(id: number): void {
     Swal.fire({
       title: '¿Eliminar postulación?',

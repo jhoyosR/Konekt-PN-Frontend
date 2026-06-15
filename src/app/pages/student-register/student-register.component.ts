@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-
 import { UniversityService } from '../../services/university.service';
 import { University } from '../../interfaces/university';
 import { StudentRegisterService } from '../../services/student-register.service';
@@ -86,7 +85,7 @@ export class StudentRegisterComponent implements OnInit {
     this.loadUniversities();
     this.loadCareers();
   }
-
+  //Metodo para cargar las universidades (paginación de a 10)
   private loadUniversities(): void {
     if (this.loading || !this.hasMore || this.isSearchMode) {
       return;
@@ -100,7 +99,6 @@ export class StudentRegisterComponent implements OnInit {
 
         this.universities = [...this.universities, ...data];
 
-        // lo que ve el select
         this.displayUniversities = [...this.universities];
 
         if (data.length < 10) {
@@ -116,6 +114,7 @@ export class StudentRegisterComponent implements OnInit {
       },
     });
   }
+  //Metodo para cargar TODAS las universidades
   loadAllUniversities(): void {
     this.loading = true;
 
@@ -123,7 +122,6 @@ export class StudentRegisterComponent implements OnInit {
       next: (response: any) => {
         this.allUniversities = response ?? [];
 
-        // el select muestra TODAS
         this.displayUniversities = [...this.allUniversities];
 
         this.loading = false;
@@ -135,14 +133,13 @@ export class StudentRegisterComponent implements OnInit {
     });
   }
   allUniversitiesLoaded = false;
-
+  //Metodo para buscar la universidad en el selector
   onUniversitySearch(event: { term: string }): void {
     const term = event.term?.trim();
 
     if (!term) {
       this.isSearchMode = false;
 
-      // vuelve a mostrar las paginadas
       this.displayUniversities = [...this.universities];
 
       return;
@@ -155,6 +152,7 @@ export class StudentRegisterComponent implements OnInit {
       this.loadAllUniversities();
     }
   }
+  //Metodo para cargar las universidades al hacer scroll
   onScrollEnd(): void {
     if (this.isSearchMode) {
       return;
@@ -162,7 +160,7 @@ export class StudentRegisterComponent implements OnInit {
 
     this.loadUniversities();
   }
-
+//Metodo para cargar las carreras
   private loadCareers(): void {
     this.commonService.getConstants('career').subscribe({
       next: (response) => {
@@ -173,7 +171,7 @@ export class StudentRegisterComponent implements OnInit {
       },
     });
   }
-
+//Metodo para validar si las contraseñas escritas coinciden
   passwordMatchValidator(form: any) {
     const password = form.get('password')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
@@ -202,7 +200,7 @@ export class StudentRegisterComponent implements OnInit {
 
     return null;
   }
-
+//Metodo para que un estudiante se registre
   Studentregister(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
@@ -273,7 +271,7 @@ export class StudentRegisterComponent implements OnInit {
       },
     });
   }
-
+//Checbox para ocultar y mostrar las contraseñas escritas
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
@@ -281,11 +279,11 @@ export class StudentRegisterComponent implements OnInit {
   get f() {
     return this.registerForm.controls;
   }
-
+//Metodo para volver al inicio de sesión
   goToLogin(): void {
     this.router.navigate(['/']);
   }
-
+//Metodo para volver al panel de roles de registro
   goToRoles(): void {
     this.router.navigate(['/roles']);
   }

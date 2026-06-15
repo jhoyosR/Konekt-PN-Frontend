@@ -56,7 +56,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadDashboard();
   }
-
+//Metodo para cargar los datos de la dashboard de super-admin
   loadDashboard(): void {
     this.userService.getUsers(1).subscribe((res: any) => {
       const users = res.data || [];
@@ -107,7 +107,7 @@ export class AdminDashboardComponent implements OnInit {
       this.totalPartnerships = res.total || res.data.length;
     });
   }
-
+//Metodo para crear el grafico de la dashboard
   createChart(): void {
     const canvas = document.getElementById('adminChart') as HTMLCanvasElement;
     if (!canvas) return;

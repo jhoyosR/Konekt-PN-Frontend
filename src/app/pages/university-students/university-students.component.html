@@ -11,36 +11,36 @@
     <div class="cards-grid">
       <div *ngFor="let student of students" class="card">
         <div class="student-header">
-  <!-- AVATAR -->
-  <div class="student-avatar">
-    <img
-      *ngIf="student.profilePhotoUrl; else noPhoto"
-      [src]="student.profilePhotoUrl"
-      alt="student photo"
-    />
+          <!-- AVATAR -->
+          <div class="student-avatar">
+            <img
+              *ngIf="student.profilePhotoUrl; else noPhoto"
+              [src]="student.profilePhotoUrl"
+              alt="student photo"
+            />
 
-    <ng-template #noPhoto>
-      <div class="avatar-placeholder">
-        <i class="fa-solid fa-user"></i>
-      </div>
-    </ng-template>
-  </div>
+            <ng-template #noPhoto>
+              <div class="avatar-placeholder">
+                <i class="fa-solid fa-user"></i>
+              </div>
+            </ng-template>
+          </div>
 
-  <!-- INFO -->
-  <div class="student-info">
-    <h3>{{ student.fullName }}</h3>
-  </div>
+          <!-- INFO -->
+          <div class="student-info">
+            <h3>{{ student.fullName }}</h3>
+          </div>
 
-  <!-- BOTÓN VER FOTO -->
-  <button
-    class="view-photo-btn"
-    *ngIf="student.profilePhotoUrl"
-    (click)="openStudentPhoto(student.profilePhotoUrl)"
-    title="Ver foto"
-  >
-    <i class="fa-solid fa-eye"></i>
-  </button>
-</div>
+          <!-- BOTÓN VER FOTO -->
+          <button
+            class="view-photo-btn"
+            *ngIf="student.profilePhotoUrl"
+            (click)="openStudentPhoto(student.profilePhotoUrl)"
+            title="Ver foto"
+          >
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
 
         <p class="about">
           {{ student.about }}

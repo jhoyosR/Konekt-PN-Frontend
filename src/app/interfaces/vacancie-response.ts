@@ -1,5 +1,5 @@
 import { Company } from './company';
-
+//Interfaz de respuesta al crear una vacante
 export interface VacancieResponse {
   id: number;
   title: string;

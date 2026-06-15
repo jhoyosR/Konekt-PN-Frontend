@@ -171,9 +171,8 @@
   font-size: 13px;
 }
 
-/* BOTÓN VER (AZUL) */
 .view-photo-btn {
-  background: #2563eb; /* azul */
+  background: #2563eb;
   color: white;
   border: none;
   width: 34px;
@@ -202,7 +201,6 @@
   color: #6b7280;
 }
 
-/* toggle */
 .toggle-section {
   display: flex;
   justify-content: center;
@@ -223,7 +221,6 @@
   transform: scale(1.1);
 }
 
-/* animación suave */
 .extra-info {
   margin-top: 10px;
   animation: fadeIn 0.2s ease-in-out;
@@ -246,7 +243,6 @@
   gap: 4px;
 }
 
-/* TÍTULO GRANDE */
 .vacancy-title {
   font-size: 20px;
   font-weight: 700;
@@ -254,7 +250,6 @@
   color: #111827;
 }
 
-/* EMPRESA MÁS SUAVE */
 .company-name {
   font-size: 13px;
   color: #6b7280;
@@ -268,14 +263,12 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-/* GRID MÁS EQUILIBRADO */
 .filters-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 18px 16px; /* 👈 separación vertical + horizontal */
+  gap: 18px 16px;
 }
 
-/* FILTROS */
 .filter-group {
   display: flex;
   flex-direction: column;
@@ -283,7 +276,6 @@
   height: 100%;
 }
 
-/* LABEL */
 .filter-group label {
   font-size: 12px;
   font-weight: 600;
@@ -291,16 +283,14 @@
   text-align: center;
 }
 
-/* INPUT + SELECT BASE */
 .filter-input,
 ng-select {
   width: 100%;
   box-sizing: border-box;
 }
 
-/* INPUT STYLE UNIFICADO */
 .filter-input {
-  height: 38px; /* 👈 clave para alineación con ng-select */
+  height: 38px;
   padding: 0 12px;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
@@ -310,19 +300,16 @@ ng-select {
   background: white;
 }
 
-/* INPUT FOCUS */
 .filter-input:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
-/* NG-SELECT SOLO AJUSTE VISUAL EXTERNO */
 ng-select {
   min-height: 38px;
   display: block;
 }
 
-/* BOTÓN FUERA DEL GRID */
 .filters-actions {
   display: flex;
   justify-content: flex-end;
@@ -330,7 +317,6 @@ ng-select {
   padding-right: 5px;
 }
 
-/* BOTÓN */
 .btn-filter {
   background: #2563eb;
   color: white;
@@ -339,11 +325,9 @@ ng-select {
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-
   display: flex;
   align-items: center;
   gap: 8px;
-
   transition: 0.2s;
 }
 
@@ -353,16 +337,13 @@ ng-select {
 }
 .filters-header {
   display: flex;
-  justify-content: center; /* 👈 centra horizontal */
+  justify-content: center;
   align-items: center;
   gap: 8px;
-
   margin: 10px 0 12px 0;
-
   font-size: 14px;
   font-weight: 700;
   color: #374151;
-
   text-align: center;
   width: 100%;
 }

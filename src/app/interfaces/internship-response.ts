@@ -1,5 +1,5 @@
 import { ApplicationResponse } from './application-response';
-
+//Respuesta al traer/crear una práctica
 export interface IntershipResponse {
   id: number;
   status: string;

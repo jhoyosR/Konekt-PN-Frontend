@@ -52,7 +52,7 @@ export class UniversityIntershipComponent implements OnInit {
       this.loadInterships();
     });
   }
-
+  //Metodo para cargar la práctica de un estudiante en especifico
   loadInterships(): void {
     this.intershipService
       .getInterships({ studentId: this.studentId })
@@ -75,7 +75,7 @@ export class UniversityIntershipComponent implements OnInit {
         },
       });
   }
-
+  //Metodo para cargar las actualizaciones de una practica
   loadUpdates(): void {
     this.interships.forEach((intership) => {
       this.internshipUpdateService
@@ -98,6 +98,8 @@ export class UniversityIntershipComponent implements OnInit {
         });
     });
   }
+
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
 
@@ -120,5 +122,13 @@ export class UniversityIntershipComponent implements OnInit {
   }
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
+  }
+  //Metodo para abrir los documentos cargados de un practicante en otra ventana
+  openFile(url: string): void {
+    if (!url) {
+      return;
+    }
+
+    window.open(url, '_blank');
   }
 }

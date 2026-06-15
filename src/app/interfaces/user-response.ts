@@ -1,3 +1,4 @@
+//Interfaz de respuesta al crear un usuario
 export interface UserResponse {
   id: string;
   email: string;

@@ -1,17 +1,13 @@
 <app-navbar [role]="'student'"></app-navbar>
 
 <div class="dashboard-container">
-
   <div class="welcome-card">
     <h1>{{ studentName }}</h1>
 
-    <p>
-      Bienvenido a tu panel administrativo de estudiante.
-    </p>
+    <p>Bienvenido a tu panel administrativo de estudiante.</p>
   </div>
 
   <div class="stats-grid">
-
     <div class="stat-card">
       <i class="fa-solid fa-file-lines"></i>
 
@@ -47,11 +43,9 @@
         <span>Cerradas</span>
       </div>
     </div>
-
   </div>
 
   <div class="content-grid">
-
     <div class="chart-card">
       <h3>Distribución de postulaciones</h3>
 
@@ -63,10 +57,7 @@
     <div class="students-card">
       <h3>Últimas postulaciones</h3>
 
-      <div
-        *ngFor="let app of recentApplications"
-        class="student-item"
-      >
+      <div *ngFor="let app of recentApplications" class="student-item">
         <div>
           <strong>
             {{ app.vacancie.title }}
@@ -81,9 +72,6 @@
           {{ app.status }}
         </span>
       </div>
-
     </div>
-
   </div>
-
 </div>

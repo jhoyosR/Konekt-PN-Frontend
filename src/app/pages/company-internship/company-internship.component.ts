@@ -39,7 +39,7 @@ export class CompanyInternshipComponent implements OnInit {
     this.loadInternships();
     this.loadStatusInternship();
   }
-
+  //Metodo para cargar las prácticas de un estudiante en la empresa
   loadInternships(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     const companyId = user?.profile?.id;
@@ -69,7 +69,7 @@ export class CompanyInternshipComponent implements OnInit {
         },
       });
   }
-
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;
@@ -91,12 +91,14 @@ export class CompanyInternshipComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
+  //Metodo para cargar los estados de las practicas
   loadStatusInternship(): void {
     this.commonService.getConstants('internship-status').subscribe({
       next: (res) => (this.statusesIntership = res),
       error: (err) => console.error('Error statuses', err),
     });
   }
+  //Modal para actualizar una práctica (botón actualizar)
   updateInternship(i: IntershipResponse): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Gestionar práctica</span>`,
@@ -243,7 +245,6 @@ export class CompanyInternshipComponent implements OnInit {
             customClass: { popup: 'konekt-swal' },
           });
 
-          // si quieres refrescar:
           this.loadInternships();
         },
 
@@ -259,6 +260,7 @@ export class CompanyInternshipComponent implements OnInit {
       });
     });
   }
+  //Modal para eliminar una práctica (botón eliminar)
   deleteInternship(id: number): void {
     Swal.fire({
       title: '¿Eliminar práctica?',
@@ -315,6 +317,7 @@ export class CompanyInternshipComponent implements OnInit {
       }
     });
   }
+  //Modal para crear una actualización de una práctica (botón crear seguimiento)
   followInternship(intership: any): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Registrar seguimiento</span>`,
@@ -484,6 +487,7 @@ export class CompanyInternshipComponent implements OnInit {
         });
     });
   }
+  //Metodo para ver las actualizaciones y los documentos cargados de una práctica (botón ver detalles)
   viewInternshipDetails(intership: IntershipResponse): void {
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['/dashboard/company/internship-update'], {
@@ -495,6 +499,7 @@ export class CompanyInternshipComponent implements OnInit {
 
     window.open(url, '_blank');
   }
+  //Modal para cargar documentos de un practicante - certificado ARL y EPS (botón cargar documentos)
   openDocumentsModal(i: IntershipResponse): void {
     let arlFile: File | null = null;
     let epsFile: File | null = null;

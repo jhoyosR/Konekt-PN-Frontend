@@ -28,20 +28,15 @@ registerLocaleData(localeEsCo, 'es-CO');
 })
 export class StudentVacanciesComponent implements OnInit {
   vacancies: VacancieUI[] = [];
-
   page = 1;
   total = 0;
   pageCount = 0;
   hasNext = false;
   hasPrev = false;
   companies: any[] = [];
-
   industries: string[] = [];
   modalities: string[] = [];
-
   filtersForm!: FormGroup;
-
-  // 👇 estado central de filtros
   currentFilters: any = {};
 
   constructor(
@@ -55,13 +50,11 @@ export class StudentVacanciesComponent implements OnInit {
   ngOnInit(): void {
     this.initFiltersForm();
     this.loadCatalogs();
-    this.loadCompanies(); // ✔️ FALTABA
+    this.loadCompanies(); 
     this.loadVacancies();
   }
 
-  // =========================
-  // FORM FILTERS
-  // =========================
+//Metodo para inicializar los filtros que se esperan
   private initFiltersForm(): void {
     this.filtersForm = this.fb.group({
       title: [''],
@@ -69,13 +62,11 @@ export class StudentVacanciesComponent implements OnInit {
       modality: [null],
       industry: [null],
       salary: [null],
-      companyId: [null], // ✔️ IMPORTANTE
+      companyId: [null], 
     });
   }
 
-  // =========================
-  // CATALOGS (COMMON SERVICE)
-  // =========================
+//Metodo para cargar las industrias y las modalidades
   private loadCatalogs(): void {
     this.commonService.getConstants('industry-type').subscribe({
       next: (res) => {
@@ -91,6 +82,7 @@ export class StudentVacanciesComponent implements OnInit {
       error: (err) => console.error('Error loading modalities', err),
     });
   }
+  //Metodo para cargar las empresas
   private loadCompanies(): void {
     this.companyServie.getCompanies(undefined, true).subscribe({
       next: (res: any) => {
@@ -101,9 +93,7 @@ export class StudentVacanciesComponent implements OnInit {
       },
     });
   }
-  // =========================
-  // APPLY FILTERS
-  // =========================
+ //Metodo que captura y aplica los filtros 
   applyFilters(): void {
     this.page = 1;
 
@@ -121,9 +111,7 @@ export class StudentVacanciesComponent implements OnInit {
     this.loadVacancies();
   }
 
-  // =========================
-  // LOAD VACANCIES (UNIFIED)
-  // =========================
+  //Metodo que carga las vacantes
   loadVacancies(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     const notAppliedByStudentId = user?.profile?.id;
@@ -166,6 +154,7 @@ export class StudentVacanciesComponent implements OnInit {
         },
       });
   }
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
 
@@ -190,7 +179,7 @@ export class StudentVacanciesComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
-
+//Metodo para aplicar una vacante (botón postularme)
   applyVacancy(vacancy: VacancieResponse): void {
     Swal.fire({
       title: '¿Postularte a esta vacante?',
@@ -237,6 +226,7 @@ export class StudentVacanciesComponent implements OnInit {
       }
     });
   }
+  //Metodo para abrir la foto de perfil de una empresa en otra ventana
   openPhoto(url: string): void {
     window.open(url, '_blank');
   }

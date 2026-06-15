@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -12,10 +8,12 @@ import { API_URL } from '../../global';
 
 import { StudentRegisterResponse } from '../interfaces/student-register-response';
 import { StudentListResponse } from '../interfaces/student-list-response';
+import { Student } from '../interfaces/student';
 
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para un estudiante
 export class StudentService {
   private readonly endpoint = `${API_URL}/student`;
 
@@ -29,7 +27,7 @@ export class StudentService {
       Authorization: `Bearer ${token}`,
     });
   }
-
+  //Obtener los estudiantes
   getStudents(
     page: number,
     universityId?: number,
@@ -47,10 +45,7 @@ export class StudentService {
       })
       .pipe(
         catchError((error) => {
-          console.error(
-            '[StudentService] getStudents error:',
-            error,
-          );
+          console.error('[StudentService] getStudents error:', error);
 
           return throwError(() => ({
             message: 'Error fetching students',
@@ -59,23 +54,15 @@ export class StudentService {
         }),
       );
   }
-
-  getStudentById(
-    id: number,
-  ): Observable<StudentRegisterResponse> {
+  //Obtener un estudiante por id
+  getStudentById(id: number): Observable<Student> {
     return this.http
-      .get<StudentRegisterResponse>(
-        `${this.endpoint}/${id}`,
-        {
-          headers: this.getHeaders(),
-        },
-      )
+      .get<Student>(`${this.endpoint}/${id}`, {
+        headers: this.getHeaders(),
+      })
       .pipe(
         catchError((error) => {
-          console.error(
-            '[StudentService] getStudentById error:',
-            error,
-          );
+          console.error('[StudentService] getStudentById error:', error);
 
           return throwError(() => ({
             message: 'Error fetching student',
@@ -84,48 +71,38 @@ export class StudentService {
         }),
       );
   }
+  //Actualizar un estudiante
   updateStudent(
-  id: number,
-  data: {
-    password?: string;
-    about?: string;
-    phone?: string;
-    career?: string;
-    semester?: number;
-    profilePhoto?: string;
-    resume?:string;
-  }
-): Observable<StudentRegisterResponse> {
-
-  const payload = Object.fromEntries(
-    Object.entries(data).filter(
-      ([_, value]) =>
-        value !== undefined &&
-        value !== null &&
-        value !== ''
-    )
-  );
-
-  return this.http
-    .patch<StudentRegisterResponse>(
-      `${this.endpoint}/${id}`,
-      payload,
-      {
-        headers: this.getHeaders(),
-      }
-    )
-    .pipe(
-      catchError((error) => {
-        console.error(
-          '[StudentService] updateStudent error:',
-          error
-        );
-
-        return throwError(() => ({
-          message: 'Error updating student',
-          error,
-        }));
-      })
+    id: number,
+    data: {
+      password?: string;
+      about?: string;
+      phone?: string;
+      career?: string;
+      semester?: number;
+      profilePhoto?: string;
+      resume?: string;
+    },
+  ): Observable<StudentRegisterResponse> {
+    const payload = Object.fromEntries(
+      Object.entries(data).filter(
+        ([_, value]) => value !== undefined && value !== null && value !== '',
+      ),
     );
-}
+
+    return this.http
+      .patch<StudentRegisterResponse>(`${this.endpoint}/${id}`, payload, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        catchError((error) => {
+          console.error('[StudentService] updateStudent error:', error);
+
+          return throwError(() => ({
+            message: 'Error updating student',
+            error,
+          }));
+        }),
+      );
+  }
 }

@@ -1,5 +1,5 @@
 import { Student} from './student';
-
+//Interfaz para la paginación de los estudiantes
 export interface StudentListResponse {
   data: Student[];
   total: number;

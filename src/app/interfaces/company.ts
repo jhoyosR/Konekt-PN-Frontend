@@ -1,5 +1,5 @@
 import { User } from './user';
-
+//Interfaz de una empresa
 export interface Company {
   id: number;
   name: string;

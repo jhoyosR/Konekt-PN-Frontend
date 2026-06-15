@@ -12,11 +12,8 @@ import { Router, RouterModule } from '@angular/router';
 export class NavbarComponent implements OnChanges, OnInit {
   @Input() role: 'student' | 'company' | 'university' | 'super-admin' =
     'student';
-
   menuOpen = false;
-
   profilePhotoUrl: string | null = null;
-
   links: { label: string; path: string }[] = [];
 
   constructor(private router: Router) {}
@@ -29,7 +26,7 @@ export class NavbarComponent implements OnChanges, OnInit {
     this.setLinks();
     this.loadProfilePhoto();
   }
-
+  //Metodo para cargar la foto de perfil en el nav
   private loadProfilePhoto(): void {
     const userStr = sessionStorage.getItem('user');
 
@@ -46,7 +43,7 @@ export class NavbarComponent implements OnChanges, OnInit {
       this.profilePhotoUrl = null;
     }
   }
-
+  //Metodo para los links dependiendo del rol en el nav
   private setLinks(): void {
     switch (this.role) {
       case 'company':
@@ -92,19 +89,23 @@ export class NavbarComponent implements OnChanges, OnInit {
             label: 'Mi práctica',
             path: '/dashboard/student/internship',
           },
+          {
+            label: 'Mis habilidades',
+            path: '/dashboard/student/skill',
+          },
         ];
     }
   }
-
+  //Metodo para cerrar sesión
   logout(): void {
     sessionStorage.clear();
     this.router.navigate(['/']);
   }
-
+  //Metodo para desplegar el menú
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
-
+  //Metodo para ir al perfil
   goToProfile(): void {
     this.menuOpen = false;
     this.router.navigate(['/profile']);

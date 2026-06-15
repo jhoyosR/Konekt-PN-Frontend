@@ -37,14 +37,14 @@ export class CompanyApplicationComponent implements OnInit {
     this.loadApplications();
     this.loadCatalogs();
   }
-
+  //Metodo para cargar los estados de las postulaciones
   loadCatalogs(): void {
     this.commonService.getConstants('application-status').subscribe({
       next: (res) => (this.statuses = res),
       error: (err) => console.error('Error statuses', err),
     });
   }
-
+  //Metodo para cargar las postulaciones
   loadApplications(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     const companyId = user?.profile?.id;
@@ -76,7 +76,7 @@ export class CompanyApplicationComponent implements OnInit {
         },
       });
   }
-
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
 
@@ -101,7 +101,7 @@ export class CompanyApplicationComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
-
+  //Modal para actualizar una postulación (botón actualizar)
   updateApplication(app: ApplicationResponse): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar postulación</span>`,
@@ -275,6 +275,7 @@ export class CompanyApplicationComponent implements OnInit {
       }
     });
   }
+  //Modal para contratar/aceptar una postulación (botón contratar)
   managePractice(applicationId: number): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Contratar practicante</span>`,
@@ -358,7 +359,7 @@ export class CompanyApplicationComponent implements OnInit {
         }
 
         return {
-          status: 'Activa', // 👈 fijo por backend
+          status: 'Activa',
           startDate,
           endDate,
           applicationId,
@@ -382,8 +383,6 @@ export class CompanyApplicationComponent implements OnInit {
             confirmButtonColor: '#2563eb',
             customClass: { popup: 'konekt-swal' },
           });
-
-          // ❌ no reload si no quieres
         },
 
         error: () => {
@@ -398,9 +397,11 @@ export class CompanyApplicationComponent implements OnInit {
       });
     });
   }
+  //Metodo para abrir la foto de perfil en otra ventana (botón)
   openPhoto(url: string): void {
     window.open(url, '_blank');
   }
+  //Metodo para abrir la hoja de vida de un estudiante en otra ventana (botón)
   openResume(url?: string): void {
     if (!url) {
       Swal.fire({
@@ -416,5 +417,5 @@ export class CompanyApplicationComponent implements OnInit {
     }
 
     window.open(url, '_blank');
-  } 
+  }
 }

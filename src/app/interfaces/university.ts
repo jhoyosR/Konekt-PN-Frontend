@@ -1,5 +1,5 @@
 import { User } from './user';
-
+//Interfaz de universidad
 export interface University {
   id: number;
   name: string;

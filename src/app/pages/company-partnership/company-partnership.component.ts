@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-
 import { PartnershipService } from '../../services/partnership.service';
 import { CommonService } from '../../services/common.service';
-
 import { PartnershipResponse } from '../../interfaces/partnership-response';
-import { PartnershipRequest } from '../../interfaces/partnership-request';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { UniversityService } from '../../services/university.service';
 import { University } from '../../interfaces/university';
@@ -20,9 +17,7 @@ import { University } from '../../interfaces/university';
 })
 export class CompanyPartnershipComponent implements OnInit {
   partnerships: PartnershipResponse[] = [];
-
   statuses: any[] = [];
-
   page = 1;
   total = 0;
   pageCount = 0;
@@ -41,13 +36,14 @@ export class CompanyPartnershipComponent implements OnInit {
     this.loadCatalogs();
     this.loadUniversities();
   }
-
+  //Metodo para cargar los estados del convenio
   loadCatalogs(): void {
     this.commonService.getConstants('partnership-status').subscribe({
       next: (res) => (this.statuses = res),
       error: (err) => console.error('Error loading statuses', err),
     });
   }
+  //Metodo para cargar las universidades
   loadUniversities(): void {
     this.universityService.getUniversities(undefined, true).subscribe({
       next: (res: any) => {
@@ -66,7 +62,7 @@ export class CompanyPartnershipComponent implements OnInit {
       },
     });
   }
-
+  //Metodo para listar los convenios
   loadPartnerships(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     const companyId = user?.profile?.id;
@@ -94,7 +90,7 @@ export class CompanyPartnershipComponent implements OnInit {
         },
       });
   }
-
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;
@@ -116,7 +112,7 @@ export class CompanyPartnershipComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
-
+  //Modal para crear un convenio (botón crear convenio)
   openCreatePartnershipModal(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     const companyId = user?.profile?.id;
@@ -247,7 +243,6 @@ export class CompanyPartnershipComponent implements OnInit {
           status: 'Solicitado',
         };
 
-        // solo enviar comment si existe
         if (commentValue) {
           payload.comment = commentValue;
         }
@@ -288,7 +283,7 @@ export class CompanyPartnershipComponent implements OnInit {
       });
     });
   }
-
+  //Modal para actualizar un convenio (botón actualizar)
   openUpdatePartnershipModal(p: PartnershipResponse): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar convenio</span>`,
@@ -439,6 +434,7 @@ export class CompanyPartnershipComponent implements OnInit {
       });
     });
   }
+  //Modal para eliminar un convenio (botón eliminar)
   deletePartnership(id: number): void {
     Swal.fire({
       title: '¿Eliminar convenio?',
@@ -466,6 +462,7 @@ export class CompanyPartnershipComponent implements OnInit {
       });
     });
   }
+  //Metodo para abrir la foto de perfil de una universidad en otra ventana (botón)
   openUniversityLogo(url: string): void {
     window.open(url, '_blank');
   }

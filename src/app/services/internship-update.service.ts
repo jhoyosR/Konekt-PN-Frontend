@@ -13,6 +13,7 @@ import { InternshipUpdateListResponse } from '../interfaces/internship-update-li
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para los seguimientos de las prácticas
 export class InternshipUpdateService {
   private readonly endpoint = `${API_URL}/internship-update`;
 
@@ -27,43 +28,29 @@ export class InternshipUpdateService {
     });
   }
 
-  // =========================
-  // GET
-  // =========================
+  //Obtener los seguimientos
+  getInternshipUpdates(params?: {
+    page?: number;
+    internshipId?: number;
+  }): Observable<InternshipUpdateListResponse> {
+    let httpParams = new HttpParams();
 
-getInternshipUpdates(params?: {
-  page?: number;
-  internshipId?: number;
-}): Observable<InternshipUpdateListResponse> {
-  let httpParams = new HttpParams();
+    if (params?.page !== undefined) {
+      httpParams = httpParams.set('page', params.page);
+    }
 
-  if (params?.page !== undefined) {
-    httpParams = httpParams.set(
-      'page',
-      params.page,
-    );
-  }
+    if (params?.internshipId !== undefined) {
+      httpParams = httpParams.set('internshipId', params.internshipId);
+    }
 
-  if (params?.internshipId !== undefined) {
-    httpParams = httpParams.set(
-      'internshipId',
-      params.internshipId,
-    );
-  }
-
-  return this.http
-    .get<InternshipUpdateListResponse>(
-      this.endpoint,
-      {
+    return this.http
+      .get<InternshipUpdateListResponse>(this.endpoint, {
         headers: this.getHeaders(),
         params: httpParams,
-      },
-    )
-    .pipe(catchError(this.handleError));
-}
-  // =========================
-  // GET BY ID
-  // =========================
+      })
+      .pipe(catchError(this.handleError));
+  }
+  //Obtener un seguimiento por id
   getInternshipUpdateById(id: number): Observable<InternshipUpdateResponse> {
     return this.http
       .get<InternshipUpdateResponse>(`${this.endpoint}/${id}`, {
@@ -72,9 +59,7 @@ getInternshipUpdates(params?: {
       .pipe(catchError(this.handleError));
   }
 
-  // =========================
-  // POST
-  // =========================
+  //Crear un seguimiento
   createInternshipUpdate(
     data: InternshipUpdateRequest,
   ): Observable<InternshipUpdateResponse> {
@@ -85,9 +70,7 @@ getInternshipUpdates(params?: {
       .pipe(catchError(this.handleError));
   }
 
-  // =========================
-  // PATCH
-  // =========================
+  //Actualizar un seguimiento
   updateInternshipUpdate(
     id: number,
     data: Partial<InternshipUpdateRequest>,
@@ -99,9 +82,7 @@ getInternshipUpdates(params?: {
       .pipe(catchError(this.handleError));
   }
 
-  // =========================
-  // DELETE
-  // =========================
+  //Eliminar un seguimiento
   deleteInternshipUpdate(id: number): Observable<void> {
     return this.http
       .delete<void>(`${this.endpoint}/${id}`, {
@@ -110,9 +91,6 @@ getInternshipUpdates(params?: {
       .pipe(catchError(this.handleError));
   }
 
-  // =========================
-  // ERROR HANDLER
-  // =========================
   private handleError(error: any) {
     console.error('[InternshipUpdateService Error]', error);
 

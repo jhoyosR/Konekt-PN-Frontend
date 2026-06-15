@@ -1,5 +1,5 @@
 import { UserResponse } from "./user-response";
-
+//Interfaz para la paginación de los usuarios
 export interface UserListResponse {
   data: UserResponse[];
   total: number;

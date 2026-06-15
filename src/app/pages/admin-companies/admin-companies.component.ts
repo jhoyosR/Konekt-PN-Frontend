@@ -27,7 +27,7 @@ export class AdminCompaniesComponent implements OnInit {
   ngOnInit(): void {
     this.loadCompanies();
   }
-
+  //Metodo para listar las empresas
   loadCompanies(): void {
     this.companyService.getCompanies(this.page).subscribe({
       next: (response: any) => {
@@ -49,7 +49,7 @@ export class AdminCompaniesComponent implements OnInit {
       },
     });
   }
-
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;

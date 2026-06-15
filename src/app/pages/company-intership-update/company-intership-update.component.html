@@ -1,7 +1,6 @@
-
-
 <div class="updates-page">
   <div class="list-container">
+    <!-- HEADER -->
     <div class="header">
       <h2 class="page-title">
         <i class="fa-solid fa-list-check"></i>
@@ -12,51 +11,150 @@
     <div class="empty" *ngIf="updates.length === 0">
       No hay actualizaciones registradas
     </div>
-<!-- DOCUMENTOS DEL PRACTICANTE -->
-<div class="documents-card" *ngIf="internshipInfo">
-  <h3>
-    <i class="fa-solid fa-folder-open"></i>
-    Documentos del practicante
-  </h3>
 
-  <div class="docs-grid">
+    <!-- DATOS DE LA PRÁCTICA -->
 
-    <!-- ARL -->
-    <div class="doc-item">
-      <div class="doc-title">Certificado ARL</div>
+    <div class="documents-card" *ngIf="internshipInfo">
+      <h3>
+        <i class="fa-solid fa-briefcase"></i>
+        Datos de la práctica
+      </h3>
 
-      <button
-        class="btn-view-doc"
-        *ngIf="internshipInfo.arlCertificationUrl"
-        (click)="openFile(internshipInfo.arlCertificationUrl)"
-      >
-        Ver documento
-      </button>
+      <div class="docs-grid">
+        <!-- PRÁCTICA -->
+        <div class="doc-item">
+          <div class="doc-title">
+            <i class="fa-solid fa-hashtag"></i>
+            Práctica
+          </div>
+          <span>{{ internshipInfo.id }}</span>
+        </div>
 
-      <span *ngIf="!internshipInfo.arlCertificationUrl" class="empty">
-        Sin archivo
-      </span>
+        <!-- ESTADO -->
+        <div class="doc-item">
+          <div class="doc-title">
+            <i class="fa-solid fa-circle-info"></i>
+            Estado
+          </div>
+
+          <span
+            class="status-badge active"
+            *ngIf="internshipInfo.status === 'Activa'"
+          >
+            <i class="fa-solid fa-circle"></i>
+            Activa
+          </span>
+
+          <span
+            class="status-badge suspended"
+            *ngIf="internshipInfo.status === 'Suspendida'"
+          >
+            <i class="fa-solid fa-circle"></i>
+            Suspendida
+          </span>
+
+          <span
+            class="status-badge closed"
+            *ngIf="internshipInfo.status === 'Cerrada'"
+          >
+            <i class="fa-solid fa-circle"></i>
+            Cerrada
+          </span>
+        </div>
+
+        <!-- FECHA INICIO -->
+        <div class="doc-item">
+          <div class="doc-title">
+            <i class="fa-solid fa-play"></i>
+            Fecha inicio
+          </div>
+          <span>{{ internshipInfo.startDate | date: "yyyy-MM-dd" }}</span>
+        </div>
+
+        <!-- FECHA FIN -->
+        <div class="doc-item">
+          <div class="doc-title">
+            <i class="fa-solid fa-flag-checkered"></i>
+            Fecha fin
+          </div>
+          <span>{{ internshipInfo.endDate | date: "yyyy-MM-dd" }}</span>
+        </div>
+
+        <!-- ========================= -->
+        <!-- ESTUDIANTE -->
+        <!-- ========================= -->
+        <div class="doc-item">
+          <div class="doc-title">
+            <i class="fa-solid fa-user-graduate"></i>
+            Estudiante
+          </div>
+
+          <span>{{ internshipInfo.application.student.fullName }}</span>
+        </div>
+
+        <!-- ========================= -->
+        <!-- UNIVERSIDAD -->
+        <!-- ========================= -->
+        <div class="doc-item">
+          <div class="doc-title">
+            <i class="fa-solid fa-building-columns"></i>
+            Universidad
+          </div>
+
+          <span>{{ internshipInfo.application.student.university.name }}</span>
+        </div>
+      </div>
     </div>
 
-    <!-- EPS -->
-    <div class="doc-item">
-      <div class="doc-title">Certificado EPS</div>
+    <!-- ========================= -->
+    <!-- DOCUMENTOS DEL PRACTICANTE -->
+    <!-- ========================= -->
+    <div class="documents-card" *ngIf="internshipInfo">
+      <h3>
+        <i class="fa-solid fa-folder-open"></i>
+        Documentos del practicante
+      </h3>
 
-      <button
-        class="btn-view-doc"
-        *ngIf="internshipInfo.epsCertificationUrl"
-        (click)="openFile(internshipInfo.epsCertificationUrl)"
-      >
-        Ver documento
-      </button>
+      <div class="docs-grid">
+        <!-- ARL -->
+        <div class="doc-item">
+          <div class="doc-title">Certificado ARL</div>
 
-      <span *ngIf="!internshipInfo.epsCertificationUrl" class="empty">
-        Sin archivo
-      </span>
+          <button
+            class="btn-view-doc"
+            *ngIf="internshipInfo.arlCertificationUrl"
+            (click)="openFile(internshipInfo.arlCertificationUrl)"
+          >
+            Ver documento
+          </button>
+
+          <span *ngIf="!internshipInfo.arlCertificationUrl" class="empty">
+            Sin archivo
+          </span>
+        </div>
+
+        <!-- EPS -->
+        <div class="doc-item">
+          <div class="doc-title">Certificado EPS</div>
+
+          <button
+            class="btn-view-doc"
+            *ngIf="internshipInfo.epsCertificationUrl"
+            (click)="openFile(internshipInfo.epsCertificationUrl)"
+          >
+            Ver documento
+          </button>
+
+          <span *ngIf="!internshipInfo.epsCertificationUrl" class="empty">
+            Sin archivo
+          </span>
+        </div>
+      </div>
     </div>
 
-  </div>
-</div>
+    <!-- ========================= -->
+    <!-- LISTA DE ACTUALIZACIONES -->
+    <!-- ========================= -->
     <div class="cards-grid">
       <div *ngFor="let update of updates" class="card">
         <h3>
@@ -71,14 +169,12 @@
 
         <hr />
 
-        <!-- NÚMERO DE PRÁCTICA -->
         <div class="info-row">
           <i class="fa-solid fa-briefcase"></i>
           <b>Práctica #:</b>
           {{ update.internshipId }}
         </div>
 
-        <!-- FECHAS -->
         <div class="dates-container">
           <div class="info-row">
             <i class="fa-solid fa-clock"></i>
@@ -110,6 +206,7 @@
       </div>
     </div>
 
+    <!-- PAGINACIÓN -->
     <div class="pagination-container" *ngIf="pageCount > 1">
       <button
         class="pagination-btn"

@@ -21,9 +21,7 @@ type IntershipWithUpdates = IntershipResponse & {
 })
 export class StudentInternshipComponent implements OnInit {
   interships: IntershipWithUpdates[] = [];
-
   studentId!: number;
-
   page = 1;
   total = 0;
   pageCount = 0;
@@ -38,7 +36,7 @@ export class StudentInternshipComponent implements OnInit {
   ngOnInit(): void {
     this.loadInterships();
   }
-
+//Metodo para cargar la práctica
   loadInterships(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     this.studentId = user?.profile?.id;
@@ -59,7 +57,7 @@ export class StudentInternshipComponent implements OnInit {
         next: (res) => {
           this.interships = (res.data || []).map((i) => ({
             ...i,
-            updates: [], // 👈 siempre definido
+            updates: [], 
           }));
 
           this.loadUpdates();
@@ -73,7 +71,7 @@ export class StudentInternshipComponent implements OnInit {
         },
       });
   }
-
+//Metodo para cargar los seguimientos de la práctica
   loadUpdates(): void {
     this.interships.forEach((intership) => {
       this.internshipUpdateService
@@ -96,7 +94,7 @@ export class StudentInternshipComponent implements OnInit {
         });
     });
   }
-
+//Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;

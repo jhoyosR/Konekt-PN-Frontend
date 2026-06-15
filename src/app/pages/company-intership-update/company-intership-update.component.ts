@@ -47,6 +47,7 @@ export class CompanyIntershipUpdateComponent implements OnInit {
       this.loadUpdates();
     });
   }
+  //Metodo para listar las actualizaciones de una práctica
   loadUpdates(): void {
     this.internshipUpdateService
       .getInternshipUpdates({
@@ -76,6 +77,7 @@ export class CompanyIntershipUpdateComponent implements OnInit {
         },
       });
   }
+  //Metodo para listar los datos de la práctica por id
   loadInternshipInfo(): void {
     this.internshipService.getIntershipById(this.internshipId!).subscribe({
       next: (res: any) => {
@@ -91,9 +93,11 @@ export class CompanyIntershipUpdateComponent implements OnInit {
       },
     });
   }
+  //Metodo para abrir los documentos de un practicante en otra ventana
   openFile(url: string): void {
     window.open(url, '_blank');
   }
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
 
@@ -118,7 +122,7 @@ export class CompanyIntershipUpdateComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
-
+  //Modal para actualizar un seguimiento de una práctica (botón actualizar)
   updateInternshipUpdate(update: InternshipUpdateResponse): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar seguimiento</span>`,
@@ -275,6 +279,7 @@ export class CompanyIntershipUpdateComponent implements OnInit {
         });
     });
   }
+  //Modal para eliminar un seguimiento de una práctica (botón eliminar)
   deleteInternshipUpdate(id: number): void {
     Swal.fire({
       title: '¿Eliminar seguimiento?',

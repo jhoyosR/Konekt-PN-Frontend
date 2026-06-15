@@ -1,183 +1,232 @@
+<div *ngIf="interships.length === 0" class="empty">
+  No hay prácticas registradas
+</div>
+
 <div class="page" *ngFor="let i of interships">
+
   <h2 class="title">
     Práctica del estudiante {{ i.application.student.fullName }}
   </h2>
 
-  <div *ngIf="interships.length === 0" class="empty">
-    No hay prácticas registradas
-  </div>
+  <!-- DATOS DE LA PRÁCTICA -->
 
-  <div class="cards">
-    <div class="card">
-      <!-- ESTADO -->
-      <h3>
-        <i class="fa-solid fa-circle-info"></i>
+  <div class="card">
 
-        <span
-          [ngClass]="{
-            'status-activa': i.status === 'Activa',
-            'status-suspendida': i.status === 'Suspendida',
-            'status-cerrada': i.status === 'Cerrada',
-          }"
-        >
-          {{ i.status }}
-        </span>
-      </h3>
+    <h3>
+      <i class="fa-solid fa-circle-info"></i>
 
-      <!-- FECHAS -->
-      <p>
+      <span
+        [ngClass]="{
+          'status-activa': i.status === 'Activa',
+          'status-suspendida': i.status === 'Suspendida',
+          'status-cerrada': i.status === 'Cerrada'
+        }"
+      >
+        {{ i.status }}
+      </span>
+    </h3>
+
+    <div class="info-grid">
+
+      <div class="info-item">
         <i class="fa-solid fa-calendar"></i>
         <b>Inicio:</b>
-        {{ i.startDate | date: "yyyy-MM-dd" }}
-      </p>
+        {{ i.startDate | date:'yyyy-MM-dd' }}
+      </div>
 
-      <p>
+      <div class="info-item">
         <i class="fa-solid fa-calendar-check"></i>
         <b>Fin:</b>
-        {{ i.endDate | date: "yyyy-MM-dd" }}
-      </p>
+        {{ i.endDate | date:'yyyy-MM-dd' }}
+      </div>
 
-      <hr />
-
-      <!-- VACANTE -->
-      <h4>
+      <div class="info-item">
         <i class="fa-solid fa-briefcase"></i>
-        Vacante
-      </h4>
-
-      <p>
-        <i class="fa-solid fa-heading"></i>
-        <b>Título:</b>
+        <b>Vacante:</b>
         {{ i.application.vacancie.title }}
-      </p>
+      </div>
 
-      <p>
+      <div class="info-item">
         <i class="fa-solid fa-location-dot"></i>
         <b>Ubicación:</b>
         {{ i.application.vacancie.location }}
-      </p>
+      </div>
 
-      <p>
+      <div class="info-item">
         <i class="fa-solid fa-sack-dollar"></i>
         <b>Salario:</b>
-        {{ i.application.vacancie.salary | currency: "USD" }}
-      </p>
+        {{ i.application.vacancie.salary | currency:'USD' }}
+      </div>
 
-      <p>
+      <div class="info-item">
         <i class="fa-solid fa-laptop"></i>
         <b>Modalidad:</b>
         {{ i.application.vacancie.modality }}
-      </p>
+      </div>
 
-      <hr />
-
-      <!-- EMPRESA -->
-      <h4>
+      <div class="info-item">
         <i class="fa-solid fa-building"></i>
-        Empresa
-      </h4>
-
-      <p>
-        <i class="fa-solid fa-signature"></i>
-        <b>Nombre:</b>
+        <b>Empresa:</b>
         {{ i.application.vacancie.company.name }}
-      </p>
+      </div>
 
-      <p>
+      <div class="info-item">
         <i class="fa-solid fa-phone"></i>
         <b>Teléfono:</b>
         {{ i.application.vacancie.company.phone }}
-      </p>
+      </div>
 
-      <hr />
-
-      <!-- ESTUDIANTE -->
-      <h4>
+      <div class="info-item">
         <i class="fa-solid fa-user"></i>
-        Estudiante
-      </h4>
-
-      <p>
-        <i class="fa-solid fa-id-badge"></i>
-        <b>Nombre:</b>
+        <b>Estudiante:</b>
         {{ i.application.student.fullName }}
-      </p>
+      </div>
 
-      <p>
+      <div class="info-item">
         <i class="fa-solid fa-envelope"></i>
         <b>Email:</b>
         {{ i.application.student.user.email }}
-      </p>
+      </div>
+
     </div>
+
   </div>
+
+  <!-- DOCUMENTOS -->
+
+  <div class="documents-card">
+
+    <h3>
+      <i class="fa-solid fa-folder-open"></i>
+      Documentos del practicante
+    </h3>
+
+    <div class="docs-grid">
+
+      <div class="doc-item">
+
+        <div class="doc-title">
+          <i class="fa-solid fa-file-shield"></i>
+          Certificado ARL
+        </div>
+
+        <button
+          class="btn-view-doc"
+          *ngIf="i.arlCertificationUrl"
+          (click)="openFile(i.arlCertificationUrl)"
+        >
+          Ver documento
+        </button>
+
+        <span
+          *ngIf="!i.arlCertificationUrl"
+          class="empty-doc"
+        >
+          Sin archivo
+        </span>
+
+      </div>
+
+      <div class="doc-item">
+
+        <div class="doc-title">
+          <i class="fa-solid fa-file-medical"></i>
+          Certificado EPS
+        </div>
+
+        <button
+          class="btn-view-doc"
+          *ngIf="i.epsCertificationUrl"
+          (click)="openFile(i.epsCertificationUrl)"
+        >
+          Ver documento
+        </button>
+
+        <span
+          *ngIf="!i.epsCertificationUrl"
+          class="empty-doc"
+        >
+          Sin archivo
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- ACTUALIZACIONES -->
-<div
-  class="updates-container"
-  *ngIf="i.updates && i.updates.length > 0"
->
-  <h4>
-    <i class="fa-solid fa-list-check"></i>
-    Actualizaciones de la práctica
-  </h4>
 
-  <div
-    class="update-card"
-    *ngFor="let update of i.updates"
-  >
-    <h5>
-      <i class="fa-solid fa-clipboard-check"></i>
-      {{ update.title }}
-    </h5>
+  <div class="updates-container">
 
-    <p>
-      <i class="fa-solid fa-file-lines"></i>
-      {{ update.description }}
+    <h4>
+      <i class="fa-solid fa-list-check"></i>
+      Actualizaciones de la práctica
+    </h4>
+
+   <div *ngIf="i.updates && i.updates.length > 0">
+      <div
+        class="update-card"
+        *ngFor="let update of i.updates"
+      >
+        <h5>
+          <i class="fa-solid fa-clipboard-check"></i>
+          {{ update.title }}
+        </h5>
+
+        <p>
+          {{ update.description }}
+        </p>
+
+        <small>
+          <i class="fa-solid fa-clock"></i>
+          {{ update.createdAt | date:'yyyy-MM-dd HH:mm' }}
+        </small>
+      </div>
+
+    </div>
+
+    <p
+      class="empty-update"
+      *ngIf="!i.updates || i.updates.length === 0"
+    >
+      No hay actualizaciones registradas.
     </p>
 
-    <small>
-      <i class="fa-solid fa-clock"></i>
-      {{ update.createdAt | date:'yyyy-MM-dd HH:mm' }}
-    </small>
   </div>
+
 </div>
 
-<div
-  class="updates-container"
-  *ngIf="i.updates && i.updates.length === 0"
->
-  <h4>
-    <i class="fa-solid fa-list-check"></i>
-    Actualizaciones de la práctica
-  </h4>
+<!-- PAGINACIÓN -->
 
-  <p class="empty-update">
-    No hay actualizaciones registradas.
-  </p>
-</div>
- <!-- PAGINACIÓN -->
-    <div class="pagination-container" *ngIf="pageCount > 1">
-      <button
-        class="pagination-btn"
-        (click)="previousPage()"
-        [disabled]="!hasPrev"
-      >
-        <i class="fa-solid fa-chevron-left"></i>
-        Anterior
-      </button>
+<div class="pagination-container" *ngIf="pageCount > 1">
 
-      <select
-        class="pagination-select"
-        [value]="page"
-        (change)="goToPage(+$any($event.target).value)"
-      >
-        <option *ngFor="let p of pages" [value]="p">
-          Página {{ p }} de {{ pageCount }}
-        </option>
-      </select>
+  <button
+    class="pagination-btn"
+    (click)="previousPage()"
+    [disabled]="!hasPrev"
+  >
+    <i class="fa-solid fa-chevron-left"></i>
+    Anterior
+  </button>
 
-      <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
-        Siguiente
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
+  <select
+    class="pagination-select"
+    [value]="page"
+    (change)="goToPage(+$any($event.target).value)"
+  >
+    <option *ngFor="let p of pages" [value]="p">
+      Página {{ p }} de {{ pageCount }}
+    </option>
+  </select>
+
+  <button
+    class="pagination-btn"
+    (click)="nextPage()"
+    [disabled]="!hasNext"
+  >
+    Siguiente
+    <i class="fa-solid fa-chevron-right"></i>
+  </button>
+
 </div>

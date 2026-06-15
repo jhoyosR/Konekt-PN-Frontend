@@ -27,7 +27,7 @@ export class AdminStudentsComponent implements OnInit {
   ngOnInit(): void {
     this.loadStudents();
   }
-
+//Metodo para cargar los estudiantes
   loadStudents(): void {
     this.studentService.getStudents(this.page).subscribe({
       next: (response: any) => {
@@ -49,7 +49,7 @@ export class AdminStudentsComponent implements OnInit {
       },
     });
   }
-
+//Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;

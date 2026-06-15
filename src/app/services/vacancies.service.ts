@@ -11,6 +11,7 @@ import { VacancieListResponse } from '../interfaces/vancancie-list-response';
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para las vacantes
 export class VacanciesService {
   private readonly endpoint = `${API_URL}/vacancie`;
 
@@ -24,7 +25,7 @@ export class VacanciesService {
       Authorization: `Bearer ${token}`,
     });
   }
-
+//Crear una vacante
   createVacancie(data: VacancieRequest): Observable<VacancieResponse> {
     return this.http
       .post<VacancieResponse>(this.endpoint, data, {
@@ -41,6 +42,7 @@ export class VacanciesService {
         }),
       );
   }
+  //Obtener las vacantes
 getVacancies(
   page: number,
   notAppliedByStudentId?: number,
@@ -103,6 +105,7 @@ getVacancies(
       }),
     );
 }
+//Obtener vacante por id
   getVacancieById(id: number): Observable<VacancieResponse> {
     return this.http
       .get<VacancieResponse>(`${this.endpoint}/${id}`, {
@@ -119,7 +122,7 @@ getVacancies(
         }),
       );
   }
-
+//Actualizar vacante
   updateVacancie(
     id: number,
     data: Partial<VacancieRequest>,
@@ -139,7 +142,7 @@ getVacancies(
         }),
       );
   }
-
+//Eliminar vacante
   deleteVacancie(id: number): Observable<void> {
     return this.http
       .delete<void>(`${this.endpoint}/${id}`, {

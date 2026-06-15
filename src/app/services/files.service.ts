@@ -7,6 +7,7 @@ import { API_URL } from '../../global';
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para la carga de archivos
 export class FilesService {
   private readonly endpoint = `${API_URL}/files/upload`;
 

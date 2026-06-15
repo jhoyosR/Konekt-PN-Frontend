@@ -1,6 +1,6 @@
 import { Student } from './student';
 import { VacancieResponse } from './vacancie-response';
-
+//Interfaz de la respuesta al crear una postulación
 export interface ApplicationResponse {
   id: number;
   status: string;

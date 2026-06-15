@@ -1,5 +1,5 @@
 import { IntershipResponse } from './internship-response';
-
+//Interfaz para la paginación de las prácticas
 export interface InternshipListResponse {
   data: IntershipResponse[];
   total: number;

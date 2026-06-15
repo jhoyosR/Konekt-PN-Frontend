@@ -1,5 +1,5 @@
 import { VacancieResponse } from './vacancie-response';
-
+//Interfaz para la paginación de las vacantes
 export interface VacancieListResponse {
   data: VacancieResponse[];
   total: number;

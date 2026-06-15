@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { StudentService } from '../../services/student.service';
@@ -23,7 +19,7 @@ Chart.register(
   CategoryScale,
   LinearScale,
   Tooltip,
-  Legend
+  Legend,
 );
 
 @Component({
@@ -33,126 +29,106 @@ Chart.register(
   templateUrl: './university-dashboard.component.html',
   styleUrl: './university-dashboard.component.css',
 })
-export class UniversityDashboardComponent
-  implements OnInit, AfterViewInit
-{
+export class UniversityDashboardComponent implements OnInit {
   students: any[] = [];
-
   totalStudents = 0;
-
   semesters: Record<string, number> = {};
-
   universityName = '';
+  activeSemesters = 0;
 
-  constructor(
-    private studentService: StudentService
-  ) {}
+  constructor(private studentService: StudentService) {}
 
   ngOnInit(): void {
     this.loadStudents();
   }
-
-  ngAfterViewInit(): void {}
-
+  //Metodo para cargar los estudiantes
   loadStudents(): void {
-    const user = JSON.parse(
-      sessionStorage.getItem('user') || '{}'
-    );
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
     const universityId = user?.profile?.id;
 
-    this.universityName =
-      user?.profile?.name || 'Universidad';
+    this.universityName = user?.profile?.name || 'Universidad';
 
-    this.studentService
-      .getStudents(1, universityId)
-      .subscribe({
-        next: (response) => {
-          this.students = response.data;
+    this.studentService.getStudents(1, universityId).subscribe({
+      next: (response) => {
+        this.students = response.data;
 
-          this.totalStudents =
-            response.total ||
-            response.data.length;
+        this.totalStudents = response.total || response.data.length;
 
-          this.generateSemesterStats();
+        this.generateSemesterStats();
 
-          setTimeout(() => {
-            this.createChart();
-          }, 100);
-        },
-      });
+        setTimeout(() => {
+          this.createChart();
+        }, 100);
+      },
+    });
   }
+  //Metodo para generar los semestres de los estudiantes
+  generateSemesterStats(): void {
+    this.semesters = {};
 
-activeSemesters = 0;
+    this.students.forEach((student) => {
+      const semester = student.semester || 'Sin dato';
 
-generateSemesterStats(): void {
-  this.semesters = {};
+      this.semesters[semester] = (this.semesters[semester] || 0) + 1;
+    });
 
-  this.students.forEach((student) => {
-    const semester = student.semester || 'Sin dato';
+    this.activeSemesters = Object.keys(this.semesters).length;
+  }
+  //Metodo para crear el gráfico
+  createChart(): void {
+    const canvas = document.getElementById(
+      'semesterChart',
+    ) as HTMLCanvasElement;
 
-    this.semesters[semester] =
-      (this.semesters[semester] || 0) + 1;
-  });
+    if (!canvas) return;
 
-  this.activeSemesters = Object.keys(this.semesters).length;
-}
+    Chart.getChart(canvas)?.destroy();
 
-createChart(): void {
-  const canvas = document.getElementById(
-    'semesterChart'
-  ) as HTMLCanvasElement;
+    const labels = Object.keys(this.semesters);
+    const values = Object.values(this.semesters);
 
-  if (!canvas) return;
+    const colors = [
+      '#2563eb',
+      '#16a34a',
+      '#f59e0b',
+      '#ef4444',
+      '#8b5cf6',
+      '#06b6d4',
+      '#f97316',
+      '#84cc16',
+    ];
 
-  Chart.getChart(canvas)?.destroy();
+    new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Estudiantes',
+            data: values,
 
-  const labels = Object.keys(this.semesters);
-  const values = Object.values(this.semesters);
+            backgroundColor: labels.map((_, i) => colors[i % colors.length]),
 
-  const colors = [
-    '#2563eb', // azul
-    '#16a34a', // verde
-    '#f59e0b', // amarillo
-    '#ef4444', // rojo
-    '#8b5cf6', // morado
-    '#06b6d4', // cyan
-    '#f97316', // naranja
-    '#84cc16', // verde lima
-  ];
-
-  new Chart(canvas, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Estudiantes',
-          data: values,
-
-          backgroundColor: labels.map(
-            (_, i) => colors[i % colors.length]
-          ),
-
-          borderRadius: 6,
+            borderRadius: 6,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
         },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
         },
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-}
+    });
+  }
 
   get recentStudents() {
     return this.students.slice(0, 5);

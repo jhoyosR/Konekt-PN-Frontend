@@ -27,7 +27,7 @@ export class AdminUniversitiesComponent implements OnInit {
   ngOnInit(): void {
     this.loadUniversities();
   }
-
+//Metodo para cargar las universidades
   loadUniversities(): void {
     this.universityService.getUniversities(this.page).subscribe({
       next: (response: any) => {
@@ -49,7 +49,7 @@ export class AdminUniversitiesComponent implements OnInit {
       },
     });
   }
-
+//Metodos de paginacion
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;

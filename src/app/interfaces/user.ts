@@ -1,3 +1,4 @@
+//Interfaz de usuario
 export interface User {
   id: string;
   email: string;

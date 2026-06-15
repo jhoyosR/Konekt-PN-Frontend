@@ -62,7 +62,7 @@ export class CompanyRegisterComponent implements OnInit {
   ngOnInit(): void {
     this.loadIndustries();
   }
-
+  //Metodo para cargar las industrias
   private loadIndustries(): void {
     this.commonService.getConstants('industry-type').subscribe({
       next: (response) => {
@@ -73,6 +73,7 @@ export class CompanyRegisterComponent implements OnInit {
       },
     });
   }
+  //Metodo para validar que la contraseña y el confirmar contrasña sean iguales
   passwordMatchValidator(form: any) {
     const password = form.get('password')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
@@ -99,74 +100,77 @@ export class CompanyRegisterComponent implements OnInit {
 
     return null;
   }
+  //Metodo para registrar una empresa
+  Companyregister(): void {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
 
- Companyregister(): void {
-  if (this.registerForm.invalid) {
-    this.registerForm.markAllAsTouched();
-    return;
+    const data: CompanyRegisterRequest = {
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+      name: this.registerForm.value.name,
+      description: this.registerForm.value.description,
+      nit: this.registerForm.value.nit,
+      industry: this.registerForm.value.industry,
+      address: this.registerForm.value.address,
+      phone: this.registerForm.value.phone,
+    };
+
+    Swal.fire({
+      title: 'Registrando empresa...',
+      text: 'Por favor espera',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      customClass: {
+        popup: 'konekt-swal',
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    this.companyRegisterService.register(data).subscribe({
+      next: (response) => {
+        console.log('Register success', response);
+
+        Swal.fire({
+          icon: 'success',
+          title: '¡Registro exitoso!',
+          text: 'La empresa fue creada correctamente.',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#2563eb',
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigateByUrl('/');
+          }
+        });
+      },
+
+      error: (error) => {
+        console.error('Register error', error);
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text:
+            error?.error?.message ||
+            error?.message ||
+            'No se pudo registrar la empresa.',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#2563eb',
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
+      },
+    });
   }
-
-  const data: CompanyRegisterRequest = {
-    email: this.registerForm.value.email,
-    password: this.registerForm.value.password,
-    name: this.registerForm.value.name,
-    description: this.registerForm.value.description,
-    nit: this.registerForm.value.nit,
-    industry: this.registerForm.value.industry,
-    address: this.registerForm.value.address,
-    phone: this.registerForm.value.phone,
-  };
-
-  Swal.fire({
-    title: 'Registrando empresa...',
-    text: 'Por favor espera',
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    customClass: {
-      popup: 'konekt-swal',
-    },
-    didOpen: () => {
-      Swal.showLoading();
-    },
-  });
-
-  this.companyRegisterService.register(data).subscribe({
-    next: (response) => {
-      console.log('Register success', response);
-
-      Swal.fire({
-        icon: 'success',
-        title: '¡Registro exitoso!',
-        text: 'La empresa fue creada correctamente.',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#2563eb',
-        customClass: {
-          popup: 'konekt-swal',
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.router.navigateByUrl('/');
-        }
-      });
-    },
-
-    error: (error) => {
-      console.error('Register error', error);
-
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error?.error?.message || error?.message || 'No se pudo registrar la empresa.',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#2563eb',
-        customClass: {
-          popup: 'konekt-swal',
-        },
-      });
-    },
-  });
-}
-
+  //Checkbox para mostrar y ocultar las contraseñas
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
@@ -174,11 +178,12 @@ export class CompanyRegisterComponent implements OnInit {
   get f() {
     return this.registerForm.controls;
   }
-
+  //Metodo para volver al login (botón)
   goToLogin(): void {
     this.router.navigate(['/']);
   }
+  //Metodo para volver al panel de roles (botón)
   goToRoles(): void {
-  this.router.navigate(['/roles']);
-}
+    this.router.navigate(['/roles']);
+  }
 }

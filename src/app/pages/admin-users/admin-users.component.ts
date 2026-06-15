@@ -27,7 +27,7 @@ export class AdminUsersComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
   }
-
+  //Metodos para cargar los usuarios
   loadUsers(): void {
     this.userService.getUsers(this.page).subscribe({
       next: (response: any) => {
@@ -50,7 +50,7 @@ export class AdminUsersComponent implements OnInit {
       },
     });
   }
-
+  //Metodos para paginación
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;
@@ -72,6 +72,7 @@ export class AdminUsersComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
+  //Metodo para formartear fecha
   formatDate(date: string | Date): string {
     if (!date) return '';
 

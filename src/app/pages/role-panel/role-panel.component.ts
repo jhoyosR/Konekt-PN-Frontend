@@ -9,19 +9,20 @@ import { Router } from '@angular/router';
 })
 export class RolePanelComponent {
   constructor(private router: Router) {}
-
+//Metodo para ir al registro de estudiante
   goToStudentRegister() {
     this.router.navigate(['/register/student']);
   }
-
+//Metodo para ir al registro de empresa
   goToCompanyRegister() {
     this.router.navigate(['/register/company']);
   }
-
+//Metodo para ir al registro de universidad
   goToUniversityRegister() {
     this.router.navigate(['/register/university']);
   }
-    goToRoles(): void {
+  //Metodo para volver login
+    goToLogin(): void {
     this.router.navigate(['/']);
   }
 }

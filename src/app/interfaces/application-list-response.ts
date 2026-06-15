@@ -1,5 +1,5 @@
 import { ApplicationResponse } from "./application-response";
-
+//Interfaz de las paginación de las postulaciones
 export interface ApplicationListResponse {
   data: ApplicationResponse[];
   total: number;

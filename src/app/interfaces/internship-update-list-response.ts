@@ -1,5 +1,5 @@
 import { InternshipUpdateResponse } from "./internship-update-response";
-
+//Interfaz para la paginación de las actualizaciones de las prácticas
 export interface InternshipUpdateListResponse {
   data: InternshipUpdateResponse[];
   total: number;

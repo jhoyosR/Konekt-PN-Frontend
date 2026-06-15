@@ -6,20 +6,20 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { API_URL } from '../../global';
-import { Company } from '../interfaces/company'; // ajusta ruta si cambia
-
+//Interfaz para actualizar una empresa
 export interface UpdateCompanyRequest {
   password?: string;
   description?: string;
   industry?: string;
   address?: string;
   phone?: string;
-  profilePhoto?: string
+  profilePhoto?: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para las empresas
 export class CompanyService {
   private readonly endpoint = `${API_URL}/company`;
 
@@ -33,7 +33,7 @@ export class CompanyService {
       Authorization: `Bearer ${token}`,
     });
   }
-
+//Actualizar empresa
   updateCompany(id: number, data: UpdateCompanyRequest): Observable<any> {
     return this.http
       .patch(`${this.endpoint}/${id}`, data, {
@@ -50,32 +50,34 @@ export class CompanyService {
         }),
       );
   }
-getCompanies(page?: number, all = false): Observable<any> {
-  const params: any = {};
+  //Obtener empresas
+  getCompanies(page?: number, all = false): Observable<any> {
+    const params: any = {};
 
-  if (page) params.page = page;
+    if (page) params.page = page;
 
-  if (all) params.all = true;
+    if (all) params.all = true;
 
-  return this.http.get<any>(this.endpoint, {
-    headers: this.getHeaders(),
-    params,
-  });
-}
-getCompanyById(id: number): Observable<any> {
-  return this.http
-    .get(`${this.endpoint}/${id}`, {
+    return this.http.get<any>(this.endpoint, {
       headers: this.getHeaders(),
-    })
-    .pipe(
-      catchError((error) => {
-        console.error('[CompanyService] getCompanyById error:', error);
+      params,
+    });
+  }
+  //Obtener empresa por id
+  getCompanyById(id: number): Observable<any> {
+    return this.http
+      .get(`${this.endpoint}/${id}`, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        catchError((error) => {
+          console.error('[CompanyService] getCompanyById error:', error);
 
-        return throwError(() => ({
-          message: error?.error?.message || 'Error getting company',
-          error,
-        }));
-      }),
-    );
-}
+          return throwError(() => ({
+            message: error?.error?.message || 'Error getting company',
+            error,
+          }));
+        }),
+      );
+  }
 }

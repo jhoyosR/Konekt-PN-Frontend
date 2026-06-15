@@ -26,7 +26,7 @@ export class AdminPartnershipComponent implements OnInit {
   ngOnInit(): void {
     this.loadPartnerships();
   }
-
+  //Metodo para cargar los convenios
   loadPartnerships(): void {
     this.partnershipService.getPartnerships(this.page).subscribe({
       next: (response: any) => {
@@ -48,7 +48,7 @@ export class AdminPartnershipComponent implements OnInit {
       },
     });
   }
-
+  //Metodos de paginación
   nextPage(): void {
     if (!this.hasNext) return;
     this.page++;
@@ -70,7 +70,7 @@ export class AdminPartnershipComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
-
+  //Metodo para los colores de los estados en la tabla
   getStatusClass(status: string): string {
     switch (status) {
       case 'Activo':
