@@ -36,12 +36,13 @@ export class UniversityDashboardComponent implements OnInit {
   universityName = '';
   activeSemesters = 0;
 
+
   constructor(private studentService: StudentService) {}
 
   ngOnInit(): void {
     this.loadStudents();
   }
-  //Metodo para cargar los estudiantes
+//Metodo para cargar los estudiantes
   loadStudents(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
@@ -63,7 +64,7 @@ export class UniversityDashboardComponent implements OnInit {
       },
     });
   }
-  //Metodo para generar los semestres de los estudiantes
+//Metodo para generar los semestres de los estudiantes
   generateSemesterStats(): void {
     this.semesters = {};
 
@@ -75,7 +76,7 @@ export class UniversityDashboardComponent implements OnInit {
 
     this.activeSemesters = Object.keys(this.semesters).length;
   }
-  //Metodo para crear el gráfico
+//Metodo para crear el gráfico
   createChart(): void {
     const canvas = document.getElementById(
       'semesterChart',
@@ -89,14 +90,14 @@ export class UniversityDashboardComponent implements OnInit {
     const values = Object.values(this.semesters);
 
     const colors = [
-      '#2563eb',
-      '#16a34a',
-      '#f59e0b',
-      '#ef4444',
-      '#8b5cf6',
-      '#06b6d4',
-      '#f97316',
-      '#84cc16',
+      '#2563eb', 
+      '#16a34a', 
+      '#f59e0b', 
+      '#ef4444', 
+      '#8b5cf6', 
+      '#06b6d4', 
+      '#f97316', 
+      '#84cc16', 
     ];
 
     new Chart(canvas, {

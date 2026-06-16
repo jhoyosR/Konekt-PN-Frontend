@@ -436,3 +436,186 @@ textarea:focus {
   font-weight: 600;
   color: #64748b;
 }
+/* =========================
+   TABLET (hasta 768px)
+========================= */
+@media (max-width: 768px) {
+
+  .profile-page {
+    padding: 20px 15px 140px;
+    overflow-x: hidden;
+  }
+
+  .profile-container {
+    padding: 18px;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .profile-title {
+    font-size: 22px;
+  }
+
+  .profile-grid,
+  .edit-form,
+  .password-form,
+  .system-info {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .profile-item {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  .password-actions {
+    flex-direction: column;
+    align-items: stretch;
+    grid-column: 1 / -1;
+  }
+
+  .password-actions button {
+    width: 100%;
+  }
+
+  .floating-actions {
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    flex-direction: column;
+  }
+
+  .floating-actions button {
+    width: 100%;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .resume-wrapper {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .resume-actions {
+    flex-direction: column;
+  }
+
+  .btn-resume-upload,
+  .btn-save-resume {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* =========================
+   MÓVIL (hasta 576px)
+========================= */
+@media (max-width: 576px) {
+
+  .profile-page {
+    padding: 15px 10px 150px;
+    overflow-x: hidden;
+  }
+
+  .profile-container {
+    padding: 14px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .profile-title {
+    font-size: 20px;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  .value {
+    font-size: 14px;
+    word-break: break-word;
+  }
+
+  input,
+  textarea {
+    font-size: 14px;
+    padding: 10px 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .profile-item {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .btn-update,
+  .btn-password,
+  .btn-cancel {
+    font-size: 13px;
+    padding: 12px;
+    width: 100%;
+  }
+
+  .profile-avatar {
+    width: 90px;
+    height: 90px;
+  }
+
+  .avatar-edit-btn {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* =========================
+   MÓVIL PEQUEÑO (hasta 400px)
+========================= */
+@media (max-width: 400px) {
+
+  .profile-page {
+    overflow-x: hidden;
+  }
+
+  .profile-container {
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .profile-title {
+    font-size: 18px;
+  }
+
+  .floating-actions {
+    gap: 8px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .btn-update,
+  .btn-password,
+  .btn-cancel {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .resume-wrapper {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

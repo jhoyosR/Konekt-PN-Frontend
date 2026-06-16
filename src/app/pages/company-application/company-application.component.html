@@ -96,6 +96,18 @@
             <b>Comentario empresa: </b>
             <span>{{ a.companyComments }}</span>
           </div>
+          <div class="skills-section" *ngIf="a.student.skills.length">
+            <div class="skills-title">
+              <i class="fa-solid fa-lightbulb"></i>
+              <b>Habilidades</b>
+            </div>
+
+            <div class="skills-list">
+              <span class="skill-badge" *ngFor="let skill of a.student.skills">
+                {{ skill.name }}
+              </span>
+            </div>
+          </div>
 
           <div>
             <i class="fa-solid fa-calendar"></i>

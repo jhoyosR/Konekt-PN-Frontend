@@ -57,7 +57,7 @@ export class CompanyApplicationComponent implements OnInit {
             ...a,
             expanded: false,
           }));
-
+          console.log('applications', this.applications);
           this.total = response.total;
           this.page = response.page;
           this.pageCount = response.page_count;
@@ -65,11 +65,14 @@ export class CompanyApplicationComponent implements OnInit {
           this.hasPrev = response.has_prev;
         },
 
-        error: () => {
+        error: (err) => {
+          const message =
+            err?.error?.message || 'No se pudieron cargar las postulaciones';
+
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No se pudieron cargar las postulaciones',
+            text: message,
             confirmButtonColor: '#2563eb',
             customClass: { popup: 'konekt-swal' },
           });
@@ -383,13 +386,20 @@ export class CompanyApplicationComponent implements OnInit {
             confirmButtonColor: '#2563eb',
             customClass: { popup: 'konekt-swal' },
           });
+          this.loadApplications();
         },
 
-        error: () => {
+        error: (err: any) => {
+          const message =
+            err?.error?.message ||
+            err?.error?.error ||
+            err?.message ||
+            'No se pudo contratar al practicante';
+
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No se pudo gestionar la práctica',
+            text: message,
             confirmButtonColor: '#2563eb',
             customClass: { popup: 'konekt-swal' },
           });

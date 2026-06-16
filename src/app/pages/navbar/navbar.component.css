@@ -1,15 +1,24 @@
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 24px;
   background-color: #ffffff;
-  color: #0f172a;
-  font-family: "Segoe UI", sans-serif;
   border-bottom: 1px solid #e5e7eb;
+  font-family: "Segoe UI", sans-serif;
+
   position: sticky;
   top: 0;
   z-index: 9999;
+
+  overflow: visible;
+}
+
+/* LEFT */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .logo-img {
@@ -17,44 +26,43 @@
   object-fit: contain;
 }
 
+/* CENTER */
 .navbar-center {
   display: flex;
   gap: 18px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-link {
   color: #475569;
   text-decoration: none;
   font-weight: 500;
-  transition: 0.2s;
   padding: 6px 10px;
   border-radius: 6px;
+  transition: 0.2s;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
-  color: #0f172a;
   background-color: #f1f5f9;
+  color: #0f172a;
 }
 
 .nav-link.active {
   background-color: #f1f5f9;
-  border-radius: 6px;
   color: #0f172a;
 }
 
-.logout-btn {
-  background-color: #ef4444;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
+/* RIGHT */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
 }
 
-.logout-btn:hover {
-  background-color: #dc2626;
-}
 .user-menu {
   position: relative;
 }
@@ -63,29 +71,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
-
   border: none;
   background: transparent;
   cursor: pointer;
-
-  font-size: 24px;
-  color: black;
+  font-size: 22px;
+  color: #0f172a;
 }
 
-.user-btn:hover {
-  opacity: 0.85;
-}
-
+/* DROPDOWN */
 .dropdown-menu {
   position: absolute;
-  top: 45px;
+  top: calc(100% + 10px);
   right: 0;
+
   min-width: 180px;
   background: white;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  z-index: 99999;
 }
 
 .dropdown-item {
@@ -113,10 +117,80 @@
 .dropdown-item.logout:hover {
   background: #fef2f2;
 }
+
 .nav-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #2563eb;
+}
+
+/* =========================
+   TABLET
+   ========================= */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+
+  .navbar-center {
+    gap: 12px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 12px;
+  }
+
+  .logo-img {
+    height: 34px;
+  }
+
+  .navbar-center {
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 0 8px;
+  }
+
+  .navbar-center::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .user-btn {
+    font-size: 20px;
+  }
+}
+
+/* =========================
+   MOBILE PEQUEÑO
+   ========================= */
+@media (max-width: 480px) {
+  .logo-img {
+    height: 30px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    padding: 5px 6px;
+  }
+
+  .dropdown-menu {
+    min-width: 160px;
+    right: 0;
+  }
 }

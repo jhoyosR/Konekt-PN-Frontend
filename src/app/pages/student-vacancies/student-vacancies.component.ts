@@ -38,6 +38,7 @@ export class StudentVacanciesComponent implements OnInit {
   modalities: string[] = [];
   filtersForm!: FormGroup;
   currentFilters: any = {};
+  studentId!: number;
 
   constructor(
     private fb: FormBuilder,
@@ -50,11 +51,13 @@ export class StudentVacanciesComponent implements OnInit {
   ngOnInit(): void {
     this.initFiltersForm();
     this.loadCatalogs();
-    this.loadCompanies(); 
+    this.loadCompanies();
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    this.studentId = user?.profile?.id;
     this.loadVacancies();
   }
 
-//Metodo para inicializar los filtros que se esperan
+  //Metodo para inicializar los filtros que se esperan
   private initFiltersForm(): void {
     this.filtersForm = this.fb.group({
       title: [''],
@@ -62,11 +65,11 @@ export class StudentVacanciesComponent implements OnInit {
       modality: [null],
       industry: [null],
       salary: [null],
-      companyId: [null], 
+      companyId: [null],
     });
   }
 
-//Metodo para cargar las industrias y las modalidades
+  //Metodo para cargar las industrias y las modalidades
   private loadCatalogs(): void {
     this.commonService.getConstants('industry-type').subscribe({
       next: (res) => {
@@ -93,7 +96,7 @@ export class StudentVacanciesComponent implements OnInit {
       },
     });
   }
- //Metodo que captura y aplica los filtros 
+  //Metodo que captura y aplica los filtros
   applyFilters(): void {
     this.page = 1;
 
@@ -113,10 +116,10 @@ export class StudentVacanciesComponent implements OnInit {
 
   //Metodo que carga las vacantes
   loadVacancies(): void {
-    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const notAppliedByStudentId = user?.profile?.id;
-
     const f = this.currentFilters ?? {};
+
+    const studentId = this.studentId;
+    const notAppliedByStudentId = this.studentId;
 
     this.vacanciesService
       .getVacancies(
@@ -136,6 +139,16 @@ export class StudentVacanciesComponent implements OnInit {
             ...v,
             expanded: false,
           }));
+          console.log('this.vacancies', this.vacancies);
+          console.log('this.page', this.page);
+          console.log('notAppliedByStudentId', notAppliedByStudentId);
+          console.log('f.companyId,', f.companyId);
+          console.log('f.title', f.title);
+          console.log('f.location', f.location);
+          console.log('f.modality', f.modality);
+          console.log('f.salary', f.salary);
+          console.log('f.industry', f.industry);
+          console.log('studentId', studentId);
 
           this.total = response.total;
           this.page = response.page;
@@ -179,7 +192,7 @@ export class StudentVacanciesComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.pageCount }, (_, i) => i + 1);
   }
-//Metodo para aplicar una vacante (botón postularme)
+  //Metodo para aplicar una vacante (botón postularme)
   applyVacancy(vacancy: VacancieResponse): void {
     Swal.fire({
       title: '¿Postularte a esta vacante?',

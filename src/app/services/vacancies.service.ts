@@ -52,7 +52,8 @@ getVacancies(
   location?: string,
   modality?: string,
   salary?: number,
-  industry?: string
+  industry?: string,
+  studentId?: number
 ): Observable<VacancieListResponse> {
 
   let params = new HttpParams().set('page', page);
@@ -89,6 +90,11 @@ getVacancies(
     params = params.set('industry', industry);
   }
 
+ 
+  if (studentId !== undefined) {
+    params = params.set('studentId', studentId);
+  }
+
   return this.http
     .get<VacancieListResponse>(this.endpoint, {
       headers: this.getHeaders(),
@@ -104,6 +110,15 @@ getVacancies(
         }));
       }),
     );
+}
+//Obtener vacantes recomendadas con convenio activo
+getVacanciesByStudent(studentId: number): Observable<VacancieListResponse> {
+  const params = new HttpParams().set('studentId', studentId);
+
+  return this.http.get<VacancieListResponse>(this.endpoint, {
+    headers: this.getHeaders(),
+    params,
+  });
 }
 //Obtener vacante por id
   getVacancieById(id: number): Observable<VacancieResponse> {

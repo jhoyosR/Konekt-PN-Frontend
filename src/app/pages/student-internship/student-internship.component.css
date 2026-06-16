@@ -219,3 +219,130 @@ hr {
   font-size: 14px;
   font-weight: 500;
 }
+/* =========================
+   RESPONSIVE PRACTICAS
+   ========================= */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}
+
+/* Tablets pequeñas */
+@media (max-width: 768px) {
+  .page {
+    padding: 20px 14px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .card p {
+    font-size: 13px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .updates-section {
+    margin-top: 20px;
+  }
+
+  .update-card {
+    padding: 16px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .page {
+    padding: 16px 12px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .card h3,
+  .card h4 {
+    font-size: 15px;
+  }
+
+  .card p {
+    font-size: 12.5px;
+    flex-wrap: wrap;
+  }
+
+  .update-card {
+    padding: 14px;
+  }
+
+  .update-card h5 {
+    font-size: 14px;
+  }
+
+  .update-card p {
+    font-size: 13px;
+  }
+
+  .update-card small {
+    font-size: 11px;
+  }
+
+  /* pagination en columna */
+  .pagination-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pagination-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pagination-select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* Extra pequeño */
+@media (max-width: 360px) {
+  .card {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+}

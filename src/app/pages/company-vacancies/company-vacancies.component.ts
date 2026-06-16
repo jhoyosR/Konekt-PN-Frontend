@@ -12,6 +12,9 @@ import { VacancieRequest } from '../../interfaces/vacancie-request';
 import { VacancieResponse } from '../../interfaces/vacancie-response';
 import localeEsCo from '@angular/common/locales/es-CO';
 import { registerLocaleData } from '@angular/common';
+import { Router } from '@angular/router';
+import { SkillService } from '../../services/skill.service';
+import { SkillResponse } from '../../interfaces/skill-response';
 
 registerLocaleData(localeEsCo, 'es-CO');
 
@@ -35,6 +38,8 @@ export class CompanyVacanciesComponent implements OnInit {
   constructor(
     private vacanciesService: VacanciesService,
     private commonService: CommonService,
+    private router: Router,
+    private skillService: SkillService
   ) {}
 
   ngOnInit(): void {
@@ -587,4 +592,216 @@ export class CompanyVacanciesComponent implements OnInit {
       }
     });
   }
+  //Metodo para ver las habilidades creadas en esa vacante
+  viewSkills(vacancieId: number): void {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/dashboard/company/skills', vacancieId]),
+    );
+
+    window.open(url, '_blank');
+  }
+
+ addSkill(vacancieId: number): void {
+  this.skillService.getSkills().subscribe({
+    next: (response: SkillResponse[]) => {
+      Swal.fire({
+        title: `<span style="font-family:Segoe UI; font-weight:600;">Agregar habilidad</span>`,
+        width: '600px',
+        position: 'top',
+        showCloseButton: true,
+
+        customClass: {
+          popup: 'konekt-swal',
+        },
+
+        didOpen: () => {
+          const container = document.querySelector(
+            '.swal2-container',
+          ) as HTMLElement;
+
+          if (container) {
+            container.style.alignItems = 'flex-start';
+            container.style.paddingTop = '120px';
+          }
+
+          const popup = document.querySelector('.swal2-popup') as HTMLElement;
+
+          if (popup) {
+            popup.style.overflow = 'visible';
+          }
+        },
+
+        html: `
+        <style>
+          .swal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            font-family: Inter, sans-serif;
+            font-size: 14px;
+          }
+
+          .swal-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+          }
+
+          label {
+            font-weight: 600;
+            color: #111827;
+            text-align: center;
+          }
+
+          .required {
+            color: #ef4444;
+            margin-left: 3px;
+          }
+
+          .swal-field {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+            background: white;
+          }
+
+          .swal-field:focus {
+            outline: none;
+            border-color: #2563eb;
+          }
+
+          select.swal-field {
+            appearance: none;
+            text-align: center;
+            text-align-last: center;
+          }
+
+          .swal2-popup {
+            overflow: visible !important;
+          }
+
+          .swal2-container {
+            overflow-y: auto !important;
+          }
+        </style>
+
+        <div class="swal-form">
+          <div class="swal-group">
+            <label>
+              Habilidad
+              <span class="required">*</span>
+            </label>
+
+            <select
+              id="skillId"
+              class="swal-field"
+            >
+              <option value="" disabled selected>
+                Seleccione una habilidad
+              </option>
+
+              ${response
+                .map(
+                  (skill: SkillResponse) => `
+                    <option value="${skill.id}">
+                      ${skill.name}
+                    </option>
+                  `,
+                )
+                .join('')}
+            </select>
+          </div>
+        </div>
+      `,
+
+        showCancelButton: true,
+        confirmButtonText: 'Agregar',
+        cancelButtonText: 'Cancelar',
+
+        confirmButtonColor: '#2563eb',
+        cancelButtonColor: '#ef4444',
+
+        preConfirm: () => {
+          const popup = Swal.getPopup();
+
+          const skillId = Number(
+            (popup?.querySelector('#skillId') as HTMLSelectElement)?.value,
+          );
+
+          if (!skillId) {
+            Swal.showValidationMessage('Debe seleccionar una habilidad');
+            return false;
+          }
+
+          return {
+            skillId,
+          };
+        },
+      }).then((result) => {
+        if (!result.isConfirmed || !result.value) {
+          return;
+        }
+
+        Swal.fire({
+          title: 'Registrando habilidad...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
+
+        this.skillService
+          .createSkillVacancie(vacancieId, result.value.skillId)
+          .subscribe({
+            next: () => {
+              Swal.close();
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Habilidad agregada',
+                confirmButtonColor: '#2563eb',
+                customClass: {
+                  popup: 'konekt-swal',
+                },
+              });
+
+              this.loadVacancies();
+            },
+
+            error: () => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo agregar la habilidad, verifica si ya existe',
+                confirmButtonColor: '#2563eb',
+                customClass: {
+                  popup: 'konekt-swal',
+                },
+              });
+            },
+          });
+      });
+    },
+
+    error: () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudieron cargar las habilidades',
+        confirmButtonColor: '#2563eb',
+        customClass: {
+          popup: 'konekt-swal',
+        },
+      });
+    },
+  });
+}
 }

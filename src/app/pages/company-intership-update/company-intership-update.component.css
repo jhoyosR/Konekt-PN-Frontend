@@ -276,3 +276,157 @@ hr {
 .status-badge.closed {
   color: #ef4444;
 }
+/* =========================
+   TABLET (hasta 768px)
+========================= */
+@media (max-width: 768px) {
+
+  .updates-page {
+    padding: 25px 15px;
+    overflow-x: hidden;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .docs-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .actions {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btn-update,
+  .btn-delete {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .pagination-container {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pagination-select {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .pagination-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+
+/* =========================
+   MÓVIL (hasta 576px)
+========================= */
+@media (max-width: 576px) {
+
+  .updates-page {
+    padding: 18px 12px;
+    overflow-x: hidden;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+
+  .docs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doc-item {
+    padding: 10px;
+  }
+
+  .btn-view-doc {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .btn-update,
+  .btn-delete {
+    width: 100%;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+
+/* =========================
+   MÓVIL PEQUEÑO (hasta 400px)
+========================= */
+@media (max-width: 400px) {
+
+  .updates-page {
+    padding: 15px 10px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .doc-title {
+    font-size: 13px;
+  }
+
+  .btn-view-doc {
+    font-size: 11px;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    font-size: 13px;
+  }
+}

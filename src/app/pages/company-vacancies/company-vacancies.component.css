@@ -117,6 +117,34 @@
 .btn-delete:hover {
   background: #dc2626;
 }
+.btn-skill,
+.btn-view-skills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.btn-skill {
+  background: #16a34a;
+  color: white;
+}
+
+.btn-skill:hover {
+  background: #15803d;
+}
+
+.btn-view-skills {
+  background: #7c3aed;
+  color: white;
+}
+
+.btn-view-skills:hover {
+  background: #6d28d9;
+}
 
 .empty {
   text-align: center;
@@ -194,4 +222,154 @@
   color: #64748b;
   font-size: 14px;
   font-weight: 500;
+}
+/* =========================
+   TABLET (hasta 768px)
+========================= */
+@media (max-width: 768px) {
+
+  .vacancies-page {
+    padding: 25px 15px;
+    overflow-x: hidden;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  /* FIX botón create (evita cortes en móvil) */
+  .btn-create {
+    position: static;
+    width: 100%;
+    margin: 10px 0 20px 0;
+    justify-content: center;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 12px;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .actions {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .pagination-container {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pagination-select {
+    min-width: 160px;
+  }
+}
+
+/* =========================
+   MÓVIL (hasta 576px)
+========================= */
+@media (max-width: 576px) {
+
+  .vacancies-page {
+    padding: 18px 12px;
+    overflow-x: hidden;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    font-size: 12px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .actions button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-update,
+  .btn-delete,
+  .btn-skill,
+  .btn-view-skills {
+    width: 100%;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MÓVIL PEQUEÑO (hasta 400px)
+========================= */
+@media (max-width: 400px) {
+
+  .vacancies-page {
+    padding: 15px 10px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .btn-create {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .actions button {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .pagination-info {
+    font-size: 12px;
+  }
 }

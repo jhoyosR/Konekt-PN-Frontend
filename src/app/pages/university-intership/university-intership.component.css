@@ -357,3 +357,169 @@
     padding: 20px;
   }
 }
+/* =========================
+   TABLET (hasta 768px)
+========================= */
+@media (max-width: 768px) {
+
+  .page {
+    padding: 20px 15px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 14px;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .card h3 {
+    font-size: 18px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .info-item {
+    font-size: 13px;
+    padding: 12px 14px;
+    min-width: 0;
+  }
+
+  .documents-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .docs-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .doc-item {
+    padding: 16px;
+  }
+
+  .updates-container h4 {
+    font-size: 16px;
+  }
+
+  .update-card {
+    padding: 16px;
+  }
+
+  .pagination-container {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pagination-select {
+    min-width: 160px;
+  }
+}
+
+/* =========================
+   MÓVIL (hasta 576px)
+========================= */
+@media (max-width: 576px) {
+
+  .page {
+    padding: 15px 12px;
+    overflow-x: hidden;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+    flex-wrap: wrap;
+  }
+
+  .info-item {
+    font-size: 12px;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+  }
+
+  .documents-card {
+    padding: 14px;
+  }
+
+  .doc-item {
+    padding: 14px;
+  }
+
+  .btn-view-doc {
+    width: 100%;
+    text-align: center;
+  }
+
+  .update-card {
+    padding: 14px;
+  }
+
+  .update-card h5 {
+    font-size: 15px;
+    flex-wrap: wrap;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MÓVIL PEQUEÑO (hasta 400px)
+========================= */
+@media (max-width: 400px) {
+
+  .page {
+    padding: 12px 10px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .info-item {
+    font-size: 11px;
+  }
+
+  .doc-item {
+    padding: 12px;
+  }
+
+  .update-card {
+    padding: 12px;
+  }
+
+  .btn-view-doc {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}

@@ -102,6 +102,46 @@ export class SkillService {
         }),
       );
   }
+  // Crear una habilidad para una vacante
+  createSkillVacancie(vacancieId: number, skillId: number): Observable<any> {
+    return this.http
+      .post(
+        `${API_URL}/vacancie/${vacancieId}/skills`,
+        {
+          skillId,
+        },
+        {
+          headers: this.getHeaders(),
+        },
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('[SkillService] createSkillVacancie error:', error);
+
+          return throwError(() => ({
+            message: 'Error creating vacancie skill',
+            error,
+          }));
+        }),
+      );
+  }
+  //Eliminar una habilidad para una vacante
+  deleteSkillVacancie(vacancieId: number, skillId:number): Observable<void> {
+  return this.http
+    .delete<void>(`${API_URL}/vacancie/${vacancieId}/skills/${skillId}`, {
+      headers: this.getHeaders(),
+    })
+    .pipe(
+      catchError((error) => {
+        console.error('[SkillService] deleteSkillVacancie error:', error);
+
+        return throwError(() => ({
+          message: 'Error deleting vacancie skill',
+          error,
+        }));
+      }),
+    );
+}
   //Eliminar habilidad
   deleteSkill(id: number): Observable<void> {
     return this.http

@@ -329,6 +329,7 @@ ng-select {
   align-items: center;
   gap: 8px;
   transition: 0.2s;
+  margin-bottom: 20px;
 }
 
 .btn-filter:hover {
@@ -351,4 +352,157 @@ ng-select {
 .filters-header i {
   color: #2563eb;
   font-size: 16px;
+}
+/* =========================
+   TABLET (<= 1024px)
+   ========================= */
+@media (max-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vacancy-title {
+    font-size: 18px;
+  }
+}
+
+/* =========================
+   TABLET PEQUEÑA / MOBILE GRANDE (<= 768px)
+   ========================= */
+@media (max-width: 768px) {
+  .vacancies-page {
+    padding: 20px 12px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  /* CARDS */
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  /* HEADER VACANTE */
+  .vacancy-header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .vacancy-avatar {
+    width: 42px;
+    height: 42px;
+  }
+
+  .vacancy-title {
+    font-size: 17px;
+  }
+
+  .company-name {
+    font-size: 12px;
+  }
+
+  /* INFO GRID */
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* FILTROS */
+  .filters-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .filters-container {
+    padding: 12px;
+  }
+
+  .filters-actions {
+    justify-content: center;
+  }
+
+  .btn-filter {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* PAGINATION */
+  .pagination-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MOBILE PEQUEÑO (<= 480px)
+   ========================= */
+@media (max-width: 480px) {
+  .vacancies-page {
+    padding: 14px 10px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  /* CARD MÁS COMPACTO */
+  .card {
+    padding: 12px;
+  }
+
+  .vacancy-title {
+    font-size: 16px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+
+  .vacancy-avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .btn-apply {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  /* FILTROS */
+  .filter-input {
+    font-size: 12px;
+    height: 36px;
+  }
+
+  .filters-header {
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   FIX IMPORTANTE NG-SELECT
+   ========================= */
+ng-select {
+  width: 100% !important;
+}
+
+ng-select .ng-select-container {
+  min-height: 38px;
 }

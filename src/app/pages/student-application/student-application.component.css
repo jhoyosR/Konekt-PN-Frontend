@@ -144,3 +144,120 @@
 .pagination-select:focus {
   border-color: #2563eb;
 }
+/* =========================
+   RESPONSIVE APPLICATIONS
+   ========================= */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .applications-page {
+    padding: 30px 16px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+}
+
+/* Tablets pequeñas */
+@media (max-width: 768px) {
+  .applications-page {
+    padding: 24px 14px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .btn-delete {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .applications-page {
+    padding: 18px 12px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+
+  .info-grid {
+    font-size: 12px;
+  }
+
+  .btn-delete {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  /* pagination mejor en móvil */
+  .pagination-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pagination-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pagination-select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* Extra pequeño */
+@media (max-width: 360px) {
+  .card {
+    padding: 12px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+}

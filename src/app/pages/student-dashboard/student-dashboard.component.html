@@ -1,16 +1,16 @@
 <app-navbar [role]="'student'"></app-navbar>
 
 <div class="dashboard-container">
+  <!-- WELCOME -->
   <div class="welcome-card">
     <h1>{{ studentName }}</h1>
-
     <p>Bienvenido a tu panel administrativo de estudiante.</p>
   </div>
 
+  <!-- STATS -->
   <div class="stats-grid">
     <div class="stat-card">
       <i class="fa-solid fa-file-lines"></i>
-
       <div>
         <h2>{{ totalApplications }}</h2>
         <span>Total postulaciones</span>
@@ -19,7 +19,6 @@
 
     <div class="stat-card">
       <i class="fa-solid fa-circle-check"></i>
-
       <div>
         <h2>{{ activeApplications }}</h2>
         <span>Activas</span>
@@ -28,7 +27,6 @@
 
     <div class="stat-card">
       <i class="fa-solid fa-pause-circle"></i>
-
       <div>
         <h2>{{ suspendedApplications }}</h2>
         <span>Suspendidas</span>
@@ -37,7 +35,6 @@
 
     <div class="stat-card">
       <i class="fa-solid fa-circle-xmark"></i>
-
       <div>
         <h2>{{ cancelledApplications }}</h2>
         <span>Cerradas</span>
@@ -45,33 +42,64 @@
     </div>
   </div>
 
+  <!-- CONTENT -->
   <div class="content-grid">
+    <!-- CHART -->
     <div class="chart-card">
       <h3>Distribución de postulaciones</h3>
 
       <div class="chart-container">
-        <canvas id="applicationsChart"></canvas>
+        <canvas *ngIf="hasApplications" id="applicationsChart"></canvas>
+
+        <div *ngIf="!hasApplications" class="empty-state">
+          Aún no tienes postulaciones
+        </div>
       </div>
     </div>
 
+    <!-- POSTULACIONES -->
     <div class="students-card">
       <h3>Últimas postulaciones</h3>
 
+      <div *ngIf="recentApplications.length === 0" class="empty-state">
+        No hay postulaciones registradas
+      </div>
+
       <div *ngFor="let app of recentApplications" class="student-item">
         <div>
-          <strong>
-            {{ app.vacancie.title }}
-          </strong>
-
-          <p>
-            {{ app.vacancie.company.name }}
-          </p>
+          <strong>{{ app?.vacancie?.title }}</strong>
+          <p>{{ app?.vacancie?.company?.name }}</p>
         </div>
 
-        <span>
-          {{ app.status }}
-        </span>
+        <span>{{ app?.status }}</span>
       </div>
     </div>
   </div>
+
+
+  <!-- VACANTES RECOMENDADAS -->
+<div class="vacancies-card">
+  <h3>Vacantes que te pueden interesar</h3>
+
+  <div *ngIf="!vacancies || vacancies.length === 0" class="empty-state">
+    No hay vacantes disponibles
+  </div>
+
+  <div class="vacancy-item" *ngFor="let v of vacancies">
+    <div class="vacancy-info">
+      <strong>{{ v?.title }}</strong>
+
+      <p>{{ v.company.name }}</p>
+
+      <!-- SKILLS -->
+      <div class="skills-container" *ngIf="v.skills.length">
+        <span class="skill-chip" *ngFor="let s of v.skills">
+          {{ s?.name }}
+        </span>
+      </div>
+    </div>
+
+    <span class="location">{{ v?.location }}</span>
+  </div>
+</div>
 </div>

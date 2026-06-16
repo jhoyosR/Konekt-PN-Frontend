@@ -134,3 +134,139 @@
 .back-icon {
   font-size: 17px;
 }
+/* ========================= */
+/*        RESPONSIVE        */
+/* ========================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .roles-container {
+    gap: 1.5rem;
+  }
+
+  .role-item {
+    width: 320px;
+  }
+
+  .role-card {
+    height: 460px;
+  }
+
+  .card-image {
+    height: 260px;
+  }
+}
+
+/* Tablets pequeñas */
+@media (max-width: 768px) {
+  .role-page {
+    padding: 2rem 1rem;
+  }
+
+  .role-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .role-header p {
+    font-size: 0.95rem;
+  }
+
+  .roles-container {
+    gap: 1.2rem;
+  }
+
+  .role-item {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .role-card {
+    height: auto;
+  }
+
+  .card-image {
+    height: 240px;
+  }
+
+  .card-content h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+  .role-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .role-header {
+    margin-bottom: 2rem;
+  }
+
+  .role-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .role-header p {
+    font-size: 0.9rem;
+  }
+
+  .roles-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .role-item {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .role-card {
+    height: auto;
+  }
+
+  .card-image {
+    height: 200px;
+  }
+
+  .card-content {
+    padding: 1rem;
+  }
+
+  .card-content h2 {
+    font-size: 1.2rem;
+  }
+
+  /* Mejora hover en mobile (evita problemas táctiles) */
+  .card-hover-info {
+    opacity: 1;
+    position: relative;
+    background: #0f172a;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+
+  .role-card:hover {
+    transform: none;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 360px) {
+  .role-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .role-item {
+    max-width: 100%;
+  }
+
+  .card-image {
+    height: 180px;
+  }
+
+  .card-content h2 {
+    font-size: 1.1rem;
+  }
+}
