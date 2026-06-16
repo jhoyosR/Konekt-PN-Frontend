@@ -272,10 +272,11 @@ export class CompanyPartnershipComponent implements OnInit {
 
           this.loadPartnerships();
         },
-        error: () => {
+        error: (error) => {
           Swal.fire({
             icon: 'error',
             title: 'Error creando convenio',
+            text: error?.error?.error?.message || 'Ocurrió un error inesperado',
             confirmButtonColor: '#2563eb',
             customClass: { popup: 'konekt-swal' },
           });

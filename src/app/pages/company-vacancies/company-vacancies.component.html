@@ -2,6 +2,7 @@
 
 <div class="vacancies-page">
   <div class="list-container">
+
     <div class="header">
       <h2 class="page-title">Vacantes</h2>
 
@@ -16,77 +17,124 @@
     </div>
 
     <div class="cards-grid">
-      <div *ngFor="let v of vacancies" class="card">
-        <!-- TITLE -->
-        <h3>{{ v.title }}</h3>
 
-        <!-- DESCRIPTION -->
+      <div *ngFor="let v of vacancies" class="card">
+
+        <!-- HEADER -->
+        <div class="card-header">
+          <h3>{{ v.title }}</h3>
+
+      
+        </div>
+
+        <!-- DESCRIPCIÓN SIEMPRE VISIBLE -->
         <p class="description">{{ v.description }}</p>
 
-        <div class="info-grid">
-          <div>
-            <i class="fa-solid fa-coins"></i>
-            <b>Salario:</b>
-            {{ v.salary | currency: "COP" : "symbol" : "1.0-0" : "es-CO" }}
+        <!-- TOGGLE -->
+        <div class="toggle-section">
+          <button
+            class="toggle-btn"
+            (click)="v.expanded = !v.expanded"
+          >
+            <i
+              class="fa-solid"
+              [ngClass]="v.expanded ? 'fa-chevron-up' : 'fa-chevron-down'"
+            ></i>
+          </button>
+        </div>
+
+        <!-- DETALLES OCULTOS -->
+        <div class="extra-info" *ngIf="v.expanded">
+
+          <div class="info-grid">
+
+            <div>
+              <i class="fa-solid fa-coins"></i>
+              <b>Salario:</b>
+              {{ v.salary | currency:'COP':'symbol':'1.0-0':'es-CO' }}
+            </div>
+
+            <div>
+              <i class="fa-solid fa-location-dot"></i>
+              <b>Ubicación:</b> {{ v.location }}
+            </div>
+
+            <div>
+              <i class="fa-solid fa-circle-info"></i>
+              <b>Estado:</b>
+
+              <span
+                [ngClass]="{
+                  'status-activa': v.status === 'Activa',
+                  'status-suspendida': v.status === 'Suspendida',
+                  'status-cerrada': v.status === 'Cerrada'
+                }"
+              >
+                {{ v.status }}
+              </span>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-briefcase"></i>
+              <b>Modalidad:</b> {{ v.modality }}
+            </div>
+
+            <div style="grid-column: 1 / -1">
+              <i class="fa-solid fa-list-check"></i>
+              <b>Requisitos:</b>
+              {{ v.requirements }}
+            </div>
+
           </div>
 
-          <div>
-            <i class="fa-solid fa-location-dot"></i>
-            <b>Ubicación:</b> {{ v.location }}
-          </div>
+          <!-- ACCIONES -->
+          <div class="actions">
 
-          <div>
-            <i class="fa-solid fa-circle-info"></i>
-            <b>Estado:</b>
-            <span
-              [ngClass]="{
-                'status-activa': v.status === 'Activa',
-                'status-suspendida': v.status === 'Suspendida',
-                'status-cerrada': v.status === 'Cerrada',
-              }"
+            <button
+              class="btn-skill"
+              (click)="addSkill(v.id!)"
             >
-              {{ v.status }}
-            </span>
+              <i class="fa-solid fa-plus-circle"></i>
+              Añadir habilidad
+            </button>
+
+            <button
+              class="btn-view-skills"
+              (click)="viewSkills(v.id!)"
+            >
+              <i class="fa-solid fa-list-check"></i>
+              Ver habilidades
+            </button>
+
+            <button
+              class="btn-update"
+              (click)="openUpdateVacancyModal(v)"
+            >
+              <i class="fa-solid fa-pen-to-square"></i>
+              Actualizar
+            </button>
+
+            <button
+              class="btn-delete"
+              (click)="deleteVacancie(v.id!)"
+            >
+              <i class="fa-solid fa-trash"></i>
+              Eliminar
+            </button>
+
           </div>
 
-          <div>
-            <i class="fa-solid fa-briefcase"></i>
-            <b>Modalidad:</b> {{ v.modality }}
-          </div>
-
-          <div>
-            <i class="fa-solid fa-list-check"></i>
-            <b>Requisitos:</b> {{ v.requirements }}
-          </div>
         </div>
 
-        <!-- ACTIONS -->
-        <div class="actions">
-          <button class="btn-skill" (click)="addSkill(v.id!)">
-            <i class="fa-solid fa-plus-circle"></i>
-            Añadir habilidad
-          </button>
-
-          <button class="btn-view-skills" (click)="viewSkills(v.id!)">
-            <i class="fa-solid fa-list-check"></i>
-            Ver habilidades
-          </button>
-
-          <button class="btn-update" (click)="openUpdateVacancyModal(v)">
-            <i class="fa-solid fa-pen-to-square"></i>
-            Actualizar
-          </button>
-
-          <button class="btn-delete" (click)="deleteVacancie(v.id!)">
-            <i class="fa-solid fa-trash"></i>
-            Eliminar
-          </button>
-        </div>
       </div>
+
     </div>
 
     <!-- PAGINACIÓN -->
-    <div class="pagination-container" *ngIf="pageCount > 1">
+    <div
+      class="pagination-container"
+      *ngIf="pageCount > 1"
+    >
       <button
         class="pagination-btn"
         (click)="previousPage()"
@@ -101,15 +149,23 @@
         [value]="page"
         (change)="goToPage(+$any($event.target).value)"
       >
-        <option *ngFor="let p of pages" [value]="p">
+        <option
+          *ngFor="let p of pages"
+          [value]="p"
+        >
           Página {{ p }} de {{ pageCount }}
         </option>
       </select>
 
-      <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      <button
+        class="pagination-btn"
+        (click)="nextPage()"
+        [disabled]="!hasNext"
+      >
         Siguiente
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
+
   </div>
 </div>

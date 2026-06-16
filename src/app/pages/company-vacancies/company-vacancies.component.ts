@@ -17,7 +17,9 @@ import { SkillService } from '../../services/skill.service';
 import { SkillResponse } from '../../interfaces/skill-response';
 
 registerLocaleData(localeEsCo, 'es-CO');
-
+type VacancieUI = VacancieResponse & {
+  expanded: boolean;
+};
 @Component({
   selector: 'app-company-vacancies',
   standalone: true,
@@ -26,7 +28,7 @@ registerLocaleData(localeEsCo, 'es-CO');
   styleUrl: './company-vacancies.component.css',
 })
 export class CompanyVacanciesComponent implements OnInit {
-  vacancies: VacancieResponse[] = [];
+vacancies: VacancieUI[] = [];
   statuses: any[] = [];
   modalities: any[] = [];
   page = 1;
@@ -67,7 +69,10 @@ export class CompanyVacanciesComponent implements OnInit {
       .getVacancies(this.page, undefined, undefined, companyId)
       .subscribe({
         next: (response) => {
-          this.vacancies = response.data;
+         this.vacancies = response.data.map((v: VacancieResponse) => ({
+  ...v,
+  expanded: false,
+}));
 
           this.total = response.total;
           this.page = response.page;

@@ -224,6 +224,63 @@
   font-weight: 500;
 }
 /* =========================
+   TOGGLE
+========================= */
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.toggle-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btn-toggle,
+.toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #6b7280;
+  transition: 0.2s ease;
+}
+
+.btn-toggle:hover,
+.toggle-btn:hover {
+  color: #2563eb;
+  transform: scale(1.1);
+}
+
+/* =========================
+   CONTENIDO DESPLEGABLE
+========================= */
+
+.extra-info {
+  margin-top: 12px;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+/* =========================
+   ANIMACIÓN
+========================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* =========================
    TABLET (hasta 768px)
 ========================= */
 @media (max-width: 768px) {
@@ -372,4 +429,5 @@
   .pagination-info {
     font-size: 12px;
   }
+  
 }

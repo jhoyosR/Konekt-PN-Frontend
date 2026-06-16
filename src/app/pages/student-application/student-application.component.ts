@@ -5,7 +5,9 @@ import Swal from 'sweetalert2';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { ApplicationsService } from '../../services/applications.service';
 import { ApplicationResponse } from '../../interfaces/application-response';
-
+type ApplicationUI = ApplicationResponse & {
+  expanded: boolean;
+};
 @Component({
   selector: 'app-student-applications',
   standalone: true,
@@ -14,7 +16,7 @@ import { ApplicationResponse } from '../../interfaces/application-response';
   styleUrl: './student-application.component.css',
 })
 export class StudentApplicationComponent implements OnInit {
-  applications: ApplicationResponse[] = [];
+  applications: ApplicationUI[] = [];
   page = 1;
   total = 0;
   pageCount = 0;
@@ -36,9 +38,10 @@ export class StudentApplicationComponent implements OnInit {
       .getApplications(this.page, undefined, studentId)
       .subscribe({
         next: (response) => {
-          this.applications = response.data;
-
-          console.log('Applications response:', response);
+          this.applications = response.data.map((a: ApplicationResponse) => ({
+            ...a,
+            expanded: false,
+          }));
 
           this.total = response.total;
           this.page = response.page;
