@@ -1,0 +1,125 @@
+<app-navbar [role]="'student'"></app-navbar>
+
+<div class="applications-page">
+  <h2 class="page-title">Mis postulaciones</h2>
+
+  <div *ngIf="applications.length === 0" class="empty">
+    No tienes postulaciones aún
+  </div>
+
+  <div class="cards-grid">
+    <div *ngFor="let a of applications" class="card">
+      <!-- TÍTULO -->
+      <h3>{{ a.vacancie.title }}</h3>
+
+      <!-- DESCRIPCIÓN SIEMPRE VISIBLE -->
+      <p class="description">
+        {{ a.vacancie.description }}
+      </p>
+
+      <!-- BOTÓN DESPLEGAR -->
+      <div class="toggle-section">
+        <button class="toggle-btn" (click)="a.expanded = !a.expanded">
+          <i
+            class="fa-solid"
+            [ngClass]="a.expanded ? 'fa-chevron-up' : 'fa-chevron-down'"
+          ></i>
+        </button>
+      </div>
+
+      <!-- INFORMACIÓN OCULTA -->
+      <div class="extra-info" *ngIf="a.expanded">
+        <div class="info-grid">
+          <div>
+            <i class="fa-solid fa-building"></i>
+            <b>Empresa:</b>
+            {{ a.vacancie.company.name }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-coins"></i>
+            <b>Salario:</b>
+            {{
+              a.vacancie.salary | currency: "COP" : "symbol" : "1.0-0" : "es-CO"
+            }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-location-dot"></i>
+            <b>Ubicación:</b>
+            {{ a.vacancie.location }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-list-check"></i>
+            <b>Requisitos:</b>
+            {{ a.vacancie.requirements }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-circle-info"></i>
+            <b>Estado postulación:</b>
+
+            <span
+              [ngClass]="{
+                'status-activa': a.status === 'Activa',
+                'status-suspendida': a.status === 'Suspendida',
+                'status-cancelada': a.status === 'Cerrada',
+              }"
+            >
+              {{ a.status }}
+            </span>
+          </div>
+
+          <div *ngIf="a.companyComments">
+            <i class="fa-solid fa-comment"></i>
+            <b>Comentario empresa:</b>
+            {{ a.companyComments }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-calendar"></i>
+            <b>Fecha:</b>
+            {{ a.createdAt | date: "mediumDate" : "UTC" : "es-CO" }}
+            {{ a.createdAt | date: "shortTime" : "UTC" : "es-CO" }}
+          </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="actions">
+          <button class="btn-delete" (click)="deleteApplication(a.id)">
+            <i class="fa-solid fa-trash"></i>
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGINACIÓN -->
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      <i class="fa-solid fa-chevron-left"></i>
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+</div>

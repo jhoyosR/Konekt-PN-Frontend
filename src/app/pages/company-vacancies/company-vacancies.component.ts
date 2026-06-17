@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -12,9 +12,14 @@ import { VacancieRequest } from '../../interfaces/vacancie-request';
 import { VacancieResponse } from '../../interfaces/vacancie-response';
 import localeEsCo from '@angular/common/locales/es-CO';
 import { registerLocaleData } from '@angular/common';
+import { Router } from '@angular/router';
+import { SkillService } from '../../services/skill.service';
+import { SkillResponse } from '../../interfaces/skill-response';
 
 registerLocaleData(localeEsCo, 'es-CO');
-
+type VacancieUI = VacancieResponse & {
+  expanded: boolean;
+};
 @Component({
   selector: 'app-company-vacancies',
   standalone: true,
@@ -23,23 +28,27 @@ registerLocaleData(localeEsCo, 'es-CO');
   styleUrl: './company-vacancies.component.css',
 })
 export class CompanyVacanciesComponent implements OnInit {
-  vacancies: VacancieResponse[] = [];
-
-  // catálogos
+vacancies: VacancieUI[] = [];
   statuses: any[] = [];
   modalities: any[] = [];
+  page = 1;
+  total = 0;
+  pageCount = 0;
+  hasNext = false;
+  hasPrev = false;
 
   constructor(
-    private fb: FormBuilder,
     private vacanciesService: VacanciesService,
     private commonService: CommonService,
+    private router: Router,
+    private skillService: SkillService
   ) {}
 
   ngOnInit(): void {
     this.loadVacancies();
     this.loadCatalogs();
   }
-
+  //Metodo para cargar los estados de una vacante
   loadCatalogs(): void {
     this.commonService.getConstants('vacancie-status').subscribe({
       next: (res) => (this.statuses = res),
@@ -51,29 +60,65 @@ export class CompanyVacanciesComponent implements OnInit {
       error: (err) => console.error('Error modality', err),
     });
   }
-
+  //Metodo para listar las vacantes
   loadVacancies(): void {
-    this.vacanciesService.getVacancies().subscribe({
-      next: (data: any) => {
-        this.vacancies = Array.isArray(data)
-          ? data
-          : data?.vacancies || data?.data || [];
-      },
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    const companyId = user?.profile?.id;
 
-      error: () => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudieron cargar las vacantes',
-          confirmButtonColor: '#2563eb',
-          customClass: {
-            popup: 'konekt-swal',
-          },
-        });
-      },
-    });
+    this.vacanciesService
+      .getVacancies(this.page, undefined, undefined, companyId)
+      .subscribe({
+        next: (response) => {
+         this.vacancies = response.data.map((v: VacancieResponse) => ({
+  ...v,
+  expanded: false,
+}));
+
+          this.total = response.total;
+          this.page = response.page;
+          this.pageCount = response.page_count;
+          this.hasNext = response.has_next;
+          this.hasPrev = response.has_prev;
+        },
+
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron cargar las vacantes',
+            confirmButtonColor: '#2563eb',
+            customClass: {
+              popup: 'konekt-swal',
+            },
+          });
+        },
+      });
+  }
+  //Metodos de paginación
+  nextPage(): void {
+    if (!this.hasNext) return;
+
+    this.page++;
+    this.loadVacancies();
   }
 
+  previousPage(): void {
+    if (!this.hasPrev) return;
+
+    this.page--;
+    this.loadVacancies();
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.pageCount) return;
+
+    this.page = page;
+    this.loadVacancies();
+  }
+  get pages(): number[] {
+    return Array.from({ length: this.pageCount }, (_, i) => i + 1);
+  }
+  //Modal para crear una vacante (botón crear vacante)
   openCreateVacancyModal(): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Crear vacante</span>`,
@@ -83,116 +128,116 @@ export class CompanyVacanciesComponent implements OnInit {
         popup: 'konekt-swal',
       },
       html: `
-      <style>
-        .swal-form {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 14px;
-          font-family: Inter, sans-serif;
-          font-size: 14px;
-        }
+        <style>
+          .swal-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            font-family: Inter, sans-serif;
+            font-size: 14px;
+          }
 
-        .swal-field {
-          width: 100%;
-          box-sizing: border-box;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          padding: 8px 10px;
-          font-size: 14px;
-          text-align: center;
-        }
+          .swal-field {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 14px;
+            text-align: center;
+          }
 
-        .swal-field:focus {
-          outline: none;
-          border-color: #2563eb;
-        }
+          .swal-field:focus {
+            outline: none;
+            border-color: #2563eb;
+          }
 
-        .swal-group {
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-        }
+          .swal-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+          }
 
-        
-        label {
-          font-weight: 600;
-          color: #111827;
-          text-align: center;
-        }
+          
+          label {
+            font-weight: 600;
+            color: #111827;
+            text-align: center;
+          }
 
-        .required {
-          color: #ef4444;
-          margin-left: 3px;
-        }
+          .required {
+            color: #ef4444;
+            margin-left: 3px;
+          }
 
-        select.swal-field {
-          appearance: none;
-          background-color: white;
-          text-align: center;
-          text-align-last: center;
-        }
+          select.swal-field {
+            appearance: none;
+            background-color: white;
+            text-align: center;
+            text-align-last: center;
+          }
 
-        textarea.swal-field {
-          text-align: center;
-        }
-      </style>
+          textarea.swal-field {
+            text-align: center;
+          }
+        </style>
 
-      <div class="swal-form">
+        <div class="swal-form">
 
-        <!-- TITLE -->
-        <div class="swal-group">
-          <label>Título<span class="required">*</span></label>
-          <input id="title" class="swal-field" />
+          <!-- TITLE -->
+          <div class="swal-group">
+            <label>Título<span class="required">*</span></label>
+            <input id="title" class="swal-field" />
+          </div>
+
+          <!-- SALARY -->
+          <div class="swal-group">
+            <label>Salario<span class="required">*</span></label>
+            <input id="salary" type="number" class="swal-field" />
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div class="swal-group">
+            <label>Descripción<span class="required">*</span></label>
+            <textarea id="description" class="swal-field"></textarea>
+          </div>
+
+          <!-- REQUIREMENTS -->
+          <div class="swal-group">
+            <label>Requisitos<span class="required">*</span></label>
+            <textarea id="requirements" class="swal-field"></textarea>
+          </div>
+
+          <!-- LOCATION -->
+          <div class="swal-group">
+            <label>Ubicación<span class="required">*</span></label>
+            <input id="location" class="swal-field" />
+          </div>
+
+          <!-- MODALITY -->
+          <div class="swal-group">
+            <label>Modalidad<span class="required">*</span></label>
+            <select id="modality" class="swal-field">
+              <option value="" disabled selected>Seleccione modalidad</option>
+              ${this.modalities
+                .map((m) => `<option value="${m}">${m}</option>`)
+                .join('')}
+            </select>
+          </div>
+
+          <!-- STATUS -->
+          <div class="swal-group" style="grid-column: span 2;">
+            <label>Estado<span class="required">*</span></label>
+            <select id="status" class="swal-field">
+              <option value="" disabled selected>Seleccione estado</option>
+              ${this.statuses
+                .map((s) => `<option value="${s}">${s}</option>`)
+                .join('')}
+            </select>
+          </div>
+
         </div>
-
-        <!-- SALARY -->
-        <div class="swal-group">
-          <label>Salario<span class="required">*</span></label>
-          <input id="salary" type="number" class="swal-field" />
-        </div>
-
-        <!-- DESCRIPTION -->
-        <div class="swal-group">
-          <label>Descripción<span class="required">*</span></label>
-          <textarea id="description" class="swal-field"></textarea>
-        </div>
-
-        <!-- REQUIREMENTS -->
-        <div class="swal-group">
-          <label>Requisitos<span class="required">*</span></label>
-          <textarea id="requirements" class="swal-field"></textarea>
-        </div>
-
-        <!-- LOCATION -->
-        <div class="swal-group">
-          <label>Ubicación<span class="required">*</span></label>
-          <input id="location" class="swal-field" />
-        </div>
-
-        <!-- MODALITY -->
-        <div class="swal-group">
-          <label>Modalidad<span class="required">*</span></label>
-          <select id="modality" class="swal-field">
-            <option value="" disabled selected>Seleccione modalidad</option>
-            ${this.modalities
-              .map((m) => `<option value="${m}">${m}</option>`)
-              .join('')}
-          </select>
-        </div>
-
-        <!-- STATUS -->
-        <div class="swal-group" style="grid-column: span 2;">
-          <label>Estado<span class="required">*</span></label>
-          <select id="status" class="swal-field">
-            <option value="" disabled selected>Seleccione estado</option>
-            ${this.statuses
-              .map((s) => `<option value="${s}">${s}</option>`)
-              .join('')}
-          </select>
-        </div>
-
-      </div>
-    `,
+      `,
 
       showCancelButton: true,
       confirmButtonText: 'Crear',
@@ -253,7 +298,6 @@ export class CompanyVacanciesComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed && result.value) {
-        // 🔥 LOADING
         Swal.fire({
           title: 'Creando vacante...',
           allowOutsideClick: false,
@@ -294,6 +338,7 @@ export class CompanyVacanciesComponent implements OnInit {
       }
     });
   }
+  //Modal para actualizar una vacante (botón actualizar)
   openUpdateVacancyModal(vacancy: VacancieResponse): void {
     Swal.fire({
       title: `<span style="font-family:Segoe UI; font-weight:600;">Actualizar vacante</span>`,
@@ -303,118 +348,118 @@ export class CompanyVacanciesComponent implements OnInit {
         popup: 'konekt-swal',
       },
       html: `
-      <style>
-        .swal-form {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 14px;
-          font-family: Inter, sans-serif;
-          font-size: 14px;
-        }
+        <style>
+          .swal-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            font-family: Inter, sans-serif;
+            font-size: 14px;
+          }
 
-        .swal-field {
-          width: 100%;
-          box-sizing: border-box;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          padding: 8px 10px;
-          font-size: 14px;
-          text-align: center;
-        }
+          .swal-field {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 14px;
+            text-align: center;
+          }
 
-        .swal-field:focus {
-          outline: none;
-          border-color: #2563eb;
-        }
+          .swal-field:focus {
+            outline: none;
+            border-color: #2563eb;
+          }
 
-        .swal-group {
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-        }
+          .swal-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+          }
 
-        label {
-          font-weight: 600;
-          color: #111827;
-          text-align: center;
-        }
+          label {
+            font-weight: 600;
+            color: #111827;
+            text-align: center;
+          }
 
-        .required {
-          color: #ef4444;
-          margin-left: 3px;
-        }
+          .required {
+            color: #ef4444;
+            margin-left: 3px;
+          }
 
-        select.swal-field {
-          appearance: none;
-          background-color: white;
-          text-align: center;
-          text-align-last: center;
-        }
+          select.swal-field {
+            appearance: none;
+            background-color: white;
+            text-align: center;
+            text-align-last: center;
+          }
 
-        textarea.swal-field {
-          text-align: center;
-        }
-      </style>
+          textarea.swal-field {
+            text-align: center;
+          }
+        </style>
 
-      <div class="swal-form">
+        <div class="swal-form">
 
-        <div class="swal-group">
-          <label>Título*</label>
-          <input id="title" class="swal-field" value="${vacancy.title}" />
+          <div class="swal-group">
+            <label>Título*</label>
+            <input id="title" class="swal-field" value="${vacancy.title}" />
+          </div>
+
+          <div class="swal-group">
+            <label>Salario*</label>
+            <input id="salary" type="number" class="swal-field" value="${vacancy.salary}" />
+          </div>
+
+          <div class="swal-group">
+            <label>Descripción*</label>
+            <textarea id="description" class="swal-field">${vacancy.description}</textarea>
+          </div>
+
+          <div class="swal-group">
+            <label>Requisitos*</label>
+            <textarea id="requirements" class="swal-field">${vacancy.requirements}</textarea>
+          </div>
+
+          <div class="swal-group">
+            <label>Ubicación*</label>
+            <input id="location" class="swal-field" value="${vacancy.location}" />
+          </div>
+
+          <div class="swal-group">
+            <label>Modalidad*</label>
+            <select id="modality" class="swal-field">
+              <option value="" disabled>Seleccione modalidad</option>
+              ${this.modalities
+                .map(
+                  (m) =>
+                    `<option value="${m}" ${
+                      vacancy.modality === m ? 'selected' : ''
+                    }>${m}</option>`,
+                )
+                .join('')}
+            </select>
+          </div>
+
+          <div class="swal-group" style="grid-column: span 2;">
+            <label>Estado*</label>
+            <select id="status" class="swal-field">
+              <option value="" disabled>Seleccione estado</option>
+              ${this.statuses
+                .map(
+                  (s) =>
+                    `<option value="${s}" ${
+                      vacancy.status === s ? 'selected' : ''
+                    }>${s}</option>`,
+                )
+                .join('')}
+            </select>
+          </div>
+
         </div>
-
-        <div class="swal-group">
-          <label>Salario*</label>
-          <input id="salary" type="number" class="swal-field" value="${vacancy.salary}" />
-        </div>
-
-        <div class="swal-group">
-          <label>Descripción*</label>
-          <textarea id="description" class="swal-field">${vacancy.description}</textarea>
-        </div>
-
-        <div class="swal-group">
-          <label>Requisitos*</label>
-          <textarea id="requirements" class="swal-field">${vacancy.requirements}</textarea>
-        </div>
-
-        <div class="swal-group">
-          <label>Ubicación*</label>
-          <input id="location" class="swal-field" value="${vacancy.location}" />
-        </div>
-
-        <div class="swal-group">
-          <label>Modalidad*</label>
-          <select id="modality" class="swal-field">
-            <option value="" disabled>Seleccione modalidad</option>
-            ${this.modalities
-              .map(
-                (m) =>
-                  `<option value="${m}" ${
-                    vacancy.modality === m ? 'selected' : ''
-                  }>${m}</option>`,
-              )
-              .join('')}
-          </select>
-        </div>
-
-        <div class="swal-group" style="grid-column: span 2;">
-          <label>Estado*</label>
-          <select id="status" class="swal-field">
-            <option value="" disabled>Seleccione estado</option>
-            ${this.statuses
-              .map(
-                (s) =>
-                  `<option value="${s}" ${
-                    vacancy.status === s ? 'selected' : ''
-                  }>${s}</option>`,
-              )
-              .join('')}
-          </select>
-        </div>
-
-      </div>
-    `,
+      `,
 
       showCancelButton: true,
       confirmButtonText: 'Actualizar',
@@ -497,7 +542,7 @@ export class CompanyVacanciesComponent implements OnInit {
       }
     });
   }
-
+  //Modal para eliminar una vacante (botón eliminar)
   deleteVacancie(id: number): void {
     Swal.fire({
       title: '¿Eliminar vacante?',
@@ -552,4 +597,216 @@ export class CompanyVacanciesComponent implements OnInit {
       }
     });
   }
+  //Metodo para ver las habilidades creadas en esa vacante
+  viewSkills(vacancieId: number): void {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/dashboard/company/skills', vacancieId]),
+    );
+
+    window.open(url, '_blank');
+  }
+
+ addSkill(vacancieId: number): void {
+  this.skillService.getSkills().subscribe({
+    next: (response: SkillResponse[]) => {
+      Swal.fire({
+        title: `<span style="font-family:Segoe UI; font-weight:600;">Agregar habilidad</span>`,
+        width: '600px',
+        position: 'top',
+        showCloseButton: true,
+
+        customClass: {
+          popup: 'konekt-swal',
+        },
+
+        didOpen: () => {
+          const container = document.querySelector(
+            '.swal2-container',
+          ) as HTMLElement;
+
+          if (container) {
+            container.style.alignItems = 'flex-start';
+            container.style.paddingTop = '120px';
+          }
+
+          const popup = document.querySelector('.swal2-popup') as HTMLElement;
+
+          if (popup) {
+            popup.style.overflow = 'visible';
+          }
+        },
+
+        html: `
+        <style>
+          .swal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            font-family: Inter, sans-serif;
+            font-size: 14px;
+          }
+
+          .swal-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+          }
+
+          label {
+            font-weight: 600;
+            color: #111827;
+            text-align: center;
+          }
+
+          .required {
+            color: #ef4444;
+            margin-left: 3px;
+          }
+
+          .swal-field {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+            background: white;
+          }
+
+          .swal-field:focus {
+            outline: none;
+            border-color: #2563eb;
+          }
+
+          select.swal-field {
+            appearance: none;
+            text-align: center;
+            text-align-last: center;
+          }
+
+          .swal2-popup {
+            overflow: visible !important;
+          }
+
+          .swal2-container {
+            overflow-y: auto !important;
+          }
+        </style>
+
+        <div class="swal-form">
+          <div class="swal-group">
+            <label>
+              Habilidad
+              <span class="required">*</span>
+            </label>
+
+            <select
+              id="skillId"
+              class="swal-field"
+            >
+              <option value="" disabled selected>
+                Seleccione una habilidad
+              </option>
+
+              ${response
+                .map(
+                  (skill: SkillResponse) => `
+                    <option value="${skill.id}">
+                      ${skill.name}
+                    </option>
+                  `,
+                )
+                .join('')}
+            </select>
+          </div>
+        </div>
+      `,
+
+        showCancelButton: true,
+        confirmButtonText: 'Agregar',
+        cancelButtonText: 'Cancelar',
+
+        confirmButtonColor: '#2563eb',
+        cancelButtonColor: '#ef4444',
+
+        preConfirm: () => {
+          const popup = Swal.getPopup();
+
+          const skillId = Number(
+            (popup?.querySelector('#skillId') as HTMLSelectElement)?.value,
+          );
+
+          if (!skillId) {
+            Swal.showValidationMessage('Debe seleccionar una habilidad');
+            return false;
+          }
+
+          return {
+            skillId,
+          };
+        },
+      }).then((result) => {
+        if (!result.isConfirmed || !result.value) {
+          return;
+        }
+
+        Swal.fire({
+          title: 'Registrando habilidad...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          customClass: {
+            popup: 'konekt-swal',
+          },
+        });
+
+        this.skillService
+          .createSkillVacancie(vacancieId, result.value.skillId)
+          .subscribe({
+            next: () => {
+              Swal.close();
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Habilidad agregada',
+                confirmButtonColor: '#2563eb',
+                customClass: {
+                  popup: 'konekt-swal',
+                },
+              });
+
+              this.loadVacancies();
+            },
+
+            error: () => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo agregar la habilidad, verifica si ya existe',
+                confirmButtonColor: '#2563eb',
+                customClass: {
+                  popup: 'konekt-swal',
+                },
+              });
+            },
+          });
+      });
+    },
+
+    error: () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudieron cargar las habilidades',
+        confirmButtonColor: '#2563eb',
+        customClass: {
+          popup: 'konekt-swal',
+        },
+      });
+    },
+  });
+}
 }

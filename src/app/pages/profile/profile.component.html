@@ -1,0 +1,337 @@
+<app-navbar *ngIf="user?.role" [role]="user.role"></app-navbar>
+
+<div class="profile-page">
+  <div class="profile-container">
+    <h2 class="profile-title">Mi Perfil</h2>
+    <!-- PROFILE PHOTO -->
+    <div class="profile-avatar-wrapper">
+      <div class="profile-avatar">
+        <ng-container
+          *ngIf="
+            profileImagePreview ||
+              profile.profilePhotoUrl ||
+              profile.profilePhoto;
+            else noAvatar
+          "
+        >
+          <img
+            [src]="profileImagePreview || getProfilePhoto()"
+            alt="Profile photo"
+          />
+        </ng-container>
+
+        <ng-template #noAvatar>
+          <div class="avatar-placeholder">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </ng-template>
+
+        <button class="avatar-edit-btn" (click)="fileInput.click()">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+      </div>
+
+      <input
+        type="file"
+        hidden
+        #fileInput
+        accept="image/*"
+        (change)="onFileSelected($event)"
+      />
+
+      @if (selectedFile) {
+        <button class="btn-save-photo" (click)="updateProfilePhoto()">
+          <i class="fa-solid fa-upload"></i>
+          Guardar foto
+        </button>
+      }
+    </div>
+    <!-- DATOS GENERALES -->
+    <div class="profile-grid">
+      <div class="profile-item full-width">
+        <span class="label">Correo electrónico</span>
+        <span class="value">{{ user.email }}</span>
+      </div>
+
+      @if (user.role === "student") {
+        <div class="profile-item">
+          <span class="label">Nombre completo</span>
+          <span class="value">{{ profile.fullName }}</span>
+        </div>
+
+        <div class="profile-item">
+          <span class="label">Documento</span>
+          <span class="value">{{ profile.documentNumber }}</span>
+        </div>
+
+        <div class="profile-item full-width">
+          <span class="label">Universidad</span>
+          <span class="value">{{ profile.universityName || "-" }}</span>
+        </div>
+      }
+
+      @if (user.role === "company") {
+        <div class="profile-item">
+          <span class="label">Nombre</span>
+          <span class="value">{{ profile.name }}</span>
+        </div>
+
+        <div class="profile-item">
+          <span class="label">NIT</span>
+          <span class="value">{{ profile.nit }}</span>
+        </div>
+      }
+
+      @if (user.role === "university") {
+        <div class="profile-item">
+          <span class="label">Nombre</span>
+          <span class="value">{{ profile.name }}</span>
+        </div>
+
+        <div class="profile-item">
+          <span class="label">NIT</span>
+          <span class="value">{{ profile.nit }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- FORMULARIO PERFIL -->
+    <form class="edit-form" [formGroup]="editForm">
+      <!-- =========================
+       STUDENT
+  ========================== -->
+      @if (user.role === "student") {
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" formControlName="phone" />
+        </div>
+
+        <div class="form-group">
+          <label>Carrera</label>
+          <ng-select
+            [items]="careers"
+            bindLabel=""
+            bindValue=""
+            placeholder="Seleccione una carrera"
+            formControlName="career"
+          ></ng-select>
+        </div>
+
+        <div class="form-group">
+          <label>Semestre</label>
+          <input type="number" formControlName="semester" />
+        </div>
+
+        <!-- HOJA DE VIDA -->
+        <div class="form-group">
+          <div class="resume-wrapper">
+            <div class="resume-header">
+              <span class="label">Hoja de vida</span>
+
+              @if (profile.resumeUrl) {
+                <a
+                  class="resume-link-badge"
+                  [href]="profile.resumeUrl"
+                  target="_blank"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                  Ver actual
+                </a>
+              }
+            </div>
+
+            <input
+              type="file"
+              hidden
+              #resumeInput
+              accept=".pdf,.doc,.docx"
+              (change)="onResumeSelected($event)"
+            />
+
+            <div class="resume-actions">
+              <button
+                type="button"
+                class="btn-resume-upload"
+                (click)="resumeInput.click()"
+              >
+                <i class="fa-solid fa-file-arrow-up"></i>
+                Subir archivo
+              </button>
+
+              @if (selectedResume) {
+                <button
+                  type="button"
+                  class="btn-save-resume"
+                  (click)="updateResume()"
+                >
+                  <i class="fa-solid fa-check"></i>
+                  Guardar
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <label>Acerca de mí</label>
+          <textarea rows="4" formControlName="about"></textarea>
+        </div>
+      }
+
+      <!-- =========================
+       COMPANY
+  ========================== -->
+      @if (user.role === "company") {
+        <div class="form-group">
+          <label>Industria</label>
+          <ng-select
+            [items]="industries"
+            bindLabel=""
+            bindValue=""
+            placeholder="Seleccione una industria"
+            formControlName="industry"
+          ></ng-select>
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" formControlName="phone" />
+        </div>
+
+        <div class="form-group full-width">
+          <label>Dirección</label>
+          <input type="text" formControlName="address" />
+        </div>
+
+        <div class="form-group full-width">
+          <label>Descripción</label>
+          <textarea rows="4" formControlName="description"></textarea>
+        </div>
+      }
+
+      <!-- =========================
+       UNIVERSITY
+  ========================== -->
+      @if (user.role === "university") {
+        <!-- SOLO EDITABLES -->
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" formControlName="phone" />
+        </div>
+
+        <div class="form-group">
+          <label>Dirección</label>
+          <input type="text" formControlName="address" />
+        </div>
+      }
+    </form>
+
+    <!-- FORMULARIO CONTRASEÑA -->
+    @if (showPasswordForm) {
+      <form class="password-form" [formGroup]="passwordForm">
+        <div class="form-group full-width">
+          <label>Nueva contraseña</label>
+
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+          />
+
+          @if (p["password"].touched && p["password"].invalid) {
+            <small class="error-message">
+              La contraseña debe tener mínimo 8 caracteres, una mayúscula, una
+              minúscula, un número y un carácter especial.
+            </small>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label>Confirmar contraseña</label>
+
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+          />
+
+          <!-- UN SOLO CHECKBOX (arreglado implícitamente en TS si quieres luego) -->
+          <div class="show-password">
+            <input
+              type="checkbox"
+              [checked]="showPassword"
+              (change)="togglePassword()"
+            />
+            <label>Mostrar contraseña</label>
+          </div>
+
+          @if (
+            passwordForm.hasError("passwordMismatch") &&
+            p["confirmPassword"].touched
+          ) {
+            <small class="error-message"> Las contraseñas no coinciden. </small>
+          }
+        </div>
+
+        <div class="password-actions">
+          <button
+            type="button"
+            class="btn-password"
+            (click)="changePassword()"
+            [disabled]="passwordForm.invalid"
+          >
+            <i class="fa-solid fa-key"></i>
+            Guardar contraseña
+          </button>
+
+          <button
+            type="button"
+            class="btn-cancel"
+            (click)="cancelPasswordChange()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    }
+
+    @if (profile.createdAt || profile.updatedAt) {
+      <div class="profile-grid system-info">
+        @if (profile.createdAt) {
+          <div class="profile-item">
+            <span class="label">Fecha de creación</span>
+            <span class="value">
+              {{ profile.createdAt | date: "dd/MM/yyyy" }}
+            </span>
+          </div>
+        }
+
+        @if (profile.updatedAt) {
+          <div class="profile-item">
+            <span class="label">Última actualización</span>
+            <span class="value">
+              {{ profile.updatedAt | date: "dd/MM/yyyy" }}
+            </span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- BOTONES -->
+  @if (user.role !== "super-admin") {
+    <div class="floating-actions">
+      <button class="btn-password" (click)="togglePasswordForm()">
+        <i class="fa-solid fa-key"></i>
+        Cambiar contraseña
+      </button>
+
+      <button
+        class="btn-update"
+        (click)="updateProfile()"
+        [disabled]="editForm.invalid"
+      >
+        <i class="fa-solid fa-floppy-disk"></i>
+        Guardar cambios
+      </button>
+    </div>
+  }
+</div>

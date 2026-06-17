@@ -62,7 +62,7 @@ export class CompanyRegisterComponent implements OnInit {
   ngOnInit(): void {
     this.loadIndustries();
   }
-
+  //Metodo para cargar las industrias
   private loadIndustries(): void {
     this.commonService.getConstants('industry-type').subscribe({
       next: (response) => {
@@ -73,6 +73,7 @@ export class CompanyRegisterComponent implements OnInit {
       },
     });
   }
+  //Metodo para validar que la contraseña y el confirmar contrasña sean iguales
   passwordMatchValidator(form: any) {
     const password = form.get('password')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
@@ -99,7 +100,7 @@ export class CompanyRegisterComponent implements OnInit {
 
     return null;
   }
-
+  //Metodo para registrar una empresa
   Companyregister(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
@@ -138,13 +139,15 @@ export class CompanyRegisterComponent implements OnInit {
           icon: 'success',
           title: '¡Registro exitoso!',
           text: 'La empresa fue creada correctamente.',
-          confirmButtonText: 'Continuar',
+          confirmButtonText: 'Aceptar',
           confirmButtonColor: '#2563eb',
           customClass: {
             popup: 'konekt-swal',
           },
-        }).then(() => {
-          this.router.navigate(['/login']);
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigateByUrl('/');
+          }
         });
       },
 
@@ -154,7 +157,10 @@ export class CompanyRegisterComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: error?.message || 'No se pudo registrar la empresa.',
+          text:
+            error?.error?.message ||
+            error?.message ||
+            'No se pudo registrar la empresa.',
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#2563eb',
           customClass: {
@@ -164,7 +170,7 @@ export class CompanyRegisterComponent implements OnInit {
       },
     });
   }
-
+  //Checkbox para mostrar y ocultar las contraseñas
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
@@ -172,8 +178,12 @@ export class CompanyRegisterComponent implements OnInit {
   get f() {
     return this.registerForm.controls;
   }
-
+  //Metodo para volver al login (botón)
   goToLogin(): void {
     this.router.navigate(['/']);
+  }
+  //Metodo para volver al panel de roles (botón)
+  goToRoles(): void {
+    this.router.navigate(['/roles']);
   }
 }

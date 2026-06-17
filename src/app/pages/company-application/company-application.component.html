@@ -1,0 +1,171 @@
+<app-navbar [role]="'company'"></app-navbar>
+
+<div class="applications-page">
+  <h2 class="page-title">Postulaciones recibidas</h2>
+
+  <div *ngIf="applications.length === 0" class="empty">
+    No hay postulaciones aún
+  </div>
+
+  <div class="cards-grid">
+    <div *ngFor="let a of applications" class="card">
+      <!-- =======================
+           HEADER ESTUDIANTE
+      ======================= -->
+      <div class="student-header">
+        <div class="student-avatar">
+          <img
+            *ngIf="a.student.profilePhotoUrl; else noPhoto"
+            [src]="a.student.profilePhotoUrl"
+            alt="student photo"
+          />
+
+          <ng-template #noPhoto>
+            <div class="avatar-placeholder">
+              <i class="fa-solid fa-user"></i>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="student-info">
+          <h3>{{ a.student.fullName }}</h3>
+
+          <p>
+            <i class="fa-solid fa-graduation-cap"></i>
+            {{ a.student.career }}
+          </p>
+        </div>
+
+        <!-- VER FOTO -->
+        <button
+          class="view-photo-btn"
+          *ngIf="a.student.profilePhotoUrl"
+          (click)="openPhoto(a.student.profilePhotoUrl)"
+        >
+          <i class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+
+      <!-- =======================
+           VACANTE
+      ======================= -->
+      <h3 class="vacancy-title">{{ a.vacancie.title }}</h3>
+
+      <p class="description">
+        {{ a.vacancie.description }}
+      </p>
+
+      <!-- =======================
+           TOGGLE (FLECHA)
+      ======================= -->
+      <div class="toggle-section">
+        <button class="toggle-btn" (click)="a.expanded = !a.expanded">
+          <i
+            class="fa-solid"
+            [ngClass]="a.expanded ? 'fa-chevron-up' : 'fa-chevron-down'"
+          ></i>
+        </button>
+      </div>
+
+      <!-- =======================
+           EXPANDIBLE
+      ======================= -->
+      <div class="extra-info" *ngIf="a.expanded">
+        <div class="info-grid">
+          <div>
+            <i class="fa-solid fa-building"></i>
+            <b>Universidad:</b> {{ a.student.university.name }}
+          </div>
+
+          <div>
+            <i class="fa-solid fa-circle-info"></i>
+            <b>Estado:</b>
+
+            <span
+              [ngClass]="{
+                'status-activa': a.status === 'Activa',
+                'status-suspendida': a.status === 'Suspendida',
+                'status-cancelada': a.status === 'Cerrada',
+              }"
+            >
+              {{ a.status }}
+            </span>
+          </div>
+          <div class="comment" *ngIf="a.companyComments">
+            <i class="fa-solid fa-comment"></i>
+            <b>Comentario empresa: </b>
+            <span>{{ a.companyComments }}</span>
+          </div>
+          <div class="skills-section" *ngIf="a.student.skills.length">
+            <div class="skills-title">
+              <i class="fa-solid fa-lightbulb"></i>
+              <b>Habilidades</b>
+            </div>
+
+            <div class="skills-list">
+              <span class="skill-badge" *ngFor="let skill of a.student.skills">
+                {{ skill.name }}
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <i class="fa-solid fa-calendar"></i>
+            <b>Fecha:</b>
+            {{ a.createdAt | date: "mediumDate" : "UTC" : "es-CO" }}
+          </div>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="actions">
+          <button class="btn-update" (click)="updateApplication(a)">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Actualizar
+          </button>
+
+          <button class="btn-manage" (click)="managePractice(a.id)">
+            <i class="fa-solid fa-briefcase"></i>
+            Contratar
+          </button>
+
+          <!-- NUEVO BOTÓN -->
+          <button
+            class="btn-cv"
+            *ngIf="a.student.resume"
+            (click)="a.student.resumeUrl && openResume(a.student.resumeUrl)"
+          >
+            <i class="fa-solid fa-file-lines"></i>
+            Ver hoja de vida
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div class="pagination-container" *ngIf="pageCount > 1">
+      <button
+        class="pagination-btn"
+        (click)="previousPage()"
+        [disabled]="!hasPrev"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+        Anterior
+      </button>
+
+      <select
+        class="pagination-select"
+        [value]="page"
+        (change)="goToPage(+$any($event.target).value)"
+      >
+        <option *ngFor="let p of pages" [value]="p">
+          Página {{ p }} de {{ pageCount }}
+        </option>
+      </select>
+
+      <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+        Siguiente
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

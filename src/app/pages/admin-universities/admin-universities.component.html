@@ -1,0 +1,60 @@
+<app-navbar [role]="'super-admin'"></app-navbar>
+
+<div class="universities-page">
+  <h2 class="page-title">Gestión de universidades</h2>
+
+  <div class="table-container">
+    <table class="universities-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>NIT</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let u of universities">
+          <td>{{ u.name }}</td>
+          <td>{{ u.user.email }}</td>
+
+          <td>{{ u.nit }}</td>
+
+          <td>{{ u.address }}</td>
+
+          <td>{{ u.phone }}</td>
+        </tr>
+
+        <tr *ngIf="universities.length === 0">
+          <td colspan="5" class="empty">No hay universidades disponibles</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+    </button>
+  </div>
+</div>

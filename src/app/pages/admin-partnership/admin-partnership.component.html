@@ -1,0 +1,64 @@
+<app-navbar [role]="'super-admin'"></app-navbar>
+
+<div class="partnerships-page">
+  <h2 class="page-title">Gestión de convenios</h2>
+
+  <div class="table-container">
+    <table class="partnerships-table">
+      <thead>
+        <tr>
+          <th>Universidad</th>
+          <th>Comentario</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of partnerships">
+          <td>{{ p.university.name }}</td>
+
+          <td>{{ p.comment }}</td>
+
+          <td>
+            <span class="status" [ngClass]="getStatusClass(p.status)">
+              {{ p.status }}
+            </span>
+          </td>
+
+          <td>
+            {{ p.createdAt | date: "mediumDate" }}
+          </td>
+        </tr>
+
+        <tr *ngIf="partnerships.length === 0">
+          <td colspan="5" class="empty">No hay alianzas registradas</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+    </button>
+  </div>
+</div>

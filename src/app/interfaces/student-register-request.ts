@@ -1,3 +1,4 @@
+//Interfaz para crear un estudiante
 export interface StudentRegisterRequest {
   email: string;
   password: string;

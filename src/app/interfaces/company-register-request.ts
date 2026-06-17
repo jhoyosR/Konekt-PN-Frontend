@@ -1,3 +1,4 @@
+//Interfaz para registrar/crear una empresa
 export interface CompanyRegisterRequest {
   email: string;
   password: string;

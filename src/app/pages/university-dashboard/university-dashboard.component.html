@@ -1,1 +1,57 @@
-<p>university-dashboard works!</p>
+<app-navbar [role]="'university'"></app-navbar>
+
+<div class="dashboard-container">
+  <div class="welcome-card">
+    <div>
+      <h1>{{ universityName }}</h1>
+      <p>Bienvenido al panel administrativo de tu universidad.</p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <i class="fa-solid fa-user-graduate"></i>
+
+      <div>
+        <h2>{{ totalStudents }}</h2>
+        <span>Estudiantes registrados</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-book"></i>
+
+      <div>
+        <h2>{{ activeSemesters }}</h2>
+        <span>Semestres activos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="chart-card">
+      <h3>Distribución estudiantes por semestre</h3>
+
+      <canvas id="semesterChart"></canvas>
+    </div>
+
+    <div class="students-card">
+      <h3>Últimos estudiantes</h3>
+
+      <div class="student-item" *ngFor="let student of recentStudents">
+        <div>
+          <strong>
+            {{ student.fullName }}
+          </strong>
+
+          <p>
+            {{ student.career }}
+          </p>
+        </div>
+
+        <span> Sem. {{ student.semester }} </span>
+      </div>
+    </div>
+  </div>
+  
+</div>

@@ -1,6 +1,93 @@
 <app-navbar [role]="'company'"></app-navbar>
-<div class="dashboard-container">
-  <h1>Dashboard Empresa</h1>
 
-  <p>Bienvenido al panel de empresa</p>
+<div class="dashboard-container">
+  <div class="welcome-card">
+    <h1>{{ companyName }}</h1>
+    <p>Bienvenido al panel administrativo de tu empresa.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <i class="fa-solid fa-users"></i>
+      <div>
+        <h2>{{ totalApplications }}</h2>
+        <span>Total postulaciones</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-circle-check"></i>
+      <div>
+        <h2>{{ activeApplications }}</h2>
+        <span>Activas</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-pause-circle"></i>
+      <div>
+        <h2>{{ suspendedApplications }}</h2>
+        <span>Suspendidas</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="fa-solid fa-circle-xmark"></i>
+      <div>
+        <h2>{{ cancelledApplications }}</h2>
+        <span>Canceladas</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="chart-card">
+      <h3>Distribución de postulaciones</h3>
+
+      <div class="chart-container">
+        <canvas id="applicationsChart"></canvas>
+      </div>
+    </div>
+
+    <div class="universities-card">
+      <h3>Universidades destacadas</h3>
+
+      <ng-container *ngIf="topUniversities.length > 0; else noUniversities">
+        <div class="university-item" *ngFor="let u of topUniversities">
+          <strong>{{ u[0] }}</strong>
+          <span>{{ u[1] }} postulaciones</span>
+        </div>
+      </ng-container>
+
+      <ng-template #noUniversities>
+        <div class="empty-state">No hay universidades asociadas.</div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="students-card">
+    <h3>Últimas postulaciones</h3>
+
+    <ng-container *ngIf="recentApplications.length > 0; else noApplications">
+      <div class="student-item" *ngFor="let app of recentApplications">
+        <div>
+          <strong>
+            {{ app?.student?.fullName || "Sin nombre" }}
+          </strong>
+
+          <p>
+            {{ app?.student?.career || "Sin carrera" }}
+          </p>
+        </div>
+
+        <span>
+          {{ app?.status }}
+        </span>
+      </div>
+    </ng-container>
+
+    <ng-template #noApplications>
+      <div class="empty-state">No hay postulaciones registradas.</div>
+    </ng-template>
+  </div>
 </div>

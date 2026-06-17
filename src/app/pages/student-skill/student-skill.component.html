@@ -1,0 +1,36 @@
+<app-navbar [role]="'student'"></app-navbar>
+
+<div class="page">
+  <div class="header">
+    <h2 class="title">Mis habilidades</h2>
+
+    <button class="btn-create-skill" (click)="createSkill()">
+      <i class="fa-solid fa-plus"></i>
+      Agregar habilidad
+    </button>
+  </div>
+
+  <div *ngIf="skills.length === 0" class="empty">
+    No tienes habilidades registradas
+  </div>
+
+  <div class="cards">
+    <div class="card" *ngFor="let skill of skills">
+      <h3>
+        <i class="fa-solid fa-star"></i>
+        {{ skill.name }}
+      </h3>
+
+      <p>
+        <i class="fa-solid fa-calendar"></i>
+        Registrada:
+        {{ skill.createdAt | date: "yyyy-MM-dd" }}
+      </p>
+
+      <button class="btn-delete-skill" (click)="deleteSkill(skill)">
+        <i class="fa-solid fa-trash"></i>
+        Eliminar
+      </button>
+    </div>
+  </div>
+</div>

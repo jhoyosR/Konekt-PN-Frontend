@@ -1,0 +1,194 @@
+<app-navbar [role]="'student'"></app-navbar>
+
+<div class="vacancies-page">
+  <div class="list-container">
+    <!-- FILTERS -->
+
+    <h2 class="page-title">Vacantes disponibles</h2>
+    <div class="filters-header">
+  <i class="fa-solid fa-filter"></i>
+  <h3>Filtros</h3>
+</div>
+    <div
+      class="filters-container"
+      *ngIf="filtersForm"
+      [formGroup]="filtersForm"
+    >
+    
+      <div class="filters-row">
+        <!-- TITLE -->
+        <div class="filter-group">
+          <label>Título</label>
+          <input type="text" class="filter-input" formControlName="title" />
+        </div>
+
+        <!-- LOCATION -->
+        <div class="filter-group">
+          <label>Ubicación</label>
+          <input type="text" class="filter-input" formControlName="location" />
+        </div>
+        <!-- SALARY -->
+        <div class="filter-group">
+          <label>Salario</label>
+          <input type="number" class="filter-input" formControlName="salary" />
+        </div>
+
+        <!-- MODALITY -->
+        <div class="filter-group">
+          <label>Modalidad</label>
+          <ng-select
+            [items]="modalities"
+            formControlName="modality"
+          ></ng-select>
+        </div>
+
+        <!-- INDUSTRY -->
+        <div class="filter-group">
+          <label>Industria</label>
+          <ng-select
+            [items]="industries"
+            formControlName="industry"
+          ></ng-select>
+        </div>
+
+        <!-- COMPANY -->
+        <div class="filter-group">
+          <label>Empresa</label>
+          <ng-select
+            [items]="companies"
+            bindLabel="name"
+            bindValue="id"
+            formControlName="companyId"
+          ></ng-select>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTÓN FUERA DEL GRID -->
+    <div class="filters-actions">
+      <button class="btn-filter" (click)="applyFilters()">
+        <i class="fa-solid fa-filter"></i>
+        Aplicar filtros
+      </button>
+    </div>
+
+    <div *ngIf="vacancies.length === 0" class="empty">
+      No hay vacantes disponibles
+    </div>
+
+    <div class="cards-grid">
+      <div *ngFor="let v of vacancies" class="card">
+        <!-- HEADER -->
+        <div class="vacancy-header">
+          <div class="vacancy-avatar">
+            <img
+              *ngIf="v.company.profilePhotoUrl; else noCompanyLogo"
+              [src]="v.company.profilePhotoUrl"
+              alt="company logo"
+            />
+
+            <ng-template #noCompanyLogo>
+              <div class="avatar-placeholder">
+                <i class="fa-solid fa-building"></i>
+              </div>
+            </ng-template>
+          </div>
+
+          <!-- INFO -->
+          <div class="vacancy-info">
+            <!-- TÍTULO DE LA VACANTE (GRANDE Y ABAJO DE LA IMAGEN) -->
+            <h2 class="vacancy-title">
+              {{ v.title }}
+            </h2>
+
+            <h4 class="company-name">
+              {{ v.company.name || "Empresa" }}
+            </h4>
+          </div>
+
+          <button
+            class="view-photo-btn"
+            *ngIf="v.company.profilePhotoUrl"
+            (click)="openPhoto(v.company.profilePhotoUrl)"
+          >
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+
+        <!-- DESCRIPCIÓN SIEMPRE VISIBLE -->
+        <p class="description">{{ v.description }}</p>
+
+        <!-- TOGGLE -->
+        <div class="toggle-section">
+          <button class="toggle-btn" (click)="v.expanded = !v.expanded">
+            <i
+              class="fa-solid"
+              [ngClass]="v.expanded ? 'fa-chevron-up' : 'fa-chevron-down'"
+            ></i>
+          </button>
+        </div>
+
+        <!-- DETALLES OCULTOS -->
+        <div class="extra-info" *ngIf="v.expanded">
+          <div class="info-grid">
+            <div>
+              <i class="fa-solid fa-coins"></i>
+              <b>Salario:</b>
+              {{ v.salary | currency: "COP" : "symbol" : "1.0-0" : "es-CO" }}
+            </div>
+
+            <div>
+              <i class="fa-solid fa-location-dot"></i>
+              <b>Ubicación:</b> {{ v.location }}
+            </div>
+
+            <div>
+              <i class="fa-solid fa-briefcase"></i>
+              <b>Modalidad:</b> {{ v.modality }}
+            </div>
+
+            <div>
+              <i class="fa-solid fa-list-check"></i>
+              <b>Requisitos:</b> {{ v.requirements }}
+            </div>
+          </div>
+
+          <!-- BOTÓN POSTULAR -->
+          <div class="actions">
+            <button class="btn-apply" (click)="applyVacancy(v)">
+              <i class="fa-solid fa-paper-plane"></i>
+              Postularme
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div class="pagination-container" *ngIf="pageCount > 1">
+      <button
+        class="pagination-btn"
+        (click)="previousPage()"
+        [disabled]="!hasPrev"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+        Anterior
+      </button>
+
+      <select
+        class="pagination-select"
+        [value]="page"
+        (change)="goToPage(+$any($event.target).value)"
+      >
+        <option *ngFor="let p of pages" [value]="p">
+          Página {{ p }} de {{ pageCount }}
+        </option>
+      </select>
+
+      <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+        Siguiente
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,8 @@
 <div class="university-register-page">
+  <div class="back-button" (click)="goToRoles()">
+  <i class="fa-solid fa-arrow-left back-icon"></i>
+  <span class="back-text">Volver</span>
+</div>
   <div class="university-register-container">
     <div class="logo-container">
       <img src="images/logo.png" alt="Logo" class="university-register-logo" />
@@ -9,7 +13,7 @@
     <form
       class="university-register-form"
       [formGroup]="registerForm"
-      (ngSubmit)="register()"
+      (ngSubmit)="Universityregister()"
     >
       <!-- NAME -->
       <div class="form-group">

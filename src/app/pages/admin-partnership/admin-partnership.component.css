@@ -1,0 +1,231 @@
+.partnerships-page {
+  padding: 40px 20px;
+  background: #f4f6f9;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #0f172a;
+}
+
+.table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+}
+
+.partnerships-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+  table-layout: fixed;
+}
+
+.partnerships-table thead {
+  background: #2563eb;
+  color: white;
+}
+
+.partnerships-table th {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.partnerships-table td {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partnerships-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.partnerships-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.pending {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.empty {
+  text-align: center;
+  padding: 20px;
+  color: #64748b;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.pagination-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination-btn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.pagination-select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+}
+/* =========================
+   TABLET (hasta 768px)
+========================= */
+@media (max-width: 768px) {
+
+  .partnerships-page {
+    padding: 25px 15px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .partnerships-table {
+    min-width: 700px;
+  }
+
+  .partnerships-table th {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .partnerships-table td {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .status {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .pagination-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MÓVIL (hasta 576px)
+========================= */
+@media (max-width: 576px) {
+
+  .partnerships-page {
+    padding: 18px 12px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .partnerships-table {
+    min-width: 650px;
+  }
+
+  .partnerships-table th {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .partnerships-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .status {
+    font-size: 11px;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MÓVIL PEQUEÑO (hasta 400px)
+========================= */
+@media (max-width: 400px) {
+
+  .partnerships-page {
+    padding: 15px 10px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .partnerships-table {
+    min-width: 600px;
+  }
+
+  .partnerships-table th,
+  .partnerships-table td {
+    font-size: 11px;
+    padding: 6px;
+  }
+
+  .status {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    font-size: 13px;
+  }
+}

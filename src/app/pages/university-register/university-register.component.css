@@ -147,3 +147,105 @@ input:focus {
   cursor: not-allowed;
   transform: none;
 }
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #2563eb;
+  font-weight: 500;
+  user-select: none;
+  transition: 0.2s ease;
+}
+
+.back-button:hover {
+  transform: translateX(-3px);
+  color: #1d4ed8;
+}
+
+.back-icon {
+  font-size: 17px;
+}
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .university-register-page {
+    padding: 1.2rem;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .university-register-container {
+    width: 100%;
+    max-width: 520px;
+    padding: 1.8rem;
+  }
+
+  .university-register-title {
+    font-size: 1.4rem;
+  }
+
+  .university-register-form {
+    gap: 0.8rem;
+  }
+
+  .back-button {
+    top: 16px;
+    left: 16px;
+    z-index: 20;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .university-register-page {
+    padding: 0.8rem;
+    align-items: flex-start;
+    position: relative;
+    padding-top: 60px;
+  }
+
+  .university-register-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.2rem;
+    border-radius: 10px;
+    margin: 0 12px;
+  }
+
+  .university-register-logo {
+    max-width: 140px;
+  }
+
+  .university-register-title {
+    font-size: 1.2rem;
+  }
+
+  input {
+    font-size: 0.95rem;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .btn-register,
+  .btn-login-back {
+    font-size: 0.95rem;
+    padding: 0.75rem;
+  }
+
+  .show-password {
+    font-size: 0.85rem;
+  }
+
+  .back-button {
+    top: 14px;
+    left: 14px;
+    z-index: 20;
+  }
+}

@@ -11,6 +11,7 @@ import { StudentRegisterResponse } from '../interfaces/student-register-response
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para crear un estudiante
 export class StudentRegisterService {
   private readonly endpoint = `${API_URL}/auth/register-student`;
 

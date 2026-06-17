@@ -1,0 +1,163 @@
+<app-navbar [role]="'company'"></app-navbar>
+
+<div class="internships-page">
+  <h2 class="page-title">Prácticas</h2>
+
+  <div *ngIf="internships.length === 0" class="empty">
+    No hay prácticas registradas
+  </div>
+
+  <div class="cards-grid">
+    <div *ngFor="let i of internships" class="card">
+      <h3>
+        <i class="fa-solid fa-circle-info"></i>
+
+        <span
+          [ngClass]="{
+            'status-activa': i.status === 'Activa',
+            'status-suspendida': i.status === 'Suspendida',
+            'status-cerrada': i.status === 'Cerrada',
+          }"
+        >
+          {{ i.status }}
+        </span>
+      </h3>
+
+      <p>
+        <i class="fa-solid fa-calendar"></i>
+        Inicio: {{ i.startDate | date: "yyyy-MM-dd" }}
+      </p>
+
+      <p>
+        <i class="fa-solid fa-calendar-check"></i>
+        Fin: {{ i.endDate | date: "yyyy-MM-dd" }}
+      </p>
+
+      <hr />
+
+      <!-- STUDENT -->
+      <h4>
+        <i class="fa-solid fa-user"></i>
+        Estudiante
+      </h4>
+
+      <p class="student-name">
+        <i class="fa-solid fa-user-graduate"></i>
+        {{ i.application.student.fullName }}
+      </p>
+
+      <p>
+        <i class="fa-solid fa-envelope"></i>
+        {{ i.application.student.user.email }}
+      </p>
+
+      <hr />
+
+      <!-- UNIVERSITY -->
+      <h4>
+        <i class="fa-solid fa-building-columns"></i>
+        Universidad
+      </h4>
+
+      <p>
+        <i class="fa-solid fa-school"></i>
+        {{ i.application.student.university.name }}
+      </p>
+
+      <p>
+        <i class="fa-solid fa-id-card"></i>
+        NIT: {{ i.application.student.university.nit }}
+      </p>
+
+      <p>
+        <i class="fa-solid fa-location-dot"></i>
+        {{ i.application.student.university.address }}
+      </p>
+
+      <p>
+        <i class="fa-solid fa-phone"></i>
+        {{ i.application.student.university.phone }}
+      </p>
+
+      <hr />
+
+      <!-- VACANCY -->
+      <h4>
+        <i class="fa-solid fa-briefcase"></i>
+        Vacante
+      </h4>
+
+      <p>
+        <i class="fa-solid fa-heading"></i>
+        {{ i.application.vacancie.title }}
+      </p>
+
+      <p>
+        <i class="fa-solid fa-location-dot"></i>
+        {{ i.application.vacancie.location }}
+      </p>
+
+      <p>
+        <i class="fa-solid fa-sack-dollar"></i>
+        {{
+          i.application.vacancie.salary
+            | currency: "COP" : "symbol" : "1.0-0" : "es-CO"
+        }}
+      </p>
+
+      <!-- ACTIONS -->
+      <div class="actions">
+        <button class="btn-docs" (click)="openDocumentsModal(i)">
+          <i class="fa-solid fa-folder-open"></i>
+          Cargar documentos
+        </button>
+        <button class="btn-follow" (click)="followInternship(i)">
+          <i class="fa-solid fa-plus"></i>
+          Crear seguimiento
+        </button>
+
+        <button class="btn-details" (click)="viewInternshipDetails(i)">
+          <i class="fa-solid fa-eye"></i>
+          Ver detalles
+        </button>
+
+        <button class="btn-update" (click)="updateInternship(i)">
+          <i class="fa-solid fa-pen-to-square"></i>
+          Actualizar
+        </button>
+
+        <button class="btn-delete" (click)="deleteInternship(i.id)">
+          <i class="fa-solid fa-trash"></i>
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGINACIÓN -->
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      <i class="fa-solid fa-chevron-left"></i>
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+</div>

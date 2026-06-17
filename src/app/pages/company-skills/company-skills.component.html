@@ -1,0 +1,31 @@
+
+
+<div class="page">
+  <div class="header">
+    <h2 class="title">Habilidades de la vacante</h2>
+  </div>
+
+  <div *ngIf="skills.length === 0" class="empty">
+    Esta vacante no tiene habilidades registradas
+  </div>
+
+  <div class="cards">
+    <div class="card" *ngFor="let skill of skills">
+      <h3>
+        <i class="fa-solid fa-star"></i>
+        {{ skill.name }}
+      </h3>
+
+      <p>
+        <i class="fa-solid fa-calendar"></i>
+        Registrada:
+        {{ skill.createdAt | date: "yyyy-MM-dd" }}
+      </p>
+
+      <button class="btn-delete-skill" (click)="deleteSkill(skill)">
+        <i class="fa-solid fa-trash"></i>
+        Eliminar
+      </button>
+    </div>
+  </div>
+</div>

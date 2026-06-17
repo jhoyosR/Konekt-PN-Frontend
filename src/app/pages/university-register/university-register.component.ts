@@ -26,7 +26,7 @@ export class UniversityRegisterComponent {
   constructor(
     private fb: FormBuilder,
     private universityRegisterService: UniversityRegisterService,
-    private router: Router
+    private router: Router,
   ) {
     this.registerForm = this.fb.group(
       {
@@ -42,48 +42,46 @@ export class UniversityRegisterComponent {
             Validators.required,
             Validators.minLength(8),
             Validators.pattern(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_\-])[A-Za-z\d@$!%*?&.#_\-]{8,}$/
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_\-])[A-Za-z\d@$!%*?&.#_\-]{8,}$/,
             ),
           ],
         ],
 
         confirmPassword: ['', [Validators.required]],
       },
-      { validators: this.passwordMatchValidator }
+      { validators: this.passwordMatchValidator },
     );
   }
+  //Metodo para validar que las contraseñas coincidan
+  passwordMatchValidator(form: any) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    const confirmControl = form.get('confirmPassword');
 
-  // 🔥 VALIDATOR PASSWORD MATCH
-passwordMatchValidator(form: any) {
-  const password = form.get('password')?.value;
-  const confirmPassword = form.get('confirmPassword')?.value;
-  const confirmControl = form.get('confirmPassword');
+    if (!confirmControl) return null;
 
-  if (!confirmControl) return null;
+    if (password !== confirmPassword) {
+      confirmControl.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
 
-  if (password !== confirmPassword) {
-    confirmControl.setErrors({ passwordMismatch: true });
-    return { passwordMismatch: true };
-  }
+    if (confirmControl.hasError('passwordMismatch')) {
+      const errors = confirmControl.errors;
+      if (errors) {
+        delete errors['passwordMismatch'];
 
-  // 🔥 LIMPIAR ERROR cuando ya coinciden
-  if (confirmControl.hasError('passwordMismatch')) {
-    const errors = confirmControl.errors;
-    if (errors) {
-      delete errors['passwordMismatch'];
-
-      if (Object.keys(errors).length === 0) {
-        confirmControl.setErrors(null);
-      } else {
-        confirmControl.setErrors(errors);
+        if (Object.keys(errors).length === 0) {
+          confirmControl.setErrors(null);
+        } else {
+          confirmControl.setErrors(errors);
+        }
       }
     }
+
+    return null;
   }
-
-  return null;
-}
-
-  register(): void {
+  //Metodo para crear una universidad
+  Universityregister(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
@@ -119,13 +117,15 @@ passwordMatchValidator(form: any) {
           icon: 'success',
           title: '¡Registro exitoso!',
           text: 'La universidad fue creada correctamente.',
-          confirmButtonText: 'Continuar',
+          confirmButtonText: 'Aceptar',
           confirmButtonColor: '#2563eb',
           customClass: {
             popup: 'konekt-swal',
           },
-        }).then(() => {
-          this.router.navigate(['/login']);
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigateByUrl('/');
+          }
         });
       },
 
@@ -135,7 +135,10 @@ passwordMatchValidator(form: any) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: error?.message || 'No se pudo registrar la universidad.',
+          text:
+            error?.error?.message ||
+            error?.message ||
+            'No se pudo registrar la universidad.',
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#2563eb',
           customClass: {
@@ -145,8 +148,7 @@ passwordMatchValidator(form: any) {
       },
     });
   }
-
-  // 🔥 CHECKBOX CONTROLA AMBOS CAMPOS
+  //Checkbox para mostrar y ocultar las contraseñas escritas
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
@@ -158,8 +160,12 @@ passwordMatchValidator(form: any) {
   get f() {
     return this.registerForm.controls;
   }
-
+  //Metodo para volver al login
   goToLogin(): void {
     this.router.navigate(['/']);
+  }
+  //Metodo para ir al panel de roles de registro
+  goToRoles(): void {
+    this.router.navigate(['/roles']);
   }
 }

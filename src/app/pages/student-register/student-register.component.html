@@ -1,4 +1,9 @@
 <div class="student-register-page">
+  <!-- BACK BUTTON -->
+  <div class="back-button" (click)="goToRoles()">
+    <i class="fa-solid fa-arrow-left back-icon"></i>
+    <span class="back-text">Volver</span>
+  </div>
   <div class="student-register-container">
     <div class="logo-container">
       <img
@@ -13,7 +18,7 @@
     <form
       class="student-register-form"
       [formGroup]="registerForm"
-      (ngSubmit)="register()"
+      (ngSubmit)="Studentregister()"
     >
       <!-- FULL NAME -->
       <div class="form-group">
@@ -87,17 +92,19 @@
           <small class="error-message"> La carrera es obligatoria. </small>
         }
       </div>
-
       <!-- UNIVERSITY -->
       <div class="form-group">
         <label>Universidad</label>
 
         <ng-select
-          [items]="universities"
+          [items]="displayUniversities"
           bindLabel="name"
           bindValue="id"
           placeholder="Seleccione una universidad"
           formControlName="universityId"
+          [loading]="loading"
+          (scrollToEnd)="onScrollEnd()"
+          (search)="onUniversitySearch($event)"
         >
         </ng-select>
 

@@ -1,96 +1,230 @@
-import { Routes } from '@angular/router';
+  import { Routes } from '@angular/router';
 
-import { LoginComponent } from './pages/login/login.component';
-import { RolePanelComponent } from './pages/role-panel/role-panel.component';
+  import { LoginComponent } from './pages/login/login.component';
+  import { RolePanelComponent } from './pages/role-panel/role-panel.component';
 
-import { StudentRegisterComponent } from './pages/student-register/student-register.component';
-import { UniversityRegisterComponent } from './pages/university-register/university-register.component';
-import { CompanyRegisterComponent } from './pages/company-register/company-register.component';
+  import { StudentRegisterComponent } from './pages/student-register/student-register.component';
+  import { UniversityRegisterComponent } from './pages/university-register/university-register.component';
+  import { CompanyRegisterComponent } from './pages/company-register/company-register.component';
 
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+  import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+  import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
-import { StudentDashboardComponent } from './pages/student-dashboard/student-dashboard.component';
-import { UniversityDashboardComponent } from './pages/university-dashboard/university-dashboard.component';
-import { CompanyDashboardComponent } from './pages/company-dashboard/company-dashboard.component';
+  import { StudentDashboardComponent } from './pages/student-dashboard/student-dashboard.component';
+  import { UniversityDashboardComponent } from './pages/university-dashboard/university-dashboard.component';
+  import { CompanyDashboardComponent } from './pages/company-dashboard/company-dashboard.component';
 
-import { CompanyVacanciesComponent } from './pages/company-vacancies/company-vacancies.component';
+  import { CompanyVacanciesComponent } from './pages/company-vacancies/company-vacancies.component';
+  import { StudentVacanciesComponent } from './pages/student-vacancies/student-vacancies.component';
+  import { StudentApplicationComponent } from './pages/student-application/student-application.component';
+  import { CompanyApplicationComponent } from './pages/company-application/company-application.component';
+  import { ProfileComponent } from './pages/profile/profile.component';
+  import { UniversityStudentsComponent } from './pages/university-students/university-students.component';
+  import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+  import { AdminUsersComponent } from './pages/admin-users/admin-users.component';
+  import { AdminStudentsComponent } from './pages/admin-students/admin-students.component';
+  import { AdminUniversitiesComponent } from './pages/admin-universities/admin-universities.component';
+  import { AdminCompaniesComponent } from './pages/admin-companies/admin-companies.component';
+  import { AdminApplicationsComponent } from './pages/admin-applications/admin-applications.component';
+  import { AdminVacanciesComponent } from './pages/admin-vacancies/admin-vacancies.component';
+  import { AdminPartnershipComponent } from './pages/admin-partnership/admin-partnership.component';
+  import { UniversityPartnershipComponent } from './pages/university-partnership/university-partnership.component';
+  import { CompanyPartnershipComponent } from './pages/company-partnership/company-partnership.component';
+  import { UniversityIntershipComponent } from './pages/university-intership/university-intership.component';
+  import { StudentInternshipComponent } from './pages/student-internship/student-internship.component';
+  import { CompanyInternshipComponent } from './pages/company-internship/company-internship.component';
+  import { CompanyIntershipUpdateComponent } from './pages/company-intership-update/company-intership-update.component';
+  import { StudentSkillComponent } from './pages/student-skill/student-skill.component';
+  import { CompanySkillsComponent } from './pages/company-skills/company-skills.component';
 
-export const routes: Routes = [
-  {
-    path: '',
-    component: LoginComponent,
-  },
+  export const routes: Routes = [
+    {
+      path: '',
+      component: LoginComponent,
+    },
 
-  {
-    path: 'roles',
-    component: RolePanelComponent,
-  },
+    {
+      path: 'roles',
+      component: RolePanelComponent,
+    },
+    {
+      path: 'profile',
+      component: ProfileComponent,
+    },
 
-  {
-    path: 'register',
-    children: [
-      {
-        path: 'student',
-        component: StudentRegisterComponent,
-      },
-      {
-        path: 'university',
-        component: UniversityRegisterComponent,
-      },
-      {
-        path: 'company',
-        component: CompanyRegisterComponent,
-      },
-      {
-        path: '',
-        redirectTo: 'student',
-        pathMatch: 'full',
-      },
-    ],
-  },
+    {
+      path: 'register',
+      children: [
+        {
+          path: 'student',
+          component: StudentRegisterComponent,
+        },
+        {
+          path: 'university',
+          component: UniversityRegisterComponent,
+        },
+        {
+          path: 'company',
+          component: CompanyRegisterComponent,
+        },
+        {
+          path: '',
+          redirectTo: 'student',
+          pathMatch: 'full',
+        },
+      ],
+    },
 
-  {
-    path: 'dashboard',
-    children: [
-      {
-        path: 'student',
-        component: StudentDashboardComponent,
-      },
-      {
-        path: 'university',
-        component: UniversityDashboardComponent,
-      },
+    {
+      path: 'dashboard',
+      children: [
+        {
+          path: 'student',
+          component: StudentDashboardComponent,
+        },
+        {
+          path: 'university',
+          component: UniversityDashboardComponent,
+        },
+        {
+          path: 'admin',
+          component: AdminDashboardComponent,
+        },
 
-      {
-        path: 'company',
-        children: [
-          {
-            path: '',
-            component: CompanyDashboardComponent,
-          },
-          {
-            path: 'vacancies',
-            component: CompanyVacanciesComponent,
-          },
-        ],
-      },
+        {
+          path: 'company',
+          children: [
+            {
+              path: '',
+              component: CompanyDashboardComponent,
+            },
+            {
+              path: 'vacancies',
+              component: CompanyVacanciesComponent,
+            },
+            {
+              path: 'applications',
+              component: CompanyApplicationComponent,
+            },
+              {
+              path: 'partnership',
+              component: CompanyPartnershipComponent,
+            },
+            {
+              path: 'internship',
+              component: CompanyInternshipComponent,
+            },
+            {
+              path: 'internship-update',
+              component: CompanyIntershipUpdateComponent,
+            },
+              {
+              path: 'skills/:id',
+              component: CompanySkillsComponent,
+            },
+            
+          ],
+        },
 
-      {
-        path: '',
-        redirectTo: 'student',
-        pathMatch: 'full',
-      },
-    ],
-  },
+        {
+          path: 'student',
+          children: [
+            {
+              path: '',
+              component: StudentDashboardComponent,
+            },
+            {
+              path: 'vacancies',
+              component: StudentVacanciesComponent,
+            },
+            {
+              path: 'applications',
+              component: StudentApplicationComponent,
+            },
+            {
+              path: 'internship',
+              component: StudentInternshipComponent,
+            },
+            {
+              path: 'skill',
+              component: StudentSkillComponent,
+            },
+          ],
+        },
+        {
+          path: 'university',
+          children: [
+            {
+              path: '',
+              component: UniversityDashboardComponent,
+            },
+            {
+              path: 'students',
+              component: UniversityStudentsComponent,
+            },
+            {
+              path: 'partnership',
+              component: UniversityPartnershipComponent,
+            },
+              {
+              path: 'intership',
+              component: UniversityIntershipComponent,
+            },
+          ],
+        },
+        {
+          path: 'admin',
+          children: [
+            {
+              path: '',
+              component: AdminDashboardComponent,
+            },
+            {
+              path: 'users',
+              component: AdminUsersComponent,
+            },
+            {
+              path: 'students',
+              component: AdminStudentsComponent,
+            },
+            {
+              path: 'university',
+              component: AdminUniversitiesComponent,
+            },
+            {
+              path: 'company',
+              component: AdminCompaniesComponent,
+            },
+            {
+              path: 'applications',
+              component: AdminApplicationsComponent,
+            },
+            {
+              path: 'vacancies',
+              component: AdminVacanciesComponent,
+            },
+            {
+              path: 'partnership',
+              component: AdminPartnershipComponent,
+            },
+          ],
+        },
 
-  {
-    path: 'forgot-password',
-    component: ForgotPasswordComponent,
-  },
+        {
+          path: '',
+          redirectTo: 'student',
+          pathMatch: 'full',
+        },
+      ],
+    },
 
-  {
-    path: 'reset-password',
-    component: ResetPasswordComponent,
-  },
-];
+    {
+      path: 'forgot-password',
+      component: ForgotPasswordComponent,
+    },
+
+    {
+      path: 'reset-password',
+      component: ResetPasswordComponent,
+    },
+  ];

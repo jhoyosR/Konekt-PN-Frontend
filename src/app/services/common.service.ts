@@ -7,6 +7,7 @@ import { API_URL } from '../../global';
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para las constantes
 export class CommonService {
   private readonly endpoint = `${API_URL}/common`;
 

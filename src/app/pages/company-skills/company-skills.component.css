@@ -1,0 +1,198 @@
+.page {
+  padding: 30px;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f6f9;
+  min-height: 100vh;
+}
+
+.header {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+
+  font-size: 26px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.empty {
+  text-align: center;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 22px 26px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-left: 6px solid #7c3aed; /* morado company */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card h3 i {
+  color: #7c3aed;
+}
+
+.card p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card p i {
+  color: #7c3aed;
+}
+
+.btn-delete-skill {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #dc2626;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-delete-skill:hover {
+  background: #b91c1c;
+}
+/* =========================
+   TABLET (hasta 768px)
+========================= */
+@media (max-width: 768px) {
+
+  .page {
+    padding: 22px 15px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 12px;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .card h3 {
+    font-size: 17px;
+  }
+
+  .card p {
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+
+  .btn-delete-skill {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MÓVIL (hasta 576px)
+========================= */
+@media (max-width: 576px) {
+
+  .page {
+    padding: 16px 12px;
+    overflow-x: hidden;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 13px;
+  }
+
+  .btn-delete-skill {
+    font-size: 13px;
+    padding: 10px;
+  }
+}
+
+/* =========================
+   MÓVIL PEQUEÑO (hasta 400px)
+========================= */
+@media (max-width: 400px) {
+
+  .page {
+    padding: 12px 10px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .btn-delete-skill {
+    font-size: 12px;
+    padding: 9px;
+  }
+}

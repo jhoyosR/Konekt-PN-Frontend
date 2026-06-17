@@ -1,0 +1,195 @@
+.universities-page {
+  padding: 40px 20px;
+  background: #f4f6f9;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #0f172a;
+}
+
+.table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+}
+
+.universities-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+  table-layout: fixed;
+}
+
+.universities-table thead {
+  background: #2563eb;
+  color: white;
+}
+
+.universities-table th {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.universities-table td {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.universities-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.universities-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.empty {
+  text-align: center;
+  padding: 20px;
+  color: #64748b;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.pagination-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination-btn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.pagination-select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+}
+/* =========================
+   TABLET (hasta 768px)
+========================= */
+@media (max-width: 768px) {
+
+  .universities-page {
+    padding: 25px 15px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .universities-table {
+    min-width: 700px;
+  }
+
+  .universities-table th {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .universities-table td {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .pagination-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MÓVIL (hasta 576px)
+========================= */
+@media (max-width: 576px) {
+
+  .universities-page {
+    padding: 18px 12px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .universities-table {
+    min-width: 650px;
+  }
+
+  .universities-table th {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .universities-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MÓVIL PEQUEÑO (hasta 400px)
+========================= */
+@media (max-width: 400px) {
+
+  .universities-page {
+    padding: 15px 10px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .universities-table {
+    min-width: 600px;
+  }
+
+  .universities-table th,
+  .universities-table td {
+    font-size: 11px;
+    padding: 6px;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    font-size: 13px;
+  }
+}

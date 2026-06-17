@@ -1,0 +1,69 @@
+<app-navbar [role]="'super-admin'"></app-navbar>
+
+<div class="vacancies-page">
+  <h2 class="page-title">Gestión de vacantes</h2>
+
+  <div class="table-container">
+    <table class="vacancies-table">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Empresa</th>
+          <th>Ubicación</th>
+          <th>Modalidad</th>
+          <th>Salario</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let v of vacancies">
+          <td>{{ v.title }}</td>
+
+          <td>{{ v.company.name }}</td>
+
+          <td>{{ v.location }}</td>
+
+          <td>{{ v.modality }}</td>
+
+          <td>
+            {{ v.salary | currency: "COP" : "symbol" : "1.0-0" : "es-CO" }}
+          </td>
+          <td>
+            <span class="status" [ngClass]="getStatusClass(v.status)">
+              {{ v.status }}
+            </span>
+          </td>
+        </tr>
+
+        <tr *ngIf="vacancies.length === 0">
+          <td colspan="6" class="empty">No hay vacantes disponibles</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+    </button>
+  </div>
+</div>

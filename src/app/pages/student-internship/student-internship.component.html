@@ -1,0 +1,121 @@
+<app-navbar [role]="'student'"></app-navbar>
+
+<div class="page">
+  <h2 class="title">Mis prácticas</h2>
+
+  <div *ngIf="interships.length === 0" class="empty">
+    No tienes prácticas registradas
+  </div>
+
+  <!-- CARDS SOLO PRÁCTICAS -->
+  <div class="cards">
+    <div *ngFor="let i of interships" class="card">
+      <!-- ESTADO -->
+      <h3>
+        <i class="fa-solid fa-circle-info"></i>
+
+        <span
+          [ngClass]="{
+            'status-activa': i.status === 'Activa',
+            'status-suspendida': i.status === 'Suspendida',
+            'status-cerrada': i.status === 'Cerrada',
+          }"
+        >
+          {{ i.status }}
+        </span>
+      </h3>
+
+      <!-- FECHAS -->
+      <p>
+        <i class="fa-solid fa-calendar"></i>
+        Inicio: {{ i.startDate | date: "yyyy-MM-dd" }}
+      </p>
+
+      <p>
+        <i class="fa-solid fa-calendar-check"></i>
+        Fin: {{ i.endDate | date: "yyyy-MM-dd" }}
+      </p>
+
+      <hr />
+
+      <!-- VACANTE -->
+      <h4>
+        <i class="fa-solid fa-briefcase"></i>
+        Vacante
+      </h4>
+
+      <p>{{ i.application.vacancie.title }}</p>
+      <p>{{ i.application.vacancie.location }}</p>
+      <p>{{ i.application.vacancie.salary | currency: "USD" }}</p>
+      <p>{{ i.application.vacancie.modality }}</p>
+
+      <hr />
+
+      <!-- EMPRESA -->
+      <h4>
+        <i class="fa-solid fa-building"></i>
+        Empresa
+      </h4>
+
+      <p>{{ i.application.vacancie.company.name }}</p>
+      <p>{{ i.application.vacancie.company.phone }}</p>
+    </div>
+  </div>
+
+  <div class="updates-section" *ngFor="let i of interships">
+    <h3 class="updates-title">
+      <i class="fa-solid fa-list-check"></i>
+      Actualizaciones de la práctica
+    </h3>
+
+    <ng-container *ngIf="i.updates.length > 0; else noUpdates">
+      <div class="update-card" *ngFor="let update of i.updates">
+        <h5>
+          <i class="fa-solid fa-clipboard-check"></i>
+          {{ update.title }}
+        </h5>
+
+        <p>
+          <i class="fa-solid fa-file-lines"></i>
+          {{ update.description }}
+        </p>
+
+        <small>
+          <i class="fa-solid fa-clock"></i>
+          {{ update.createdAt | date: "yyyy-MM-dd HH:mm" }}
+        </small>
+      </div>
+    </ng-container>
+
+    <ng-template #noUpdates>
+      <p class="empty-update">No hay actualizaciones registradas.</p>
+    </ng-template>
+  </div>
+
+  <!-- PAGINACIÓN -->
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      <i class="fa-solid fa-chevron-left"></i>
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+</div>

@@ -1,12 +1,24 @@
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 24px;
   background-color: #ffffff;
-  color: #0f172a;
-  font-family: "Segoe UI", sans-serif;
   border-bottom: 1px solid #e5e7eb;
+  font-family: "Segoe UI", sans-serif;
+
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+
+  overflow: visible;
+}
+
+/* LEFT */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .logo-img {
@@ -14,41 +26,371 @@
   object-fit: contain;
 }
 
+/* CENTER */
 .navbar-center {
   display: flex;
   gap: 18px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-link {
   color: #475569;
   text-decoration: none;
   font-weight: 500;
-  transition: 0.2s;
   padding: 6px 10px;
   border-radius: 6px;
+  transition: 0.2s;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
-  color: #0f172a;
   background-color: #f1f5f9;
+  color: #0f172a;
 }
 
 .nav-link.active {
   background-color: #f1f5f9;
-  border-radius: 6px;
   color: #0f172a;
 }
 
-.logout-btn {
-  background-color: #ef4444;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
+/* RIGHT */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
 }
 
-.logout-btn:hover {
-  background-color: #dc2626;
+.notification-menu,
+.user-menu {
+  position: relative;
+  overflow: visible;
+}
+
+/* PERFIL */
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.nav-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #2563eb;
+}
+
+/* NOTIFICACIONES */
+.notification-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #0f172a;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-btn:hover {
+  color: #2563eb;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+
+  border-radius: 999px;
+  background: #ef4444;
+  color: white;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notifications {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: -40px;
+
+  width: 340px;
+  max-height: 420px;
+
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+  z-index: 99999;
+}
+
+.notifications::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notifications::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.notifications::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.notifications::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 14px;
+  border-bottom: 1px solid #e5e7eb;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  background: #fafafa;
+
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.mark-all-btn {
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  cursor: pointer;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mark-all-btn:hover {
+  text-decoration: underline;
+}
+
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 12px;
+  padding: 12px 14px;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item:hover {
+  background: #f8fafc;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-content h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.notification-content p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.notification-content small {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.notification-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-actions input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.notification-actions .fa-check {
+  color: #22c55e;
+  font-size: 14px;
+}
+
+.empty-notifications {
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-notifications i {
+  font-size: 22px;
+  color: #94a3b8;
+}
+
+/* DROPDOWNS */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+
+  min-width: 180px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+  z-index: 99999;
+}
+
+.dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+
+  border: none;
+  background: white;
+
+  cursor: pointer;
+  text-align: left;
+
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.dropdown-item:hover {
+  background: #f1f5f9;
+}
+
+.dropdown-item.logout {
+  color: #dc2626;
+}
+
+.dropdown-item.logout:hover {
+  background: #fef2f2;
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+
+  .navbar-center {
+    gap: 12px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 12px;
+  }
+
+  .logo-img {
+    height: 34px;
+  }
+
+  .navbar-center {
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 0 8px;
+  }
+
+  .navbar-center::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .user-btn {
+    font-size: 20px;
+  }
+
+  .notifications {
+    width: 300px;
+    right: -20px;
+  }
+}
+
+/* MOBILE PEQUEÑO */
+@media (max-width: 480px) {
+  .logo-img {
+    height: 30px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    padding: 5px 6px;
+  }
+
+  .dropdown-menu {
+    min-width: 160px;
+  }
+
+  .notifications {
+    width: 280px;
+    right: -10px;
+  }
+
+  .notifications-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }

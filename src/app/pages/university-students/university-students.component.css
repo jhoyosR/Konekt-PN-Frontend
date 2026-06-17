@@ -1,0 +1,360 @@
+.students-page {
+  padding: 40px 20px;
+  background: #f4f6f9;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #0f172a;
+}
+
+.empty {
+  text-align: center;
+  color: #64748b;
+  padding: 20px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+  transition: 0.2s;
+  border-left: 5px solid #2563eb;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.card p {
+  margin: 6px 0;
+  color: #334155;
+  font-size: 14px;
+}
+
+.about {
+  margin-top: 12px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.info-grid i {
+  margin-right: 6px;
+  color: #64748b;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.pagination-btn:disabled {
+  background-color: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.pagination-select {
+  min-width: 180px;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.pagination-select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.manage-btn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s ease;
+}
+
+.manage-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+.student-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  font-size: 18px;
+  color: #64748b;
+}
+
+.student-info h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.view-photo-btn {
+  margin-left: auto;
+  background: #2563eb;
+  border: none;
+  color: white;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-photo-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.05);
+}
+/* =========================
+   TABLET (hasta 768px)
+========================= */
+@media (max-width: 768px) {
+
+  .students-page {
+    padding: 25px 15px;
+    overflow-x: hidden;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 12px;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .student-header {
+    gap: 10px;
+  }
+
+  .view-photo-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .manage-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .pagination-container {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pagination-select {
+    min-width: 160px;
+  }
+}
+
+/* =========================
+   MÓVIL (hasta 576px)
+========================= */
+@media (max-width: 576px) {
+
+  .students-page {
+    padding: 18px 12px;
+    overflow-x: hidden;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+  }
+
+  .card p {
+    font-size: 13px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    font-size: 12px;
+  }
+
+  .student-header {
+    flex-wrap: wrap;
+  }
+
+  .student-avatar {
+    width: 42px;
+    height: 42px;
+  }
+
+  .student-info h3 {
+    font-size: 15px;
+  }
+
+  .view-photo-btn {
+    width: 30px;
+    height: 30px;
+    margin-left: auto;
+  }
+
+  .manage-btn {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagination-btn,
+  .pagination-select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MÓVIL PEQUEÑO (hasta 400px)
+========================= */
+@media (max-width: 400px) {
+
+  .students-page {
+    padding: 15px 10px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .student-avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .student-info h3 {
+    font-size: 14px;
+  }
+
+  .view-photo-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .manage-btn {
+    font-size: 12px;
+    padding: 9px;
+  }
+}

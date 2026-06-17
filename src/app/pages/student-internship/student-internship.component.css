@@ -1,0 +1,348 @@
+.page {
+  padding: 30px;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f6f9;
+  min-height: 100vh;
+}
+
+.title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #0f172a;
+}
+
+.empty {
+  text-align: center;
+  color: #64748b;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 22px 26px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-left: 6px solid #10b981;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  transition: 0.2s ease;
+}
+
+.card h3,
+.card h4 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.card p {
+  margin: 4px 0;
+  color: #334155;
+  font-size: 14px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+hr {
+  margin: 14px 0;
+  border: none;
+  border-top: 1px solid #e2e8f0;
+}
+
+.card i {
+  color: #10b981;
+}
+.status-activa {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.status-suspendida {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.status-cerrada {
+  color: #dc2626;
+  font-weight: 700;
+}
+.updates-container {
+  margin-top: 20px;
+}
+
+.updates-container h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 14px;
+
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.updates-container h4 i {
+  color: #2563eb;
+}
+
+.update-card {
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 14px;
+  border-left: 5px solid #2563eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.update-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+.update-card h5 {
+  margin: 0 0 10px 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.update-card h5 i {
+  color: #2563eb;
+}
+
+.update-card p {
+  margin: 0 0 12px 0;
+
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.update-card small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #64748b;
+  font-size: 12px;
+}
+
+.update-card small i {
+  color: #64748b;
+}
+
+.empty-update {
+  background: white;
+
+  padding: 16px;
+
+  border-radius: 12px;
+
+  text-align: center;
+
+  color: #64748b;
+
+  border: 1px dashed #cbd5e1;
+}
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.pagination-btn:disabled {
+  background-color: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.pagination-select {
+  min-width: 180px;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  outline: none;
+}
+
+.pagination-select:focus {
+  border-color: #2563eb;
+}
+
+.pagination-info {
+  text-align: center;
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+}
+/* =========================
+   RESPONSIVE PRACTICAS
+   ========================= */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}
+
+/* Tablets pequeñas */
+@media (max-width: 768px) {
+  .page {
+    padding: 20px 14px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .card p {
+    font-size: 13px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .updates-section {
+    margin-top: 20px;
+  }
+
+  .update-card {
+    padding: 16px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .page {
+    padding: 16px 12px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .card h3,
+  .card h4 {
+    font-size: 15px;
+  }
+
+  .card p {
+    font-size: 12.5px;
+    flex-wrap: wrap;
+  }
+
+  .update-card {
+    padding: 14px;
+  }
+
+  .update-card h5 {
+    font-size: 14px;
+  }
+
+  .update-card p {
+    font-size: 13px;
+  }
+
+  .update-card small {
+    font-size: 11px;
+  }
+
+  /* pagination en columna */
+  .pagination-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pagination-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pagination-select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* Extra pequeño */
+@media (max-width: 360px) {
+  .card {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+}

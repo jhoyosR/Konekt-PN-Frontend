@@ -10,6 +10,7 @@ import { CompanyRegisterResponse } from '../interfaces/company-register-response
 @Injectable({
   providedIn: 'root',
 })
+//Servicio para registrar empresa
 export class CompanyRegisterService {
   private readonly endpoint = `${API_URL}/auth/register-company`;
 

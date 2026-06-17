@@ -1,0 +1,70 @@
+<app-navbar [role]="'super-admin'"></app-navbar>
+
+<div class="students-page">
+  <h2 class="page-title">Gestión de estudiantes</h2>
+
+  <div class="table-container">
+    <table class="students-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Descripción</th>
+          <th>Documento</th>
+          <th>Teléfono</th>
+          <th>Carrera</th>
+          <th>Semestre</th>
+          <th>Universidad</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let s of students">
+          <td>{{ s.fullName }}</td>
+
+          <td>{{ s.user.email }}</td>
+
+          <td>{{ s.about }}</td>
+
+          <td>{{ s.documentNumber }}</td>
+
+          <td>{{ s.phone }}</td>
+
+          <td>{{ s.career }}</td>
+
+          <td>{{ s.semester }}</td>
+
+          <td>{{ s.university.name }}</td>
+        </tr>
+
+        <tr *ngIf="students.length === 0">
+          <td colspan="7" class="empty">No hay estudiantes disponibles</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-container" *ngIf="pageCount > 1">
+    <button
+      class="pagination-btn"
+      (click)="previousPage()"
+      [disabled]="!hasPrev"
+    >
+      Anterior
+    </button>
+
+    <select
+      class="pagination-select"
+      [value]="page"
+      (change)="goToPage(+$any($event.target).value)"
+    >
+      <option *ngFor="let p of pages" [value]="p">
+        Página {{ p }} de {{ pageCount }}
+      </option>
+    </select>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="!hasNext">
+      Siguiente
+    </button>
+  </div>
+</div>
