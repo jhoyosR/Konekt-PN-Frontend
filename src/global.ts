@@ -1,1 +1,1 @@
-export const API_URL = 'http://52.54.156.48:3000/api';
+export const API_URL = 'https://konekt-app.duckdns.org/api';
